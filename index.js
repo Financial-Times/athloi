@@ -10,18 +10,6 @@ const omit = require('lodash.omit');
 
 const pe = new PrettyError();
 
-async function runTask(task, externalOptions) {
-	const packages = await getPackages();
-	const {choice, run} = tasks[task];
-
-	const options = Object.assign(
-		externalOptions || (choice ? await choice() : {}),
-		{packages}
-	);
-
-	return run(options);
-}
-
 async function chooseTask() {
 	const {task} = await inquirer.prompt([{
 		type: 'list',
@@ -53,10 +41,20 @@ or without a task to get the interactive prompt:
 	}
 
 	if(noTask || nonexistentTask) {
+		choseTask = true;
 		task = await chooseTask();
+
+		if(tasks[task].choice) {
+			Object.assign(
+				argv,
+				await tasks[task].choice()
+			);
+		}
 	}
 
-	return runTask(task, omit(argv, '_'));
+	argv.packages = await getPackages();
+
+	return tasks[task].run(argv);
 }
 
 main(
