@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -I index.js"
+    "start": "nodemon -I index.js",
+    "test": "echo hello"
   },
+  "bin": "index.js",
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -18,14 +20,21 @@
   "homepage": "https://github.com/quarterto/athloi#readme",
   "description": "",
   "dependencies": {
+    "@quarterto/chalk-hash": "^1.0.0",
+    "@quarterto/in-dir": "^1.1.0",
+    "@quarterto/symbol-logger": "^1.7.0",
     "chalk": "^2.4.0",
+    "cross-spawn": "^6.0.5",
     "find-up": "^2.1.0",
+    "fs-extra": "^5.0.0",
     "glob": "^7.1.2",
     "glob-promise": "^3.4.0",
     "inquirer": "^5.2.0",
     "lodash.omit": "^4.5.0",
     "minimist": "^1.2.0",
-    "pretty-error": "^2.1.1"
+    "npm": "^5.8.0",
+    "pretty-error": "^2.1.1",
+    "resolve-bin": "^0.4.0"
   },
   "devDependencies": {
     "nodemon": "^1.17.3"
