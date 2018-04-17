@@ -1,0 +1,33 @@
+{
+  "name": "athloi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -I index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quarterto/athloi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/quarterto/athloi/issues"
+  },
+  "homepage": "https://github.com/quarterto/athloi#readme",
+  "description": "",
+  "dependencies": {
+    "chalk": "^2.4.0",
+    "find-up": "^2.1.0",
+    "glob": "^7.1.2",
+    "glob-promise": "^3.4.0",
+    "inquirer": "^5.2.0",
+    "lodash.omit": "^4.5.0",
+    "minimist": "^1.2.0",
+    "pretty-error": "^2.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
+}
