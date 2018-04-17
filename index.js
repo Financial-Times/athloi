@@ -48,7 +48,7 @@ there's no ${chalk.cyan(task)} task. available tasks are:
 ${Object.keys(tasks).map(t => ` ・ ${chalk.blue(t)}`).join('\n')}
 
 run ${chalk.magenta('athloi')} again with one of these tasks (e.g. ${chalk.grey('athloi start')}),
-or without a task to get the interactive prompt.
+or without a task to get the interactive prompt:
 		`);
 	}
 
