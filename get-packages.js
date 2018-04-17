@@ -4,7 +4,7 @@ const glob = require('glob-promise');
 module.exports = async function() {
 	const lernaJson = await findUp('lerna.json');
 	if(!lernaJson) {
-		throw new Error('Athloi should be run in a Lerna monorepo');
+		throw new Error('athloi should be run in a lerna monorepo');
 	}
 
 	const {packages} = require(lernaJson);
