@@ -8,5 +8,8 @@ module.exports = async function() {
 	}
 
 	const {packages} = require(lernaJson);
-	return glob(`{${packages.join(',')}}`);
+	return glob(packages.length > 1
+		? `{${packages.join(',')}}`
+		: packages[0]
+	);
 };
