@@ -1,5 +1,4 @@
 const path = require('path');
-const pushd = require('@quarterto/in-dir');
 const crossSpawn = require('cross-spawn');
 const chalkHash = require('@quarterto/chalk-hash');
 const byline = require('byline');

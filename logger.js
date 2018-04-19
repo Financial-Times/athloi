@@ -21,4 +21,8 @@ module.exports = symbolLogger({
 		symbol: '┃',
 		format: 'red',
 	},
+	protip: {
+		symbol: '☞ protip',
+		format: chalk.blue.bold,
+	},
 });

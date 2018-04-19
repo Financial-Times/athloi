@@ -2,11 +2,11 @@
 
 const inquirer = require('inquirer');
 const chalk = require('chalk');
-const tasks = require('./tasks');
-const getPackages = require('./get-packages');
 const minimist = require('minimist');
 const PrettyError = require('pretty-error');
-const omit = require('lodash.omit');
+const tasks = require('./tasks');
+const getPackages = require('./get-packages');
+const protip = require('./protip');
 
 const pe = new PrettyError();
 
@@ -39,7 +39,6 @@ or without a task to get the interactive prompt:
 	}
 
 	if(noTask || nonexistentTask) {
-		choseTask = true;
 		task = await chooseTask();
 
 		if(tasks[task].choice) {
@@ -48,6 +47,8 @@ or without a task to get the interactive prompt:
 				await tasks[task].choice()
 			);
 		}
+
+		await protip(task, argv);
 	}
 
 	argv.packages = await getPackages();

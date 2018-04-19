@@ -25,6 +25,7 @@
     "byline": "^5.0.0",
     "chalk": "^2.4.0",
     "cross-spawn": "^6.0.5",
+    "escapeshellarg": "^0.1.0",
     "find-up": "^2.1.0",
     "fs-extra": "^5.0.0",
     "glob": "^7.1.2",
