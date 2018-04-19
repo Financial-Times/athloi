@@ -14,7 +14,6 @@ const spawn = (cmd, args) => new Promise((resolve, reject) => {
 	const child = crossSpawn(cmd, args, {
 		env: Object.assign({
 			FORCE_COLOR: '1', // henlo chalk
-			// CI: '1', // some loggers use this to determine whether to output progress bars
 		}, process.env),
 	});
 
