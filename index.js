@@ -15,11 +15,9 @@ async function chooseTask() {
 		type: 'list',
 		name: 'task',
 		message: 'What do you want to do?',
-		choices: [
-			{value: 'start', short: 'start', name: 'Start the development server'},
-			{value: 'build', short: 'build', name: 'Run the production build'},
-			{value: 'create', short: 'create', name: 'Create a new package'},
-		]
+		choices: Object.keys(tasks).map(task => ({
+			value: task, short: task, name: tasks[task].label
+		})),
 	}]);
 
 	return task;

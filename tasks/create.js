@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 
+exports.label = 'Create a new package';
 exports.choice = () => inquirer.prompt([
 	{
 		type: 'input',

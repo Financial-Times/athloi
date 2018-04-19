@@ -31,17 +31,17 @@ const spawn = (cmd, args) => new Promise((resolve, reject) => {
 	});
 });
 
-module.exports = async function runPackage(command, pkgDir) {
+module.exports = async function runPackage(command, pkgDir, {log = true} = {}) {
 	const pkgName = path.basename(pkgDir);
-	logger.start(chalkHash(command) + ' ' + chalkHash(pkgName));
+	log && logger.start(chalkHash(command) + ' ' + chalkHash(pkgName));
 
 	const popd = await pushd(pkgDir);
 
 	try {
 		await spawn('npm', ['run', command], {stdio: 'inherit'});
-		logger.success(chalkHash(command) + ' ' + chalkHash(pkgName) + ' succeeded');
+		log && logger.success(chalkHash(command) + ' ' + chalkHash(pkgName) + ' succeeded');
 	} catch(e) {
-		logger.failure(e.message);
+		log && logger.failure(e.message);
 		throw e;
 	} finally {
 		console.log('\n'); // clear a couple of lines
