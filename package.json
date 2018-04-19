@@ -22,6 +22,7 @@
   "dependencies": {
     "@quarterto/chalk-hash": "^1.0.0",
     "@quarterto/symbol-logger": "^1.15.0",
+    "array-to-sentence": "^2.0.0",
     "byline": "^5.0.0",
     "chalk": "^2.4.0",
     "cross-spawn": "^6.0.5",

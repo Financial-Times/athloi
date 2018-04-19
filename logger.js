@@ -6,6 +6,14 @@ module.exports = symbolLogger({
 		symbol: '⛭',
 		format: 'blue',
 	},
+	packages: {
+		symbol: '⎘',
+		format: 'cyan',
+	},
+	info: {
+		symbol: '🛈',
+		format: 'blue',
+	},
 	success: {
 		symbol: '✔︎',
 		format: 'green',

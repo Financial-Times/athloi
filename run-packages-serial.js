@@ -3,6 +3,7 @@ const keyBy = require('lodash.keyby');
 const runPackage = require('./run-package');
 const loadPackagesWithScript = require('./load-packages-with-script');
 const sortDeps = require('./sort-deps');
+const logPackages = require('./log-packages');
 
 module.exports = async function(script, packages) {
 	const packagesWithScript = await loadPackagesWithScript(packages, script);
@@ -12,7 +13,9 @@ module.exports = async function(script, packages) {
 		manifest => manifest.pkgPath
 	);
 
-	for(const pkg of order) {
-		await runPackage(script, namesToPaths[pkg]);
+	if(logPackages(script, order)) {
+		for(const pkg of order) {
+			await runPackage(script, namesToPaths[pkg]);
+		}
 	}
 };

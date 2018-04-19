@@ -21,4 +21,4 @@ module.exports = async (task, args) => {
 	console.log();
 
 	await new Promise(r => setTimeout(r, 3000));
-}
+};
