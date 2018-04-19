@@ -15,7 +15,7 @@ module.exports = async (task, args) => {
 	const argsString = formatArgs(omit(args, '_'));
 	const posString = args._.map(escapeShellArg).join(' ');
 	console.log();
-	logger.protip('');
+	logger.protip('protip');
 	logger.message(`you can run this as ${chalk.magenta('athloi')} ${chalk.green(task)} ${chalk.cyan(argsString)}  ${chalk.grey(posString)}`);
 	logger.success(chalk.grey.italic('which would be quicker'));
 	console.log();
