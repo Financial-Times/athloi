@@ -21,7 +21,6 @@
   "description": "",
   "dependencies": {
     "@quarterto/chalk-hash": "^1.0.0",
-    "@quarterto/in-dir": "^1.1.0",
     "@quarterto/symbol-logger": "^1.15.0",
     "byline": "^5.0.0",
     "chalk": "^2.4.0",

@@ -43,6 +43,5 @@ module.exports = async function runPackage(command, pkgDir) {
 		throw e;
 	} finally {
 		console.log('\n'); // clear a couple of lines
-		await popd();
 	}
 };
