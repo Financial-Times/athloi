@@ -1,56 +1,16 @@
-const runPackage = require('./run-package');
-const toposort = require('toposort');
-const fs = require('fs-extra');
-const path = require('path');
-const keyBy = require('lodash.keyby');
 const mapValues = require('lodash.mapvalues');
-
-const loadPackage = pkgPath => fs.readFile(
-	path.resolve(pkgPath, 'package.json')
-)
-.then(JSON.parse)
-.then(pkg => Object.assign(pkg, {
-	pkgPath
-}));
-
-async function sortDeps(manifests) {
-	const packageNames = new Set(manifests.map(({name}) => name));
-
-	const edges = manifests.reduce(
-		(edges, pkg) => {
-			const deps = pkg.dependencies
-				? Object.keys(pkg.dependencies).filter(
-					dep => packageNames.has(dep)
-				)
-				: [];
-
-			return edges.concat(
-				deps.map(
-					dep => [dep, pkg.name]
-				)
-			);
-		},
-		[]
-	);
-
-	return toposort.array(Array.from(packageNames), edges);
-}
+const keyBy = require('lodash.keyby');
+const runPackage = require('./run-package');
+const loadPackagesWithScript = require('./load-packages-with-script');
+const sortDeps = require('./sort-deps');
 
 module.exports = async function(script, packages) {
-	const manifests = await Promise.all(
-		packages.map(loadPackage)
-	);
-
+	const packagesWithScript = await loadPackagesWithScript(packages, script);
+	const order = await sortDeps(packagesWithScript);
 	const namesToPaths = mapValues(
-		keyBy(manifests, 'name'),
+		keyBy(packagesWithScript, 'name'),
 		manifest => manifest.pkgPath
 	);
-
-	const packagesWithBuild = manifests.filter(
-		pkg => pkg.scripts && script in pkg.scripts
-	);
-
-	const order = await sortDeps(packagesWithBuild);
 
 	for(const pkg of order) {
 		await runPackage(script, namesToPaths[pkg]);

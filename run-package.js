@@ -10,12 +10,12 @@ const cleanLine = line => {
 	return line.toString('utf8');
 };
 
-const spawn = (cmd, args) => new Promise((resolve, reject) => {
-	const child = crossSpawn(cmd, args, {
+const spawn = (cmd, args, options) => new Promise((resolve, reject) => {
+	const child = crossSpawn(cmd, args, Object.assign({
 		env: Object.assign({
 			FORCE_COLOR: '1', // henlo chalk
 		}, process.env),
-	});
+	}, options));
 
 	byline(child.stdout, {keepEmptyLines: true}).on('data', line => logger.message(cleanLine(line)));
 	byline(child.stderr, {keepEmptyLines: true}).on('data', line => logger.error(cleanLine(line)));
@@ -31,17 +31,15 @@ const spawn = (cmd, args) => new Promise((resolve, reject) => {
 	});
 });
 
-module.exports = async function runPackage(command, pkgDir, {log = true} = {}) {
+module.exports = async function runPackage(command, pkgDir) {
 	const pkgName = path.basename(pkgDir);
-	log && logger.start(chalkHash(command) + ' ' + chalkHash(pkgName));
-
-	const popd = await pushd(pkgDir);
+	logger.start(chalkHash(command) + ' ' + chalkHash(pkgName));
 
 	try {
-		await spawn('npm', ['run', command], {stdio: 'inherit'});
-		log && logger.success(chalkHash(command) + ' ' + chalkHash(pkgName) + ' succeeded');
+		await spawn('npm', ['run', command], {cwd: pkgDir});
+		logger.success(chalkHash(command) + ' ' + chalkHash(pkgName) + ' succeeded');
 	} catch(e) {
-		log && logger.failure(e.message);
+		logger.failure(e.message);
 		throw e;
 	} finally {
 		console.log('\n'); // clear a couple of lines
