@@ -2,6 +2,7 @@ const logger = require('./logger');
 const chalk = require('chalk');
 const omit = require('lodash.omit');
 const escapeShellArg = require('escapeshellarg');
+const {argvSeparated} = require('./argv-zero');
 
 const formatArg = (name, val) => typeof val === 'boolean'
 	? val ? `--${name}` : ''
@@ -24,7 +25,7 @@ module.exports = async (task, args) => {
 
 	logger.protip('protip');
 	logger.message(
-		`you can run this as ${chalk.magenta('athloi')} ${chalk.green(task)} ${chalk.cyan(argsString)}  ${chalk.grey(posString)}`
+		`you can run this as ${argvSeparated} ${chalk.green(task)} ${chalk.cyan(argsString)}  ${chalk.grey(posString)}`
 	);
 	logger.success(chalk.grey.italic('which would be quicker'));
 

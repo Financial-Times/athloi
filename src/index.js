@@ -10,6 +10,7 @@ const protip = require('./protip');
 const sentence = require('./sentence');
 const logger = require('./logger');
 const prefix = require('./inquirer-prefix');
+const {argvZero, argvSeparated} = require('./argv-zero');
 
 async function chooseTask() {
 	console.log();
@@ -29,8 +30,8 @@ async function chooseTask() {
 }
 
 async function main(argv) {
-	let task = argv._[0];
 	const noTask = argv._.length === 0;
+	let task = argv._.shift();
 	const nonexistentTask = !noTask && !(task in tasks);
 	const taskNames = sentence(Object.keys(tasks));
 
@@ -43,7 +44,7 @@ async function main(argv) {
 			if(nonexistentTask) {
 				logger.failure(nonexistentMessage);
 				logger.message(`available tasks are ${taskNames}\n`);
-				logger.message(`run ${chalk.magenta('athloi')} again with one of these tasks (e.g. ${chalk.grey('athloi start')}), or without a task to get the interactive prompt:`);
+				logger.message(`run ${argvZero} again with one of these tasks (e.g. ${argvSeparated} ${chalk.cyan.italic('start')}), or without a task to get the interactive prompt:`);
 				console.log();
 			}
 
