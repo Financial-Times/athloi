@@ -3,6 +3,7 @@ const runPackagesParallel = require('../run-packages-parallel');
 const inquirer = require('inquirer');
 
 exports.label = 'Run another script';
+exports.requiredArgs = ['script'];
 
 exports.choice = () => inquirer.prompt([
 	{
@@ -15,8 +16,8 @@ exports.choice = () => inquirer.prompt([
 		name: 'parallel',
 		message: 'Run all packages in parallel, or one at a time?',
 		choices: [
-			{value: true, name: 'Parallel'},
 			{value: false, name: 'Serial'},
+			{value: true, name: 'Parallel'},
 		]
 	},
 ]);

@@ -9,4 +9,6 @@ exports.choice = () => inquirer.prompt([
 	},
 ]);
 
+exports.requiredArgs = ['name'];
+
 exports.run = console.log;

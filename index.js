@@ -38,16 +38,26 @@ or without a task to get the interactive prompt:
 		`);
 	}
 
+	let didAPrompt = false;
+
 	if(noTask || nonexistentTask) {
 		task = await chooseTask();
+		didAPrompt = true;
+	}
 
-		if(tasks[task].choice) {
-			Object.assign(
-				argv,
-				await tasks[task].choice()
-			);
-		}
+	const missingArgs = tasks[task].requiredArgs && tasks[task].requiredArgs.some(
+		arg => !argv.hasOwnProperty(arg)
+	);
 
+	if(missingArgs && tasks[task].choice) {
+		Object.assign(
+			argv,
+			await tasks[task].choice()
+		);
+		didAPrompt = true;
+	}
+
+	if(didAPrompt) {
 		await protip(task, argv);
 	}
 
