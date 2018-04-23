@@ -1,12 +1,12 @@
 {
   "name": "athloi",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "nodemon -I index.js",
     "test": "echo hello"
   },
-  "bin": "index.js",
+  "bin": "src/index.js",
   "keywords": [],
   "author": "",
   "license": "ISC",
