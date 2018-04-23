@@ -4,13 +4,19 @@ const inquirer = require('inquirer');
 const chalk = require('chalk');
 const minimist = require('minimist');
 const tasks = require('./tasks');
+const loadLernaJson = require('./load-lerna-config');
 const getPackages = require('./get-packages');
 const protip = require('./protip');
 const sentence = require('./sentence');
-const logger = require('./logger')
+const logger = require('./logger');
+const prefix = require('./inquirer-prefix');
 
 async function chooseTask() {
+	console.log();
+
 	const {task} = await inquirer.prompt([{
+		prefix,
+		suffix: '\n',
 		type: 'list',
 		name: 'task',
 		message: 'What do you want to do?',
@@ -48,6 +54,9 @@ async function main(argv) {
 		}
 	}
 
+	argv.lernaJson = await loadLernaJson();
+	argv.packages = await getPackages(argv.lernaJson.packages);
+
 	const missingArgs = (tasks[task].requiredArgs || []).filter(
 		arg => !argv.hasOwnProperty(arg)
 	);
@@ -57,7 +66,7 @@ async function main(argv) {
 			if(tasks[task].choice) {
 				Object.assign(
 					argv,
-					await tasks[task].choice()
+					await tasks[task].choice(argv)
 				);
 
 				didAPrompt = true;
@@ -81,7 +90,6 @@ async function main(argv) {
 		await protip(task, argv);
 	}
 
-	argv.packages = await getPackages();
 
 	return tasks[task].run(argv);
 }
@@ -94,6 +102,7 @@ main(
 		console.log();
 		console.log(`  ${errorTag} ${e.message}`);
 		logger.stack(e.stack.split('\n').slice(1).join('\n').trim());
+		logger.failure('sorry about that');
 		process.exit(1);
 	}
 );

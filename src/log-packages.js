@@ -1,5 +1,6 @@
 const logger = require('./logger');
 const sentence = require('./sentence');
+const chalk = require('chalk');
 const chalkHash = require('@quarterto/chalk-hash');
 const path = require('path');
 
