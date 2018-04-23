@@ -25,23 +25,27 @@ async function chooseTask() {
 async function main(argv) {
 	let task = argv._[0];
 	const noTask = argv._.length === 0;
-	const nonexistentTask = !(task in tasks);
-
-	if(!noTask && nonexistentTask) {
-		console.log(`
-there's no ${chalk.cyan(task)} task. available tasks are:
-${Object.keys(tasks).map(t => ` ・ ${chalk.blue(t)}`).join('\n')}
-
-run ${chalk.magenta('athloi')} again with one of these tasks (e.g. ${chalk.grey('athloi start')}),
-or without a task to get the interactive prompt:
-		`);
-	}
+	const nonexistentTask = !noTask && !(task in tasks);
+	const taskNames = sentence(Object.keys(tasks));
 
 	let didAPrompt = false;
 
 	if(noTask || nonexistentTask) {
-		task = await chooseTask();
-		didAPrompt = true;
+		const nonexistentMessage = `there's no ${chalk.cyan(task)} task`;
+
+		if(process.stdin.isTTY) {
+			if(nonexistentTask) {
+				logger.failure(nonexistentMessage);
+				logger.message(`available tasks are ${taskNames}\n`);
+				logger.message(`run ${chalk.magenta('athloi')} again with one of these tasks (e.g. ${chalk.grey('athloi start')}), or without a task to get the interactive prompt:`);
+				console.log();
+			}
+
+			task = await chooseTask();
+			didAPrompt = true;
+		} else {
+			throw new Error(`${nonexistentTask ? nonexistentMessage : 'no task specified'}. available tasks are ${taskNames}`);
+		}
 	}
 
 	const missingArgs = (tasks[task].requiredArgs || []).filter(
