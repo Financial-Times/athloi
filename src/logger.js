@@ -29,6 +29,11 @@ module.exports = symbolLogger({
 		symbol: '┃',
 		format: 'red',
 	},
+	stack: {
+		symbol: '┃',
+		format: 'red',
+		formatLine: 'grey',
+	},
 	protip: {
 		symbol: '☞',
 		format: chalk.blue.bold,

@@ -3,12 +3,11 @@
 const inquirer = require('inquirer');
 const chalk = require('chalk');
 const minimist = require('minimist');
-const PrettyError = require('pretty-error');
 const tasks = require('./tasks');
 const getPackages = require('./get-packages');
 const protip = require('./protip');
-
-const pe = new PrettyError();
+const sentence = require('./sentence');
+const logger = require('./logger')
 
 async function chooseTask() {
 	const {task} = await inquirer.prompt([{
@@ -45,16 +44,33 @@ or without a task to get the interactive prompt:
 		didAPrompt = true;
 	}
 
-	const missingArgs = tasks[task].requiredArgs && tasks[task].requiredArgs.some(
+	const missingArgs = (tasks[task].requiredArgs || []).filter(
 		arg => !argv.hasOwnProperty(arg)
 	);
 
-	if(missingArgs && tasks[task].choice) {
-		Object.assign(
-			argv,
-			await tasks[task].choice()
-		);
-		didAPrompt = true;
+	if(missingArgs.length > 0) {
+		if(process.stdin.isTTY) {
+			if(tasks[task].choice) {
+				Object.assign(
+					argv,
+					await tasks[task].choice()
+				);
+
+				didAPrompt = true;
+			}
+		} else {
+			const required = sentence(tasks[task].requiredArgs);
+			const missing = missingArgs.length === tasks[task].requiredArgs.length
+				? missingArgs.length === 1
+					? 'it'
+					: 'all of them'
+				: sentence(missingArgs);
+
+			const was = missingArgs.length === 1 ? 'was' : 'were';
+			const args = tasks[task].requiredArgs.length === 1 ? 'argument' : 'arguments';
+
+			throw new Error(`${chalk.blue(task)} needs ${args} ${required} but ${missing} ${was} missing`);
+		}
 	}
 
 	if(didAPrompt) {
@@ -70,7 +86,10 @@ main(
 	minimist(process.argv.slice(2))
 ).catch(
 	e => {
-		console.error(pe.render(e));
+		const errorTag = chalk.black.keyword('black').bold.bgRed(' ' + e.constructor.name.toUpperCase() + ' ');
+		console.log();
+		console.log(`  ${errorTag} ${e.message}`);
+		logger.stack(e.stack.split('\n').slice(1).join('\n').trim());
 		process.exit(1);
 	}
 );
