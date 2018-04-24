@@ -5,6 +5,7 @@ const chalk = require('chalk');
 const minimist = require('minimist');
 const tasks = require('./tasks');
 const loadLernaJson = require('./load-lerna-config');
+const loadCustomTasks = require('./load-custom-tasks');
 const getPackages = require('./get-packages');
 const protip = require('./protip');
 const sentence = require('./sentence');
@@ -17,7 +18,6 @@ async function chooseTask() {
 
 	const {task} = await inquirer.prompt([{
 		prefix,
-		suffix: '\n',
 		type: 'list',
 		name: 'task',
 		message: 'What do you want to do?',
@@ -30,10 +30,14 @@ async function chooseTask() {
 }
 
 async function main(argv) {
+	const extraTasks = await loadCustomTasks(tasks);
+	const allTasks = Object.assign({}, tasks, extraTasks);
+
 	const noTask = argv._.length === 0;
 	let task = argv._.shift();
-	const nonexistentTask = !noTask && !(task in tasks);
-	const taskNames = sentence(Object.keys(tasks));
+
+	const nonexistentTask = !noTask && !(task in allTasks);
+	const taskNames = sentence(Object.keys(allTasks));
 
 	let didAPrompt = false;
 
@@ -58,30 +62,30 @@ async function main(argv) {
 	argv.lernaJson = await loadLernaJson();
 	argv.packages = await getPackages(argv.lernaJson.packages);
 
-	const missingArgs = (tasks[task].requiredArgs || []).filter(
+	const missingArgs = (allTasks[task].requiredArgs || []).filter(
 		arg => !argv.hasOwnProperty(arg)
 	);
 
 	if(missingArgs.length > 0) {
 		if(process.stdin.isTTY) {
-			if(tasks[task].choice) {
+			if(allTasks[task].choice) {
 				Object.assign(
 					argv,
-					await tasks[task].choice(argv)
+					await allTasks[task].choice(argv)
 				);
 
 				didAPrompt = true;
 			}
 		} else {
-			const required = sentence(tasks[task].requiredArgs);
-			const missing = missingArgs.length === tasks[task].requiredArgs.length
+			const required = sentence(allTasks[task].requiredArgs);
+			const missing = missingArgs.length === allTasks[task].requiredArgs.length
 				? missingArgs.length === 1
 					? 'it'
 					: 'all of them'
 				: sentence(missingArgs);
 
 			const was = missingArgs.length === 1 ? 'was' : 'were';
-			const args = tasks[task].requiredArgs.length === 1 ? 'argument' : 'arguments';
+			const args = allTasks[task].requiredArgs.length === 1 ? 'argument' : 'arguments';
 
 			throw new Error(`${chalk.blue(task)} needs ${args} ${required} but ${missing} ${was} missing`);
 		}
@@ -92,7 +96,7 @@ async function main(argv) {
 	}
 
 
-	return tasks[task].run(argv);
+	return allTasks[task].run(argv);
 }
 
 main(
