@@ -1,6 +1,7 @@
 const crossSpawn = require('cross-spawn');
 const byline = require('byline');
 const logger = require('./logger');
+const chalk = require('chalk');
 
 const cleanLine = line => {
 	return line.toString('utf8');
