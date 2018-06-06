@@ -1,6 +1,6 @@
 const findUp = require('find-up');
 
-const defaultChoose = () => ({});
+const defaultChoose = () => [];
 
 module.exports = async function(tasks) {
 	const athloiJs = await findUp('athloi.js');
