@@ -10,14 +10,13 @@ const getPackages = require('./get-packages');
 const protip = require('./protip');
 const sentence = require('./sentence');
 const logger = require('./logger');
-const prefix = require('./inquirer-prefix');
 const {argvZero, argvSeparated} = require('./argv-zero');
+const runPrompt = require('./prompt');
 
 async function chooseTask() {
 	console.log();
 
-	const {task} = await inquirer.prompt([{
-		prefix,
+	const {task} = await runPrompt([{
 		type: 'list',
 		name: 'task',
 		message: 'What do you want to do?',
@@ -69,9 +68,16 @@ async function main(argv) {
 	if(missingArgs.length > 0) {
 		if(process.stdin.isTTY) {
 			if(allTasks[task].choice) {
+				const choice = await allTasks[task].choice(argv);
+
+				const chosenArgv = await runPrompt(
+					choice,
+					argv
+				);
+
 				Object.assign(
 					argv,
-					await allTasks[task].choice(argv)
+					chosenArgv
 				);
 
 				didAPrompt = true;

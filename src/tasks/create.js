@@ -1,10 +1,8 @@
-const inquirer = require('inquirer');
 const path = require('path');
 const chalkHash = require('@quarterto/chalk-hash');
 const logger = require('../logger');
 const chalk = require('chalk');
 const spawn = require('../spawn');
-const prefix = require('../inquirer-prefix');
 const fs = require('fs-extra');
 
 const getUniquePackageRoots = packages => Array.from(
@@ -19,23 +17,20 @@ exports.label = 'Create a new package';
 exports.choice = ({lernaJson, packages}) => {
 	const uniqueRoots = getUniquePackageRoots(lernaJson.packages.concat(packages));
 
-	console.log();
-	return inquirer.prompt([
+	return [
 		{
-			prefix,
 			type: 'input',
 			name: 'name',
 			message: 'What\'s the package called?',
 		},
 		{
-			prefix,
 			type: 'list',
 			name: 'folder',
 			message: 'What folder should it go in?',
 			choices: uniqueRoots,
 			when: () => uniqueRoots.length > 1,
 		},
-	]);
+	];
 };
 
 exports.requiredArgs = ['name'];
