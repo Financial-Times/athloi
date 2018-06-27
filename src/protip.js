@@ -13,7 +13,7 @@ const formatArgs = args => Object.keys(args)
 	.join(' ');
 
 module.exports = async (task, args) => {
-	const argsString = formatArgs(omit(args, ['_', 'packages', 'lernaJson']));
+	const argsString = formatArgs(omit(args, ['_', 'packages', 'lernaJson', 'logger']));
 	const positional = args._;
 	if(positional[0] === task) {
 		positional.shift();

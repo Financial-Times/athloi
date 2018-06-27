@@ -60,6 +60,7 @@ async function main(argv) {
 
 	argv.lernaJson = await loadLernaJson();
 	argv.packages = await getPackages(argv.lernaJson.packages);
+	argv.logger = logger;
 
 	const missingArgs = (allTasks[task].requiredArgs || []).filter(
 		arg => !argv.hasOwnProperty(arg)
@@ -100,7 +101,6 @@ async function main(argv) {
 	if(didAPrompt) {
 		await protip(task, argv);
 	}
-
 
 	return allTasks[task].run(argv);
 }
