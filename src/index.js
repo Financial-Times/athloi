@@ -3,7 +3,7 @@
 const inquirer = require('inquirer');
 const chalk = require('chalk');
 const minimist = require('minimist');
-const tasks = require('./tasks');
+const builtinTasks = require('./tasks');
 const loadLernaJson = require('./load-lerna-config');
 const loadCustomTasks = require('./load-custom-tasks');
 const getPackages = require('./get-packages');
@@ -13,7 +13,7 @@ const logger = require('./logger');
 const {argvZero, argvSeparated} = require('./argv-zero');
 const runPrompt = require('./prompt');
 
-async function chooseTask() {
+async function chooseTask(tasks) {
 	console.log();
 
 	const {task} = await runPrompt([{
@@ -29,8 +29,8 @@ async function chooseTask() {
 }
 
 async function main(argv) {
-	const extraTasks = await loadCustomTasks(tasks);
-	const allTasks = Object.assign({}, tasks, extraTasks);
+	const extraTasks = await loadCustomTasks(builtinTasks);
+	const allTasks = Object.assign({}, builtinTasks, extraTasks);
 
 	const noTask = argv._.length === 0;
 	let task = argv._.shift();
@@ -51,7 +51,7 @@ async function main(argv) {
 				console.log();
 			}
 
-			task = await chooseTask();
+			task = await chooseTask(allTasks);
 			didAPrompt = true;
 		} else {
 			throw new Error(`${nonexistentTask ? nonexistentMessage : 'no task specified'}. available tasks are ${taskNames}`);
