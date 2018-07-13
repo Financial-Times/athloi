@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+const path = require('path');
+const program = require('commander');
+
+const tasks = [
+	'exec',
+	'run',
+	'script'
+];
+
+tasks.forEach((task) => {
+	const module = require(path.join('../tasks/', task));
+	module.register(program);
+});
+
+const argv = program.parse(process.argv);
+
+if (argv.args.length === 0) {
+	program.help();
+}

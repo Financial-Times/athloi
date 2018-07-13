@@ -1,29 +1,26 @@
+const path = require('path');
 const logger = require('../logger');
 const runSeries = require('../run-series');
 const runPackage = require('../run-package');
 const loadPackages = require('../load-packages');
 const sortDependencies = require('../sort-dependencies');
 
-async function run (script) {
+async function script (scriptPath) {
 	// 1. load all of the manifests for packages in the repo
 	const manifests = await loadPackages();
 
 	logger.info(`Loaded ${manifests.length} packages`);
 
-	// 2. filter out packages without the requested command
-	const filtered = manifests.filter((manifest) => {
-		return manifest.scripts && manifest.scripts[script];
-	});
+	// 2. sort the packages topologically
+	const order = sortDependencies(manifests);
 
-	logger.message(`Found ${filtered.length} packages with a "${script}" script`);
-
-	// 3. sort the packages topologically
-	const order = sortDependencies(filtered);
+	// 3. solve path to script file
+	const fullScriptPath = path.resolve(process.cwd(), scriptPath);
 
 	// 4. create a queue of tasks to run
 	const queue = order.map((name) => {
 		const manifest = manifests.find((manifest) => manifest.name === name);
-		return () => runPackage('npm', ['run', script], manifest.packagePath);
+		return () => runPackage('node', [fullScriptPath], manifest.packagePath);
 	});
 
 	// 5. run each task in series
@@ -32,7 +29,7 @@ async function run (script) {
 
 module.exports.register = (program) => {
 	program
-		.command('run <command>')
-		.description('Run an npm script in each package that contains that script.')
-		.action(run); // TODO: handle errors
+		.command('script <path>')
+		.description('Run a given Node script in each package.')
+		.action(script); // TODO: handle errors
 };

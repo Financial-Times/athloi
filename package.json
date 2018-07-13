@@ -3,45 +3,28 @@
   "version": "1.4.0",
   "main": "src/index.js",
   "scripts": {
-    "start": "nodemon -I index.js",
     "test": "echo hello"
   },
-  "bin": "src/index.js",
+  "bin": "src/bin/cli",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/quarterto/athloi.git"
+    "url": "git+https://github.com/Financial-Times/athloi.git"
   },
   "bugs": {
-    "url": "https://github.com/quarterto/athloi/issues"
+    "url": "https://github.com/Financial-Times/athloi/issues"
   },
-  "homepage": "https://github.com/quarterto/athloi#readme",
+  "homepage": "https://github.com/Financial-Times/athloi#readme",
   "description": "",
   "dependencies": {
-    "@quarterto/chalk-hash": "^1.0.0",
-    "@quarterto/symbol-logger": "^1.15.0",
-    "array-to-sentence": "^2.0.0",
     "byline": "^5.0.0",
-    "chalk": "^2.4.0",
-    "cross-spawn": "^6.0.5",
-    "escapeshellarg": "^0.1.0",
-    "find-up": "^2.1.0",
-    "fs-extra": "^5.0.0",
+    "chalk": "^2.4.1",
+    "commander": "^2.16.0",
+    "dependency-solver": "^1.0.6",
+    "find-up": "^3.0.0",
     "glob": "^7.1.2",
-    "glob-promise": "^3.4.0",
-    "inquirer": "^5.2.0",
-    "lodash.keyby": "^4.6.0",
-    "lodash.mapvalues": "^4.6.0",
-    "lodash.omit": "^4.5.0",
-    "minimist": "^1.2.0",
-    "npm": "^5.8.0",
-    "pretty-error": "^2.1.1",
-    "resolve-bin": "^0.4.0",
-    "toposort": "^1.0.6"
-  },
-  "devDependencies": {
-    "nodemon": "^1.17.3"
+    "log-symbols": "^2.2.0"
   }
 }
