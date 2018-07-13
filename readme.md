@@ -1,53 +1,65 @@
-# athloi
+# Athloi
 
-a cli tool for managing [lerna](https://github.com/lerna/lerna) monorepos
+Athloi is a tool that optimizes the workflow around managing multi-package repositories with git and npm.
 
-## usage (for monorepo maintainers)
+[monorepos]: https://github.com/babel/babel/blob/master/doc/design/monorepo.md
 
-at the top level of your monorepo
+
+## Getting Started
+
+Start by installing Athloi within your project using [npm].
 
 ```sh
 npm install --save-dev athloi
 ```
 
-then in your `package.json` add something to the `scripts` entry to run `athloi`. i'd suggest adding it under `start`:
+[npm]: https://www.npmjs.com/
+
+Athloi needs to know where your packages are located within your repository. Create a `monorepo.json` configuration file in root of your project and add a list of [globs] for each folder containing packages.
 
 ```json
-"scripts": {
-	"start": "athloi"
+{
+  "packages": [
+    "components/*",
+    "packages/*"
+  ]
 }
 ```
 
-## usage (for developing in a monorepo)
-
-if you're working in a monorepo with athloi installed, run it to get an interactive list of available tasks. e.g. if it's set up as the `start` script as above:
-
-```
-> npm start
-? What do you want to do?
-  Start the development server
-❯ Run the production build
-  Create a new package
-  Run another script
-```
-
-choosing a task will tell you how to run that task as a shortcut:
-
-```
-? What do you want to do? build
-
-  ☞ protip
-  │ you can run this as npm start -- build
-  ✔︎ which would be quicker
+[globs]: https://en.wikipedia.org/wiki/Glob_(programming)
 
 
-  ⛭ running build serially
-  ⎘ in package-1, package-2 and package-3
+## Commands
+
+### run
+
+Run an npm script in each package that contains that script.
+
+```sh
+athloi run build
 ```
 
-## what's with the name
+### exec
 
-one of the twelve labours of heracles (hoi hērakleous athloi) was to slay the lernean hydra.
+Run an arbitrary command in each package. A double-dash (`--`) is necessary to pass dashed arguments to the script being executed.
+
+```sh
+athloi exec npm install
+```
+
+### script
+
+Run a Node script in each package.
+
+```sh
+athloi script path/to/task.js
+```
+
+
+## What's with the name?
+
+One of the twelve labours of Hercules (hoi hērakleous athloi) was to slay the Lernean Hydra.
+
 
 ## licence
 

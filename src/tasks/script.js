@@ -30,6 +30,6 @@ async function script (scriptPath) {
 module.exports.register = (program) => {
 	program
 		.command('script <path>')
-		.description('Run a given Node script in each package.')
+		.description('Run a Node script in each package.')
 		.action(script); // TODO: handle errors
 };
