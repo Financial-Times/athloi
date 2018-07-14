@@ -1,4 +1,3 @@
-const path = require('path');
 const spawn = require('./spawn');
 const logger = require('./logger');
 
