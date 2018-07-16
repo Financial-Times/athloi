@@ -14,8 +14,8 @@ async function exec (command, args = []) {
 	const packagesInOrder = sortDependencies(packages);
 
 	// 3. create a queue of tasks to run
-	const taskQueue = packagesInOrder.map((package) => {
-		return () => runPackage(command, args, package.location);
+	const taskQueue = packagesInOrder.map((pkg) => {
+		return () => runPackage(command, args, pkg.location);
 	});
 
 	// 4. run each task in series

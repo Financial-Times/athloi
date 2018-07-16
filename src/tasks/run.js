@@ -4,15 +4,15 @@ const runPackage = require('../run-package');
 const loadPackages = require('../load-packages');
 const sortDependencies = require('../sort-dependencies');
 
-async function run(script) {
+async function run (script) {
 	// 1. load all of the manifests for packages in the repo
 	const packages = await loadPackages();
 
 	logger.info(`Loaded ${packages.length} packages`);
 
 	// 2. filter out packages without the requested command
-	const filteredPackages = packages.filter((package) => {
-		return package.scripts.hasOwnProperty(script);
+	const filteredPackages = packages.filter((pkg) => {
+		return pkg.scripts.hasOwnProperty(script);
 	});
 
 	logger.message(`Found ${filteredPackages.length} packages with script`);
@@ -21,8 +21,8 @@ async function run(script) {
 	const packagesInOrder = sortDependencies(filteredPackages);
 
 	// 4. create a queue of tasks to run
-	const taskQueue = packagesInOrder.map((package) => {
-		return () => runPackage('npm', ['run', script], package.location);
+	const taskQueue = packagesInOrder.map((pkg) => {
+		return () => runPackage('npm', ['run', script], pkg.location);
 	});
 
 	// 5. run each task in series

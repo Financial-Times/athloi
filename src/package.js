@@ -1,14 +1,14 @@
 class Package {
-	constructor(manifest, location) {
+	constructor (manifest, location) {
 		this.manifest = manifest;
 		this.location = location;
 	}
 
-	get name() {
+	get name () {
 		return this.manifest.name;
 	}
 
-	get allDependencies() {
+	get allDependencies () {
 		return Object.keys({
 			...this.manifest.dependencies,
 			...this.manifest.devDependencies,
@@ -17,7 +17,7 @@ class Package {
 		});
 	}
 
-	get scripts() {
+	get scripts () {
 		return Object.assign({}, this.manifest.scripts);
 	}
 }

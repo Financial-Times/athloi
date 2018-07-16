@@ -1,10 +1,10 @@
 const { solve } = require('dependency-solver');
 
 module.exports = (packages = []) => {
-	const packageNames = new Set(packages.map((package) => package.name));
+	const packageNames = new Set(packages.map((pkg) => pkg.name));
 
-	const edges = packages.reduce((output, package) => {
-		output[package.name] = package.allDependencies.filter((dependencyName) => {
+	const edges = packages.reduce((output, pkg) => {
+		output[pkg.name] = pkg.allDependencies.filter((dependencyName) => {
 			return packageNames.has(dependencyName);
 		});
 
@@ -15,6 +15,6 @@ module.exports = (packages = []) => {
 	const order = solve(edges);
 
 	return order.map((packageName) => {
-		return packages.find((package) => package.name === packageName);
+		return packages.find((pkg) => pkg.name === packageName);
 	});
 };

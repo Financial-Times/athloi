@@ -1,10 +1,10 @@
 class Stopwatch {
-	start() {
+	start () {
 		this.start = Date.now();
 		this.end = undefined;
 	}
 
-	stop() {
+	stop () {
 		if (typeof this.start !== 'number') {
 			throw Error('.start() has not been called');
 		}
@@ -16,7 +16,7 @@ class Stopwatch {
 		this.end = Date.now();
 	}
 
-	get duration() {
+	get duration () {
 		if (typeof this.end !== 'number') {
 			throw Error('.stop() has not been called');
 		}

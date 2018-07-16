@@ -8,7 +8,7 @@ module.exports = async (cmd, args = [], location) => {
 
 	try {
 		await spawn(cmd, args, { cwd: location });
-		logger.success(`Task succeeded\n`);
+		logger.success('Task succeeded\n');
 	} catch (error) {
 		logger.error(error.message);
 		return Promise.reject(error);

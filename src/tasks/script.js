@@ -5,7 +5,7 @@ const runPackage = require('../run-package');
 const loadPackages = require('../load-packages');
 const sortDependencies = require('../sort-dependencies');
 
-async function script(scriptPath) {
+async function script (scriptPath) {
 	// 1. load all of the manifests for packages in the repo
 	const packages = await loadPackages();
 
@@ -18,8 +18,8 @@ async function script(scriptPath) {
 	const resolvedScript = path.resolve(process.cwd(), scriptPath);
 
 	// 4. create a queue of tasks to run
-	const taskQueue = packagesInOrder.map((package) => {
-		return () => runPackage('node', [resolvedScript], package.location);
+	const taskQueue = packagesInOrder.map((pkg) => {
+		return () => runPackage('node', [resolvedScript], pkg.location);
 	});
 
 	// 5. run each task in series
