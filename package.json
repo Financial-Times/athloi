@@ -1,6 +1,6 @@
 {
-  "name": "athloi",
-  "version": "1.4.0",
+  "name": "@financial-times/athloi",
+  "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
     "test": "echo hello",
