@@ -1,10 +1,11 @@
+const path = require('path');
 const spawn = require('./spawn');
 const logger = require('./logger');
 
 module.exports = async (cmd, args = [], location) => {
-	const shortPath = location.replace(process.cwd(), '');
+	const relPath = path.relative(process.cwd(), location);
 
-	logger.info(`Running task in ${shortPath}`);
+	logger.info(`Running task in ${relPath}`);
 
 	try {
 		await spawn(cmd, args, { cwd: location });
