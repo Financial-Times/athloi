@@ -1,3 +1,4 @@
+const Package = require('./package');
 const loadConfig = require('./load-config');
 const getPackages = require('./get-packages');
 const loadManifest = require('./load-manifest');
@@ -7,8 +8,11 @@ module.exports = async () => {
 	const config = await loadConfig();
 
 	// 2. find all packages by path
-	const packagePaths = await getPackages(config.packages);
+	const locations = await getPackages(config.packages);
 
-	// 3. require all of the package manifests
-	return packagePaths.map(loadManifest);
+	// 3. load the package manifests and create package instances
+	return locations.map((location) => {
+		const manifest = loadManifest(location);
+		return new Package(manifest, location);
+	});
 };

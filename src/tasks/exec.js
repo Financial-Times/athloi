@@ -4,23 +4,22 @@ const runPackage = require('../run-package');
 const loadPackages = require('../load-packages');
 const sortDependencies = require('../sort-dependencies');
 
-async function exec (cmd, args = []) {
+async function exec (command, args = []) {
 	// 1. load all of the manifests for packages in the repo
-	const manifests = await loadPackages();
+	const packages = await loadPackages();
 
-	logger.info(`Loaded ${manifests.length} packages`);
+	logger.info(`Loaded ${packages.length} packages`);
 
 	// 2. sort the packages topologically
-	const order = sortDependencies(manifests);
+	const packagesInOrder = sortDependencies(packages);
 
 	// 3. create a queue of tasks to run
-	const queue = order.map((name) => {
-		const manifest = manifests.find((manifest) => manifest.name === name);
-		return () => runPackage(cmd, args, manifest.packagePath);
+	const taskQueue = packagesInOrder.map((package) => {
+		return () => runPackage(command, args, package.location);
 	});
 
 	// 4. run each task in series
-	return runSeries(queue);
+	return runSeries(taskQueue);
 };
 
 module.exports.register = (program) => {

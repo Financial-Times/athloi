@@ -5,26 +5,25 @@ const runPackage = require('../run-package');
 const loadPackages = require('../load-packages');
 const sortDependencies = require('../sort-dependencies');
 
-async function script (scriptPath) {
+async function script(scriptPath) {
 	// 1. load all of the manifests for packages in the repo
-	const manifests = await loadPackages();
+	const packages = await loadPackages();
 
-	logger.info(`Loaded ${manifests.length} packages`);
+	logger.info(`Loaded ${packages.length} packages`);
 
 	// 2. sort the packages topologically
-	const order = sortDependencies(manifests);
+	const packagesInOrder = sortDependencies(packages);
 
 	// 3. solve path to script file
-	const fullScriptPath = path.resolve(process.cwd(), scriptPath);
+	const resolvedScript = path.resolve(process.cwd(), scriptPath);
 
 	// 4. create a queue of tasks to run
-	const queue = order.map((name) => {
-		const manifest = manifests.find((manifest) => manifest.name === name);
-		return () => runPackage('node', [fullScriptPath], manifest.packagePath);
+	const taskQueue = packagesInOrder.map((package) => {
+		return () => runPackage('node', [resolvedScript], package.location);
 	});
 
 	// 5. run each task in series
-	return runSeries(queue);
+	return runSeries(taskQueue);
 };
 
 module.exports.register = (program) => {
