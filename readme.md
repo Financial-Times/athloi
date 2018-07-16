@@ -54,13 +54,20 @@ A double-dash (`--`) is necessary to pass dashed arguments to the script being e
 athloi exec -- npm i -D
 ```
 
-
 ### script
 
 Run a Node script in each package.
 
 ```sh
 athloi script path/to/task.js
+```
+
+### clean
+
+Remove the node_modules directory from all packages.
+
+```sh
+athloi clean
 ```
 
 

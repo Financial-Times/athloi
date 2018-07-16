@@ -4,6 +4,7 @@ const path = require('path');
 const program = require('commander');
 
 const tasks = [
+	'clean',
 	'exec',
 	'run',
 	'script'

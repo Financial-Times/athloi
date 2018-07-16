@@ -1,3 +1,5 @@
+const path = require('path');
+
 class Package {
 	constructor (manifest, location) {
 		this.manifest = manifest;
