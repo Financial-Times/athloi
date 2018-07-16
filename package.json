@@ -3,7 +3,10 @@
   "version": "1.4.0",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo hello"
+    "test": "echo hello",
+    "precommit": "node_modules/.bin/secret-squirrel",
+    "commitmsg": "node_modules/.bin/secret-squirrel-commitmsg",
+    "prepush": "make verify -j3"
   },
   "bin": "src/bin/cli",
   "keywords": [],
@@ -26,5 +29,8 @@
     "find-up": "^3.0.0",
     "glob": "^7.1.2",
     "log-symbols": "^2.2.0"
+  },
+  "devDependencies": {
+    "@financial-times/n-gage": "^2.0.2"
   }
 }
