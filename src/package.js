@@ -10,7 +10,15 @@ class Package {
 		return this.manifest.name;
 	}
 
-	get allDependencies () {
+	get nodeModulesLocation () {
+		return path.join(this.location, 'node_modules');
+	}
+
+	get relativeLocation () {
+		return path.relative(process.cwd(), this.location);
+	}
+
+	get dependencyNames () {
 		return Object.keys({
 			...this.manifest.dependencies,
 			...this.manifest.devDependencies,

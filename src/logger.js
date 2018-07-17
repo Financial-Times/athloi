@@ -1,7 +1,7 @@
 const chalk = require('chalk');
 const logSymbols = require('log-symbols');
 
-const WS = '\x20\x20';
+const WS = '\x20';
 
 const format = (symbol, color, message) => {
 	return `${symbol} ${chalk[color](message)}\n`;

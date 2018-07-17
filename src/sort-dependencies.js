@@ -3,8 +3,8 @@ const { solve } = require('dependency-solver');
 module.exports = (packages = []) => {
 	const packageNames = new Set(packages.map((pkg) => pkg.name));
 
-	const edges = packages.reduce((output, pkg) => {
-		output[pkg.name] = pkg.allDependencies.filter((dependencyName) => {
+	const graph = packages.reduce((output, pkg) => {
+		output[pkg.name] = pkg.dependencyNames.filter((dependencyName) => {
 			return packageNames.has(dependencyName);
 		});
 
@@ -12,7 +12,7 @@ module.exports = (packages = []) => {
 	}, {});
 
 	// <https://en.wikipedia.org/wiki/Topological_sorting>
-	const order = solve(edges);
+	const order = solve(graph);
 
 	return order.map((packageName) => {
 		return packages.find((pkg) => pkg.name === packageName);
