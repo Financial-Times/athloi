@@ -17,19 +17,6 @@ class Package {
 	get relativeLocation () {
 		return path.relative(process.cwd(), this.location);
 	}
-
-	get dependencyNames () {
-		return Object.keys({
-			...this.manifest.dependencies,
-			...this.manifest.devDependencies,
-			...this.manifest.peerDependencies,
-			...this.manifest.optionalDependencies
-		});
-	}
-
-	get scripts () {
-		return Object.assign({}, this.manifest.scripts);
-	}
 }
 
 module.exports = Package;

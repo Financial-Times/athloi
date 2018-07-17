@@ -5,7 +5,7 @@ const runPackage = require('../run-package');
 async function run (packages = [], script) {
 	// filter out packages without the requested command
 	const filteredPackages = packages.filter((pkg) => {
-		return pkg.scripts.hasOwnProperty(script);
+		return typeof pkg.scripts === 'object' && pkg.scripts.hasOwnProperty(script);
 	});
 
 	logger.message(`Found ${filteredPackages.length} packages with script`);
