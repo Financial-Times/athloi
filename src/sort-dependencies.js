@@ -1,18 +1,17 @@
-const { solve } = require('dependency-solver');
+const toposort = require('toposort');
 
 module.exports = (packages = []) => {
 	const packageNames = new Set(packages.map((pkg) => pkg.name));
 
-	const graph = packages.reduce((output, pkg) => {
-		output[pkg.name] = pkg.dependencyNames.filter((dependencyName) => {
-			return packageNames.has(dependencyName);
+	const edges = packages.reduce((edges, pkg) => {
+		const dependencies = pkg.dependencyNames.filter((dependency) => {
+			return packageNames.has(dependency);
 		});
 
-		return output;
-	}, {});
+		return edges.concat(dependencies.map((dependency) => [dependency, pkg.name]));
+	}, []);
 
-	// <https://en.wikipedia.org/wiki/Topological_sorting>
-	const order = solve(graph);
+	const order = toposort.array(Array.from(packageNames), edges);
 
 	return order.map((packageName) => {
 		return packages.find((pkg) => pkg.name === packageName);

@@ -25,11 +25,11 @@
     "byline": "^5.0.0",
     "chalk": "^2.4.1",
     "commander": "^2.16.0",
-    "dependency-solver": "^1.0.6",
     "find-up": "^3.0.0",
     "glob": "^7.1.2",
     "log-symbols": "^2.2.0",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "toposort": "^2.0.2"
   },
   "devDependencies": {
     "@financial-times/n-gage": "^2.0.2"
