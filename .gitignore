@@ -1,4 +1,5 @@
 /node*
+.circleci/
 *.env*
 .eslintrc.js
 .editorconfig
