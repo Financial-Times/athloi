@@ -10,6 +10,6 @@ function clean (packages = []) {
 module.exports.register = (program) => {
 	program
 		.command('clean')
-		.description('Remove the node_modules directory from all packages.')
+		.description('Removes the node_modules directory from all packages')
 		.action(taskify(clean));
 };

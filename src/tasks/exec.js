@@ -10,6 +10,6 @@ async function exec (packages = [], command, args = []) {
 module.exports.register = (program) => {
 	program
 		.command('exec <path> [args...]')
-		.description('Run an arbitrary command in each package.')
+		.description('Runs an arbitrary command in the scope of each package')
 		.action(taskify(exec));
 };

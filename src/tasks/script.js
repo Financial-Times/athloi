@@ -14,6 +14,6 @@ async function script (packages = [], scriptPath) {
 module.exports.register = (program) => {
 	program
 		.command('script <path>')
-		.description('Run a Node script in each package.')
+		.description('Runs the given Node script in the scope of each package')
 		.action(taskify(script));
 };

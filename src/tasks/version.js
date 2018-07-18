@@ -26,6 +26,6 @@ async function version (packages = [], tag) {
 module.exports.register = (program) => {
 	program
 		.command('version <tag>')
-		.description('Bump the version number for all packages.')
+		.description('Updates the release number for all packages and writes the new data back to package.json')
 		.action(taskify(version));
 };

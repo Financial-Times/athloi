@@ -21,7 +21,6 @@ Configuration can be passed to Athloi by providing a `monorepo.json` file in you
 {
   "packages": [
     "components/*",
-    "packages/*",
     "tools/*"
   ]
 }
@@ -32,31 +31,33 @@ Configuration can be passed to Athloi by providing a `monorepo.json` file in you
 
 ## Commands
 
-### run
-
-Run an npm script in each package that contains that script.
-
-```sh
-athloi run build
-```
-
 ### exec
 
-Run an arbitrary command in each package.
+Runs an arbitrary command in the scope of each package.
 
 ```sh
 athloi exec npm install
 ```
 
-A double-dash (`--`) is necessary to pass dashed arguments to the script being executed.
+A double-dash (`--`) is necessary to pass any dashed arguments to the script being executed.
 
 ```sh
 athloi exec -- npm i -D
 ```
 
+### run
+
+Runs an [npm script] in each package that contains that script.
+
+```sh
+athloi run build
+```
+
+[npm script]: https://docs.npmjs.com/misc/scripts
+
 ### script
 
-Run a Node script in each package.
+Runs the given Node script in the scope of each package.
 
 ```sh
 athloi script path/to/task.js
@@ -64,7 +65,7 @@ athloi script path/to/task.js
 
 ### clean
 
-Remove the node_modules directory from all packages.
+Removes the `node_modules` directory from all packages.
 
 ```sh
 athloi clean
@@ -72,18 +73,18 @@ athloi clean
 
 ### version
 
-Bump the release number for all packages and write the new data back to package.json. The given tag must parseable as a valid semver number.
+Updates the release number for all packages and writes the new data back to `package.json`. The given tag must parseable as a valid semver number.
 
 ```sh
 athloi version v1.0.0
 ```
 
+[npm-publish]: https://docs.npmjs.com/cli/publish
+
 
 ## What's with the name?
 
-One of the twelve labours of Hercules (hoi hērakleous athloi) was to slay the Lernean Hydra. This is a nod to [Lerna].
-
-[Lerna]: https://github.com/lerna/lerna
+One of the twelve labours of Hercules (hoi hērakleous athloi) was to slay the Lernean Hydra.
 
 
 ## licence

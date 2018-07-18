@@ -10,7 +10,7 @@ async function run (packages = [], script) {
 
 	logger.message(`Found ${filteredPackages.length} packages with script`);
 
-	// 4. create a queue of tasks to run
+	// create a queue of tasks to run
 	return filteredPackages.map((pkg) => {
 		return () => runPackage('npm', ['run', script], pkg.location);
 	});
@@ -19,6 +19,6 @@ async function run (packages = [], script) {
 module.exports.register = (program) => {
 	program
 		.command('run <command>')
-		.description('Run an npm script in each package that contains that script.')
+		.description('Runs an npm script in each package that contains that script.')
 		.action(taskify(run));
 };
