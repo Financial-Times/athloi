@@ -18,7 +18,7 @@ async function run (packages = [], script) {
 
 module.exports.register = (program) => {
 	program
-		.command('run <command>')
+		.command('run <script>')
 		.description('Runs an npm script in each package that contains that script.')
 		.action(taskify(run));
 };
