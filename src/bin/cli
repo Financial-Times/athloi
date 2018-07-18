@@ -7,11 +7,12 @@ const pkg = require(path.join(__dirname, '../../package.json'));
 program.version(pkg.version);
 
 const tasks = [
-	'clean',
 	'exec',
 	'run',
 	'script',
-	'version'
+	'clean',
+	'version',
+	'publish'
 ];
 
 tasks.forEach((task) => {

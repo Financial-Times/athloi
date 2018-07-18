@@ -79,6 +79,20 @@ Updates the release number for all packages and writes the new data back to `pac
 athloi version v1.0.0
 ```
 
+### publish
+
+Runs [`npm publish`][npm-publish] in the scope of each public package.
+
+```sh
+athloi publish
+```
+
+Dashed arguments may be passed using a double dash (`--`)
+
+```sh
+athloi publish -- --access=public
+```
+
 [npm-publish]: https://docs.npmjs.com/cli/publish
 
 
