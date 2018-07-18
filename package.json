@@ -1,9 +1,8 @@
 {
   "name": "@financial-times/athloi",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo hello",
     "precommit": "node_modules/.bin/secret-squirrel",
     "commitmsg": "node_modules/.bin/secret-squirrel-commitmsg",
     "prepush": "make verify -j3"
@@ -20,7 +19,10 @@
     "url": "https://github.com/Financial-Times/athloi/issues"
   },
   "homepage": "https://github.com/Financial-Times/athloi#readme",
-  "description": "",
+  "description": "Athloi is a tool to assist with the management of multi-package repositories (a.k.a. monorepos)",
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "dependencies": {
     "byline": "^5.0.0",
     "chalk": "^2.4.1",
