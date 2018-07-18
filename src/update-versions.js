@@ -1,22 +1,24 @@
 const clone = require('clone');
 
-module.exports = (manifest, version, localDependencies = []) => {
+module.exports = (manifest, number, localDependencies = []) => {
 	const pkg = clone(manifest);
 
-	pkg.version = version;
+	pkg.version = number;
 
 	for (const packageName of localDependencies) {
+		const range = `^${number}`;
+
 		if (pkg.dependencies && pkg.dependencies[packageName]) {
-			pkg.dependencies[packageName] = version;
+			pkg.dependencies[packageName] = range;
 		}
 		if (pkg.devDependencies && pkg.devDependencies[packageName]) {
-			pkg.devDependencies[packageName] = version;
+			pkg.devDependencies[packageName] = range;
 		}
 		if (pkg.peerDependencies && pkg.peerDependencies[packageName]) {
-			pkg.peerDependencies[packageName] = version;
+			pkg.peerDependencies[packageName] = range;
 		}
 		if (pkg.optionalDependencies && pkg.optionalDependencies[packageName]) {
-			pkg.optionalDependencies[packageName] = version;
+			pkg.optionalDependencies[packageName] = range;
 		}
 	}
 
