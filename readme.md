@@ -70,6 +70,14 @@ Remove the node_modules directory from all packages.
 athloi clean
 ```
 
+### version
+
+Bump the release number for all packages and write the new data back to package.json. The given tag must parseable as a valid semver number.
+
+```sh
+athloi version v1.0.0
+```
+
 
 ## What's with the name?
 

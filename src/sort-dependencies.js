@@ -15,11 +15,11 @@ module.exports = (packages = []) => {
 	const edges = packages.reduce((edges, pkg) => {
 		const dependencyNames = collateDependencies(pkg.manifest);
 
-		const dependencies = dependencyNames.filter((dependency) => {
+		const localDependencies = dependencyNames.filter((dependency) => {
 			return packageNames.has(dependency);
 		});
 
-		return edges.concat(dependencies.map((dependency) => [dependency, pkg.name]));
+		return edges.concat(localDependencies.map((dependency) => [dependency, pkg.name]));
 	}, []);
 
 	const order = toposort.array(Array.from(packageNames), edges);

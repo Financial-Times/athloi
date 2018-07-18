@@ -10,7 +10,8 @@ const tasks = [
 	'clean',
 	'exec',
 	'run',
-	'script'
+	'script',
+	'version'
 ];
 
 tasks.forEach((task) => {
