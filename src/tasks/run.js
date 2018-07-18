@@ -1,29 +1,24 @@
-const runPackagesSerial = require('../run-packages-serial');
-const runPackagesParallel = require('../run-packages-parallel');
+const logger = require('../logger');
+const taskify = require('../cli-task');
+const runPackage = require('../run-package');
 
-exports.label = 'Run another script';
-exports.requiredArgs = ['script'];
+async function run (packages = [], script) {
+	// filter out packages without the requested command
+	const filteredPackages = packages.filter((pkg) => {
+		return typeof pkg.scripts === 'object' && pkg.scripts.hasOwnProperty(script);
+	});
 
-exports.choice = () => [
-	{
-		type: 'input',
-		name: 'script',
-		message: 'What script do you want to run?',
-	},
-	{
-		type: 'list',
-		name: 'parallel',
-		message: 'Run all packages in parallel, or one at a time?',
-		choices: [
-			{value: false, name: 'Serial'},
-			{value: true, name: 'Parallel'},
-		]
-	},
-];
+	logger.message(`Found ${filteredPackages.length} packages with script`);
 
-exports.run = ({script, parallel, packages}) => (parallel
-	? runPackagesParallel
-	: runPackagesSerial)(
-		script,
-		packages
-	);
+	// create a queue of tasks to run
+	return filteredPackages.map((pkg) => {
+		return () => runPackage('npm', ['run', script], pkg.location);
+	});
+};
+
+module.exports.register = (program) => {
+	program
+		.command('run <command>')
+		.description('Runs an npm script in each package that contains that script.')
+		.action(taskify(run));
+};

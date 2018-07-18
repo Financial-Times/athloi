@@ -1,1 +1,7 @@
-node_modules
+/node*
+*.env*
+.eslintrc.js
+.editorconfig
+.DS_Store
+npm-debug.log
+package-lock.json

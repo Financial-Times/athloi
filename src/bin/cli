@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+const path = require('path');
+const program = require('commander');
+const pkg = require(path.join(__dirname, '../../package.json'));
+
+program.version(pkg.version);
+
+const tasks = [
+	'exec',
+	'run',
+	'script',
+	'clean',
+	'version',
+	'publish'
+];
+
+tasks.forEach((task) => {
+	const module = require(path.join('../tasks/', task));
+	module.register(program);
+});
+
+const argv = program.parse(process.argv);
+
+if (argv.args.length === 0) {
+	program.help();
+}

@@ -1,31 +1,26 @@
-const crossSpawn = require('cross-spawn');
 const byline = require('byline');
+const { spawn } = require('child_process');
 const logger = require('./logger');
-const chalk = require('chalk');
 
-const cleanLine = line => {
-	return line.toString('utf8');
-};
+const cleanLine = (line) => line.toString('utf8');
 
-const spawn = (cmd, args, options) => new Promise((resolve, reject) => {
-	const child = crossSpawn(cmd, args, Object.assign({
-		env: Object.assign({
-			FORCE_COLOR: '1', // henlo chalk
-		}, process.env),
-	}, options));
+module.exports = (cmd, args = [], opts = {}) => {
+	return new Promise((resolve, reject) => {
+		const child = spawn(cmd, args, { ...process.env, ...opts });
 
-	byline(child.stdout, {keepEmptyLines: true}).on('data', line => logger.message(cleanLine(line)));
-	byline(child.stderr, {keepEmptyLines: true}).on('data', line => logger.error(cleanLine(line)));
-	child.on('error', reject);
+		byline(child.stdout).on('data', (line) => logger.message(cleanLine(line)));
 
-	child.on('close', code => {
-		if(code > 0) {
-			const message = `${chalk.green('npm')} ${chalk.cyan(args.join(' '))} exited with code ${chalk.red(code)}`;
-			reject(new Error(message));
-		} else {
-			resolve();
-		}
+		// stderr is not always used for error logging so rely on non-zero exit code
+		byline(child.stderr).on('data', (line) => logger.message(cleanLine(line)));
+
+		child.on('error', reject);
+
+		child.on('exit', (code) => {
+			if (code > 0) {
+				reject(Error(`${cmd} exited with code ${code}`));
+			} else {
+				resolve();
+			}
+		});
 	});
-});
-
-module.exports = spawn;
+};

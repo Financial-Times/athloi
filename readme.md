@@ -1,53 +1,105 @@
-# athloi
+# Athloi
 
-a cli tool for managing [lerna](https://github.com/lerna/lerna) monorepos
+Athloi is a tool to assist with the management of multi-package repositories (a.k.a. [monorepos]) with git and npm. It provides an interface to execute commands and scripts within the scope of each package.
 
-## usage (for monorepo maintainers)
+[monorepos]: https://github.com/babel/babel/blob/master/doc/design/monorepo.md
+[lerna]: https://lernajs.io/
 
-at the top level of your monorepo
+## Getting Started
+
+Start by installing Athloi within your project using [npm].
 
 ```sh
 npm install --save-dev athloi
 ```
 
-then in your `package.json` add something to the `scripts` entry to run `athloi`. i'd suggest adding it under `start`:
+[npm]: https://www.npmjs.com/
+
+Configuration can be passed to Athloi by providing a `monorepo.json` file in your repository root. This must include a `packages` property which is a list of [globs] matching the directories containing your packages.
 
 ```json
-"scripts": {
-	"start": "athloi"
+{
+  "packages": [
+    "components/*",
+    "tools/*"
+  ]
 }
 ```
 
-## usage (for developing in a monorepo)
-
-if you're working in a monorepo with athloi installed, run it to get an interactive list of available tasks. e.g. if it's set up as the `start` script as above:
-
-```
-> npm start
-? What do you want to do?
-  Start the development server
-❯ Run the production build
-  Create a new package
-  Run another script
-```
-
-choosing a task will tell you how to run that task as a shortcut:
-
-```
-? What do you want to do? build
-
-  ☞ protip
-  │ you can run this as npm start -- build
-  ✔︎ which would be quicker
+[globs]: https://en.wikipedia.org/wiki/Glob_(programming)
 
 
-  ⛭ running build serially
-  ⎘ in package-1, package-2 and package-3
+## Commands
+
+### exec
+
+Runs an arbitrary command in the scope of each package.
+
+```sh
+athloi exec npm install
 ```
 
-## what's with the name
+A double-dash (`--`) is necessary to pass any dashed arguments to the script being executed.
 
-one of the twelve labours of heracles (hoi hērakleous athloi) was to slay the lernean hydra.
+```sh
+athloi exec -- npm i -D
+```
+
+### run
+
+Runs an [npm script] in each package that contains that script.
+
+```sh
+athloi run build
+```
+
+[npm script]: https://docs.npmjs.com/misc/scripts
+
+### script
+
+Runs the given Node script in the scope of each package.
+
+```sh
+athloi script path/to/task.js
+```
+
+### clean
+
+Removes the `node_modules` directory from all packages.
+
+```sh
+athloi clean
+```
+
+### version
+
+Updates the release number for all packages and writes the new data back to `package.json`. The given tag must parseable as a valid semver number.
+
+```sh
+athloi version v1.0.0
+```
+
+### publish
+
+Runs [`npm publish`][npm-publish] in the scope of each public package.
+
+```sh
+athloi publish
+```
+
+Dashed arguments may be passed using a double dash (`--`)
+
+```sh
+athloi publish -- --access=public
+```
+
+[npm-publish]: https://docs.npmjs.com/cli/publish
+
+
+## What's with the name?
+
+One of the twelve labours of Hercules (hoi hērakleous athloi) was to slay the Lernean Hydra.
+
 
 ## licence
 

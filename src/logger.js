@@ -1,42 +1,28 @@
-const symbolLogger = require('@quarterto/symbol-logger');
 const chalk = require('chalk');
+const logSymbols = require('log-symbols');
 
-module.exports = symbolLogger({
-	start: {
-		symbol: '⛭',
-		format: 'blue',
-	},
-	packages: {
-		symbol: '⎘',
-		format: 'cyan',
-	},
-	info: {
-		symbol: '🛈',
-		format: 'blue',
-	},
-	success: {
-		symbol: '✔︎',
-		format: 'green',
-	},
-	failure: {
-		symbol: '✘',
-		format: chalk.red.bold,
-	},
-	message: {
-		symbol: '│',
-	},
-	error: {
-		symbol: '┃',
-		format: 'red',
-	},
-	stack: {
-		symbol: '┃',
-		format: 'red',
-		formatLine: 'grey',
-	},
-	protip: {
-		symbol: '☞',
-		format: chalk.blue.bold,
-		formatLine: chalk.blue.bold.italic,
-	},
-});
+const WS = '\x20';
+
+const format = (symbol, color, message) => {
+	return `${symbol} ${chalk[color](message)}\n`;
+};
+
+module.exports.info = (message) => {
+	process.stdout.write(format(logSymbols.info, 'blue', message));
+};
+
+module.exports.message = (message) => {
+	process.stdout.write(format(WS, 'gray', message));
+};
+
+module.exports.success = (message) => {
+	process.stdout.write(format(logSymbols.success, 'green', message));
+};
+
+module.exports.warning = (message) => {
+	process.stdout.write(format(logSymbols.warning, 'yellow', message));
+};
+
+module.exports.error = (message) => {
+	process.stderr.write(format(logSymbols.error, 'red', message));
+};
