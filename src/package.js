@@ -7,8 +7,15 @@ const writeFile = util.promisify(fs.writeFile);
 
 class Package {
 	constructor (manifest, location) {
-		this.manifest = manifest;
-		this.location = location;
+		// define read-only properties
+		Object.defineProperties(this, {
+			manifest: {
+				value: Object.freeze(manifest)
+			},
+			location: {
+				value: path.normalize(location)
+			}
+		});
 	}
 
 	get name () {

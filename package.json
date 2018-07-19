@@ -5,7 +5,8 @@
   "scripts": {
     "precommit": "node_modules/.bin/secret-squirrel",
     "commitmsg": "node_modules/.bin/secret-squirrel-commitmsg",
-    "prepush": "make verify -j3"
+    "prepush": "make verify -j3",
+    "test": "jest"
   },
   "bin": "src/bin/cli",
   "keywords": [],
