@@ -12,7 +12,7 @@ async function publish (packages = [], args = []) {
 
 	// create a queue of tasks to run
 	return filteredPackages.map((pkg) => {
-		return () => runPackage('npm', ['pack', ...args], pkg.location);
+		return () => runPackage('npm', ['publish', ...args], pkg.location);
 	});
 };
 
