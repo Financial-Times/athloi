@@ -4,9 +4,7 @@ const runPackage = require('../run-package');
 
 async function publish (packages = [], args = []) {
 	// filter out any private packages
-	const filteredPackages = packages.filter((pkg) => {
-		return !Boolean(pkg.private);
-	});
+	const filteredPackages = packages.filter((pkg) => pkg.private);
 
 	logger.message(`Found ${filteredPackages.length} packages to publish`);
 

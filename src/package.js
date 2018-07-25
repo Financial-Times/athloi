@@ -15,6 +15,10 @@ class Package {
 		return this.manifest.name;
 	}
 
+	get private () {
+		return Boolean(this.manifest.private);
+	}
+
 	get manifestLocation () {
 		return path.join(this.location, 'package.json');
 	}
