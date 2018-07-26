@@ -1,4 +1,3 @@
-const path = require('path');
 const Subject = require('../../src/package');
 
 const fixture = Object.freeze({
@@ -27,6 +26,13 @@ describe('src/package', () => {
 		it('gets the manifest name', () => {
 			const instance = factory(fixture);
 			expect(instance.name).toBe('my-package');
+		});
+	});
+
+	describe('get #private', () => {
+		it('returns a boolean', () => {
+			const instance = factory(fixture);
+			expect(instance.private).toBe(false);
 		});
 	});
 
