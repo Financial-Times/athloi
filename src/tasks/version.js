@@ -2,6 +2,7 @@ const semver = require('semver');
 const logger = require('../logger');
 const taskify = require('../cli-task');
 const updateVersions = require('../update-versions');
+const { filterOption } = require('../filter');
 
 async function version (packages = [], tag) {
 	// Projects may use different tag formats
@@ -27,5 +28,6 @@ module.exports.register = (program) => {
 	program
 		.command('version <tag>')
 		.description('Updates the release number for all packages and writes the new data back to package.json')
+		.option(filterOption.join(','))
 		.action(taskify(version));
 };
