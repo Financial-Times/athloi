@@ -18,14 +18,14 @@ module.exports = (task) => {
 			// 2. find all packages by path and create package instances
 			const packages = await loadPackages(config.packages);
 
-			// 3. filter packages where to run based on options.filter
-			const filteredPackages = applyFilter(options, packages);
+			// 3. filter packages where to run based on options.filter and get the options without the filter
+			const { filteredPackages, parsedOptions } = applyFilter(options, packages);
 
 			logger.info(`Loaded ${filteredPackages.length} packages:`);
 			filteredPackages.map((pkg) => logger.message(`- ${pkg.relativeLocation}`));
 
 			// 4. create a queue of tasks to run
-			const tasks = await Reflect.apply(task, null, [packages, cmd]);
+			const tasks = await Reflect.apply(task, null, [packages, cmd, parsedOptions]);
 
 			logger.info(`Running ${tasks.length} tasks in series`);
 
