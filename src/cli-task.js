@@ -25,7 +25,7 @@ module.exports = (task) => {
 			filteredPackages.map((pkg) => logger.message(`- ${pkg.relativeLocation}`));
 
 			// 4. create a queue of tasks to run
-			const tasks = await Reflect.apply(task, null, [packages, cmd, parsedOptions]);
+			const tasks = await Reflect.apply(task, null, [filteredPackages, cmd, parsedOptions]);
 
 			logger.info(`Running ${tasks.length} tasks in series`);
 
