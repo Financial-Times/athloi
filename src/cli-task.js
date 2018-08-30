@@ -3,11 +3,12 @@ const Stopwatch = require('./stopwatch');
 const runSeries = require('./run-series');
 const loadConfig = require('./load-config');
 const loadPackages = require('./load-packages');
+const { applyFilter } = require('./filter');
 
 module.exports = (task) => {
 	const timer = new Stopwatch();
 
-	return async (...args) => {
+	return async (cmd, options) => {
 		try {
 			timer.start();
 
@@ -17,15 +18,18 @@ module.exports = (task) => {
 			// 2. find all packages by path and create package instances
 			const packages = await loadPackages(config.packages);
 
-			logger.info(`Loaded ${packages.length} packages:`);
-			packages.map((pkg) => logger.message(`- ${pkg.relativeLocation}`));
+			// 3. filter packages where to run based on options.filter
+			const filteredPackages = applyFilter(options, packages);
 
-			// 3. create a queue of tasks to run
-			const tasks = await Reflect.apply(task, null, [packages, ...args]);
+			logger.info(`Loaded ${filteredPackages.length} packages:`);
+			filteredPackages.map((pkg) => logger.message(`- ${pkg.relativeLocation}`));
+
+			// 4. create a queue of tasks to run
+			const tasks = await Reflect.apply(task, null, [packages, cmd]);
 
 			logger.info(`Running ${tasks.length} tasks in series`);
 
-			// 4. execute all tasks in series
+			// 5. execute all tasks in series
 			// TODO: support concurrent execution
 			await runSeries(tasks);
 
