@@ -21,7 +21,7 @@ const applyFilter = (options, packages) => {
 					return manifest[key] === JSON.parse(val);
 				}
 				return manifest.name.split('/').slice(-1)[0] === filter;
-		  })
+		})
 		: packages;
 
 	return {
