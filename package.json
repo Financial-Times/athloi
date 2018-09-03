@@ -32,7 +32,6 @@
     "find-up": "^3.0.0",
     "glob": "^7.1.2",
     "log-symbols": "^2.2.0",
-    "rimraf": "^2.6.2",
     "semver": "^5.5.0",
     "toposort": "^2.0.2"
   },

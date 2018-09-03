@@ -20,7 +20,6 @@ const tasks = [
 	'exec',
 	'run',
 	'script',
-	'clean',
 	'version',
 	'publish'
 ];
