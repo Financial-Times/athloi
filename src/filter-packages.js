@@ -1,15 +1,13 @@
-module.exports = (options = {}, packages = []) => {
-	const { filter } = options;
-
-	return filter
+module.exports = (filter, packages = []) => (
+	filter
 		? packages.filter(({ manifest }) => {
-			if (filter.indexOf(':') !== -1) {
+			if (filter.includes(':')) {
 				const [key, val] = filter.split(':');
 				return manifest[key] === JSON.parse(val);
+			} else {
+				// By default filter on the package name
+				return manifest.name.split('/').slice(-1)[0] === filter;
 			}
-
-			// By default filter on the package name
-			return manifest.name.split('/').slice(-1)[0] === filter;
 		})
-		: packages;
-};
+		: packages
+);

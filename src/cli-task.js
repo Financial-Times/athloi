@@ -24,7 +24,7 @@ module.exports = (task) => {
 			const packages = await loadPackages(config.packages);
 
 			// 3. filter packages where to run based on options.filter and get the options without the filter
-			const filteredPackages = filterPackages(globals, packages);
+			const filteredPackages = filterPackages(globals.filter, packages);
 
 			logger.info(`Loaded ${filteredPackages.length} packages:`);
 			filteredPackages.map((pkg) => logger.message(`- ${pkg.relativeLocation}`));
@@ -44,7 +44,7 @@ module.exports = (task) => {
 		} catch (error) {
 			const message = error instanceof Error ? error.message : error;
 			const exitCode = error.code || 1;
-			console.error(error)
+
 			logger.error(`Task failed: "${message}"`);
 			process.exit(exitCode);
 		}
