@@ -1,4 +1,4 @@
-const clone = require('clone');
+const clone = (src) => JSON.parse(JSON.stringify(src));
 
 module.exports = (manifest, number, localDependencies = []) => {
 	const pkg = clone(manifest);
