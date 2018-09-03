@@ -10,7 +10,8 @@ unit-test:
 	export NODE_ENV=test; jest --verbose --env node
 	@$(DONE)
 
-# unit-test-coverage:
-	# nyc --reporter=$(if $(CIRCLECI),lcovonly,lcov) make unit-test
+unit-test-coverage:
+	export NODE_ENV=test; jest --coverage --env node
+	@$(DONE)
 
 test: verify unit-test
