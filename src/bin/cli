@@ -9,6 +9,11 @@ program
 		'-F, --filter <expression>',
 		'Filter where the task should be run'
 	)
+	.option(
+		'-C, --concurrency <number>',
+		'Number of tasks to be run concurrently',
+		(arg) => /\d/.test(arg) ? parseInt(arg, 10) : undefined
+	)
 	.version(pkg.version)
 
 const tasks = [

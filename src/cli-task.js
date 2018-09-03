@@ -1,7 +1,7 @@
 const logger = require('./logger');
 const Stopwatch = require('./stopwatch');
-const runSeries = require('./run-series');
 const loadConfig = require('./load-config');
+const runParallel = require('./run-parallel');
 const loadPackages = require('./load-packages');
 const filterPackages = require('./filter-packages');
 
@@ -32,11 +32,10 @@ module.exports = (task) => {
 			// 4. create a queue of tasks to run
 			const tasks = await Reflect.apply(task, null, [filteredPackages, ...options]);
 
-			logger.info(`Running ${tasks.length} tasks in series`);
+			logger.info(`Running ${tasks.length} tasks`);
 
-			// 5. execute all tasks in series
-			// TODO: support concurrent execution
-			await runSeries(tasks);
+			// 5. execute all tasks
+			await runParallel(tasks, globals.concurrency);
 
 			timer.stop();
 

@@ -98,6 +98,15 @@ athloi publish -- --access=public
 
 ## Options
 
+### concurrency
+
+A global concurrency option which can be used to execute multiple tasks in parallel. By default only one task will run at a time.
+
+```sh
+# run clean task 3 packages at a time
+athloi clean --concurrency 3
+```
+
 ### filter
 
 A global filter option which can be used for all tasks. It can filter packages based on the value of a field within each package manifest file.
