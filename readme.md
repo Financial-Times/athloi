@@ -95,24 +95,25 @@ athloi publish -- --access=public
 
 [npm-publish]: https://docs.npmjs.com/cli/publish
 
+
 ## Options
 
 ### filter
 
-A global filter option applied to all tasks. It filters packages based on fields of each package manifest file.
-The default field for `--filter` option is the `name` field in the manifest file.
+A global filter option which can be used for all tasks. It can filter packages based on the value of a field within each package manifest file.
 
 ```sh
-athloi run build --filter x-interaction
-```
-
-The above command will run only for `x-interaction` package
-
-To use another field in the manifest file for filtering:
-
-```sh
+# Only build packages marked as private
 athloi run build --filter "private:true"
 ```
+
+The field name preceeding the colon (`:`) is optional and the default field is `name`.
+
+```sh
+# Only clean the package named `x-interaction`
+athloi clean --filter x-interaction
+```
+
 
 ## What's with the name?
 
