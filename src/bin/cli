@@ -4,7 +4,12 @@ const path = require('path');
 const program = require('commander');
 const pkg = require(path.join(__dirname, '../../package.json'));
 
-program.version(pkg.version);
+program
+	.option(
+		'-F, --filter <expression>',
+		'Filter where the task should be run'
+	)
+	.version(pkg.version)
 
 const tasks = [
 	'exec',
