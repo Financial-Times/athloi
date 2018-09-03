@@ -3,12 +3,17 @@ const Stopwatch = require('./stopwatch');
 const runSeries = require('./run-series');
 const loadConfig = require('./load-config');
 const loadPackages = require('./load-packages');
-const { applyFilter } = require('./filter');
+const filterPackages = require('./filter-packages');
 
 module.exports = (task) => {
 	const timer = new Stopwatch();
 
-	return async (cmd, options) => {
+	return async (...args) => {
+		// The final argument is always the command instance
+		const command = args[args.length - 1];
+		const options = args.slice(0, -1);
+		const globals = command.parent.opts();
+
 		try {
 			timer.start();
 
@@ -19,13 +24,13 @@ module.exports = (task) => {
 			const packages = await loadPackages(config.packages);
 
 			// 3. filter packages where to run based on options.filter and get the options without the filter
-			const { filteredPackages, parsedOptions } = applyFilter(options, packages);
+			const filteredPackages = filterPackages(globals, packages);
 
 			logger.info(`Loaded ${filteredPackages.length} packages:`);
 			filteredPackages.map((pkg) => logger.message(`- ${pkg.relativeLocation}`));
 
 			// 4. create a queue of tasks to run
-			const tasks = await Reflect.apply(task, null, [filteredPackages, cmd, parsedOptions]);
+			const tasks = await Reflect.apply(task, null, [filteredPackages, ...options]);
 
 			logger.info(`Running ${tasks.length} tasks in series`);
 
@@ -39,7 +44,7 @@ module.exports = (task) => {
 		} catch (error) {
 			const message = error instanceof Error ? error.message : error;
 			const exitCode = error.code || 1;
-
+			console.error(error)
 			logger.error(`Task failed: "${message}"`);
 			process.exit(exitCode);
 		}

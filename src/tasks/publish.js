@@ -1,7 +1,6 @@
 const logger = require('../logger');
 const taskify = require('../cli-task');
 const runPackage = require('../run-package');
-const { filterOption } = require('../filter');
 
 async function publish (packages = [], args = []) {
 	// filter out any private packages
@@ -19,6 +18,5 @@ module.exports.register = (program) => {
 	program
 		.command('publish [args...]')
 		.description('Runs npm publish in the scope of each public package')
-		.option(filterOption.join(','))
 		.action(taskify(publish));
 };

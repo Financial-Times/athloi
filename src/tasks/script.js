@@ -1,7 +1,6 @@
 const path = require('path');
 const taskify = require('../cli-task');
 const runPackage = require('../run-package');
-const { filterOption } = require('../filter');
 
 async function script (packages = [], scriptPath) {
 	// solve path to script file
@@ -16,6 +15,5 @@ module.exports.register = (program) => {
 	program
 		.command('script <path>')
 		.description('Runs the given Node script in the scope of each package')
-		.option(filterOption.join(','))
 		.action(taskify(script));
 };
