@@ -63,14 +63,6 @@ Runs the given Node script in the scope of each package.
 athloi script path/to/task.js
 ```
 
-### clean
-
-Removes the `node_modules` directory from all packages.
-
-```sh
-athloi clean
-```
-
 ### version
 
 Updates the release number for all packages and writes the new data back to `package.json`. The given tag must parseable as a valid semver number.
@@ -103,8 +95,8 @@ athloi publish -- --access=public
 A global concurrency option which can be used to execute multiple tasks in parallel. By default only one task will run at a time.
 
 ```sh
-# run clean task 3 packages at a time
-athloi clean --concurrency 3
+# run a build script 3 packages at a time
+athloi run build --concurrency 3
 ```
 
 ### filter
@@ -112,15 +104,15 @@ athloi clean --concurrency 3
 A global filter option which can be used for all tasks. It can filter packages based on the value of a field within each package manifest file.
 
 ```sh
-# Only build packages marked as private
+# Run a build script in only the packages marked as private
 athloi run build --filter "private:true"
 ```
 
 The field name preceeding the colon (`:`) is optional and the default field is `name`.
 
 ```sh
-# Only clean the package named `x-interaction`
-athloi clean --filter x-interaction
+# Run a build script only for the package named `x-interaction`
+athloi run build --filter x-interaction
 ```
 
 
