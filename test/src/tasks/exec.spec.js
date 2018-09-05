@@ -32,11 +32,15 @@ describe('src/tasks/exec', () => {
 	});
 
 	it('it returns an array of functions', () => {
-		expect(result.length).toEqual(packages.length);
+		expect(result).toBeInstanceOf(Array);
 
 		result.forEach((item) => {
 			expect(item).toBeInstanceOf(Function);
 		});
+	});
+
+	it('queues a task for every package', () => {
+		expect(result.length).toEqual(3);
 	});
 
 	it('provides the correct arguments to run helper', () => {

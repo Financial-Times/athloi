@@ -1,7 +1,7 @@
 const mockRun = jest.fn();
 jest.mock('../../../src/run-package', () => mockRun);
 
-const { task: subject } = require('../../../src/tasks/publish');
+const { task: subject } = require('../../../src/tasks/run');
 
 const createPackage = (name, options = {}) => (
 	{
@@ -11,19 +11,19 @@ const createPackage = (name, options = {}) => (
 	}
 );
 
-describe('src/tasks/publish', () => {
+describe('src/tasks/run', () => {
 	const packages = [
-		createPackage('foo'),
-		createPackage('bar'),
-		createPackage('baz', { private: true }),
+		createPackage('foo', { manifest: { scripts: { test: '' } } }),
+		createPackage('bar', { manifest: { scripts: { test: '' } } }),
+		createPackage('baz', { manifest: {} }),
 	];
 
-	const args = ['--access', 'public'];
+	const command = 'test';
 
 	let result;
 
 	beforeEach(() => {
-		result = subject(packages, args);
+		result = subject(packages, command);
 	});
 
 	afterEach(() => {
@@ -38,7 +38,7 @@ describe('src/tasks/publish', () => {
 		});
 	});
 
-	it('queues a task for every non-private package', () => {
+	it('queues a task for each package with the script', () => {
 		expect(result.length).toEqual(2);
 	});
 
@@ -48,7 +48,7 @@ describe('src/tasks/publish', () => {
 
 			item();
 
-			expect(mockRun).toHaveBeenCalledWith('npm', ['publish'].concat(args), pkg.location);
+			expect(mockRun).toHaveBeenCalledWith('npm', ['run', command], pkg.location);
 		});
 	});
 });

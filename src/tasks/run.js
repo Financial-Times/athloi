@@ -2,7 +2,7 @@ const logger = require('../logger');
 const taskify = require('../cli-task');
 const runPackage = require('../run-package');
 
-async function run (packages = [], script) {
+function run (packages = [], script) {
 	// filter out packages without the requested command
 	const filteredPackages = packages.filter(({ manifest }) => {
 		return manifest.scripts && manifest.scripts.hasOwnProperty(script);
@@ -16,7 +16,9 @@ async function run (packages = [], script) {
 	});
 };
 
-module.exports.register = (program) => {
+exports.task = run;
+
+exports.register = (program) => {
 	program
 		.command('run <script>')
 		.description('Runs an npm script in each package that contains that script.')
