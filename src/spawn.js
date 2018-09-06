@@ -6,7 +6,7 @@ const cleanLine = (line) => line.toString('utf8');
 
 module.exports = (cmd, args = [], opts = {}) => {
 	return new Promise((resolve, reject) => {
-		const child = spawn(cmd, args, { ...process.env, ...opts });
+		const child = spawn(cmd, args, { env: process.env, ...opts });
 
 		byline(child.stdout).on('data', (line) => logger.message(cleanLine(line)));
 
