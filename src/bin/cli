@@ -14,6 +14,10 @@ program
 		'Number of tasks to be run concurrently',
 		(arg) => /\d/.test(arg) ? parseInt(arg, 10) : undefined
 	)
+	.option(
+		'-R, --reverse',
+		'Reverse package running order'
+	)
 	.version(pkg.version)
 
 const tasks = [

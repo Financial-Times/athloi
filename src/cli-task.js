@@ -3,6 +3,7 @@ const Stopwatch = require('./stopwatch');
 const loadConfig = require('./load-config');
 const runParallel = require('./run-parallel');
 const loadPackages = require('./load-packages');
+const sortPackages = require('./sort-packages');
 const filterPackages = require('./filter-packages');
 
 module.exports = (task) => {
@@ -23,18 +24,21 @@ module.exports = (task) => {
 			// 2. find all packages by path and create package instances
 			const packages = await loadPackages(config.packages);
 
-			// 3. filter packages where to run based on options.filter and get the options without the filter
+			// 3. filter packages to run in based on filter option
 			const filteredPackages = filterPackages(globals.filter, packages);
 
-			logger.info(`Loaded ${filteredPackages.length} packages:`);
-			filteredPackages.map((pkg) => logger.message(`- ${pkg.relativeLocation}`));
+			// 4. sort packages topologically
+			const sortedPackages = sortPackages(globals.reverse, filteredPackages);
 
-			// 4. create a queue of tasks to run
-			const tasks = await Reflect.apply(task, null, [filteredPackages, ...options]);
+			logger.info(`Loaded ${sortedPackages.length} packages:`);
+			sortedPackages.map((pkg) => logger.message(`- ${pkg.relativeLocation}`));
+
+			// 5. create a queue of tasks to run
+			const tasks = await Reflect.apply(task, null, [sortedPackages, ...options]);
 
 			logger.info(`Running ${tasks.length} tasks`);
 
-			// 5. execute all tasks
+			// 6. execute all tasks
 			await runParallel(tasks, globals.concurrency);
 
 			timer.stop();
