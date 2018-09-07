@@ -9,7 +9,7 @@ const collateDependencies = (manifest) => {
 	});
 };
 
-module.exports = (packages = []) => {
+module.exports = (reverse = false, packages = []) => {
 	const packageNames = new Set(packages.map((pkg) => pkg.name));
 
 	const edges = packages.reduce((edges, pkg) => {
@@ -23,6 +23,10 @@ module.exports = (packages = []) => {
 	}, []);
 
 	const order = toposort.array(Array.from(packageNames), edges);
+
+	if (reverse) {
+		order.reverse();
+	}
 
 	return order.map((packageName) => {
 		return packages.find((pkg) => pkg.name === packageName);
