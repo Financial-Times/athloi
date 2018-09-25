@@ -5,7 +5,8 @@
   "scripts": {
     "precommit": "node_modules/.bin/secret-squirrel",
     "commitmsg": "node_modules/.bin/secret-squirrel-commitmsg",
-    "prepush": "make verify -j3"
+    "prepush": "make verify -j3",
+    "test": "jest"
   },
   "bin": "src/bin/cli",
   "keywords": [],
@@ -30,6 +31,7 @@
     "commander": "^2.16.0",
     "find-up": "^3.0.0",
     "glob": "^7.1.2",
+    "jest": "^23.4.1",
     "log-symbols": "^2.2.0",
     "semver": "^5.5.0",
     "toposort": "^2.0.2"
