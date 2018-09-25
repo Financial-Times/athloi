@@ -1,3 +1,6 @@
+jest.mock('fs');
+
+const fs = require('fs');
 const Subject = require('../../src/package');
 
 const fixture = Object.freeze({
@@ -47,6 +50,31 @@ describe('src/package', () => {
 		it('gets the manifest name', () => {
 			const instance = factory(fixture);
 			expect(instance.nodeModulesLocation).toEqual('/root/path/to/package/node_modules');
+		});
+	});
+
+	describe('#writeManifest', () => {
+		beforeEach(() => {
+			// The final arg is a callback that needs calling!
+			fs.writeFile.mockImplementation((...args) => args[args.length - 1]());
+		});
+
+		it('writes the new manifest', async () => {
+			const instance = factory(fixture);
+			await instance.writeManifest({ ...fixture, version: '1.0.0' });
+
+			expect(fs.writeFile).toHaveBeenCalledWith(
+				'/root/path/to/package/package.json',
+				JSON.stringify({ name : 'my-package', version: '1.0.0' }, null, 2),
+				expect.any(Function)
+			);
+		});
+
+		it('updates the manifest property', async () => {
+			const instance = factory(fixture);
+			await instance.writeManifest({ ...fixture, version: '1.0.0' });
+
+			expect(instance.manifest.version).toEqual('1.0.0');
 		});
 	});
 });

@@ -7,15 +7,8 @@ const writeFile = util.promisify(fs.writeFile);
 
 class Package {
 	constructor (manifest, location) {
-		// define read-only properties
-		Object.defineProperties(this, {
-			manifest: {
-				value: Object.freeze(manifest)
-			},
-			location: {
-				value: path.normalize(location)
-			}
-		});
+		this.manifest = Object.freeze(manifest);
+		this.location = path.normalize(location);
 	}
 
 	get name () {
@@ -41,7 +34,7 @@ class Package {
 	async writeManifest (manifest) {
 		const json = JSON.stringify(manifest, null, 2);
 		await writeFile(this.manifestLocation, json);
-		this.manifest = manifest;
+		this.manifest = Object.freeze(manifest);
 	}
 }
 
