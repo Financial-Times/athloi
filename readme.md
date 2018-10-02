@@ -10,7 +10,7 @@ Athloi is a tool to assist with the management of multi-package repositories (a.
 Start by installing Athloi within your project using [npm].
 
 ```sh
-npm install --save-dev athloi
+npm install --save-dev @financial-times/athloi
 ```
 
 [npm]: https://www.npmjs.com/
