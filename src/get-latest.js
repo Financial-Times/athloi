@@ -15,11 +15,10 @@ const fetchJSON = async (url) => {
 };
 
 module.exports = async (packages = []) => {
-	const public = packages.filter((pkg) => pkg.private === false);
-	const requests = public.map((pkg) => fetchJSON(`https://registry.npmjs.org/${pkg.name}`));
+	const publishable = packages.filter((pkg) => pkg.private === false);
+	const requests = publishable.map((pkg) => fetchJSON(`https://registry.npmjs.org/${pkg.name}`));
 	const results = await Promise.all(requests);
 
-	// map all of the successful registry requests
 	const available = results.filter(Boolean).reduce((map, result) => {
 		return map.set(result.name, result['dist-tags'].latest);
 	}, new Map());

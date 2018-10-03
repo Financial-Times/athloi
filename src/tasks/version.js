@@ -1,9 +1,10 @@
 const semver = require('semver');
 const logger = require('../logger');
 const taskify = require('../cli-task');
+const getLatest = require('../get-latest');
 const updateVersions = require('../update-versions');
 
-function version (packages = [], tag) {
+async function version (packages = [], tag, allPackages = []) {
 	// Projects may use different tag formats
 	const number = semver.clean(tag);
 
@@ -13,11 +14,12 @@ function version (packages = [], tag) {
 		throw Error(`The given tag "${tag}" is not a valid version number`);
 	}
 
+	const latestVersions = await getLatest(allPackages);
 	const packageNames = new Set(packages.map((pkg) => pkg.name));
 
 	return packages.map((pkg) => {
 		const apply = () => {
-			const newManifest = updateVersions(pkg.manifest, number, packageNames);
+			const newManifest = updateVersions(pkg.manifest, packageNames, number, latestVersions);
 			return pkg.writeManifest(newManifest);
 		};
 
