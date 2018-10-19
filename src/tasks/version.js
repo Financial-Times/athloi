@@ -4,7 +4,7 @@ const taskify = require('../cli-task');
 const getLatest = require('../get-latest');
 const updateVersions = require('../update-versions');
 
-async function version (packages = [], tag, allPackages = []) {
+async function version (targetPackages = [], tag, allPackages = []) {
 	// Projects may use different tag formats
 	const number = semver.clean(tag);
 
@@ -14,10 +14,12 @@ async function version (packages = [], tag, allPackages = []) {
 		throw Error(`The given tag "${tag}" is not a valid version number`);
 	}
 
+	// Fetch the latest versions for every package from npm
 	const latestVersions = await getLatest(allPackages);
-	const packageNames = new Set(packages.map((pkg) => pkg.name));
+	// Only bump the version for the list of target packages
+	const packageNames = new Set(targetPackages.map((pkg) => pkg.name));
 
-	return packages.map((pkg) => {
+	return targetPackages.map((pkg) => {
 		const apply = () => {
 			const newManifest = updateVersions(pkg.manifest, packageNames, number, latestVersions);
 			return pkg.writeManifest(newManifest);
