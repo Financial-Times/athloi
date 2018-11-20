@@ -3,7 +3,6 @@
 Athloi is a tool to assist with the management of multi-package repositories (a.k.a. [monorepos]) with git and npm. It provides an interface to execute commands and scripts within the scope of each package.
 
 [monorepos]: https://github.com/babel/babel/blob/master/doc/design/monorepo.md
-[lerna]: https://lernajs.io/
 
 ## Getting Started
 
@@ -30,6 +29,8 @@ Configuration can be passed to Athloi by providing a `monorepo.json` file in you
 
 
 ## Commands
+
+_Please note:_ Before executing a command Athloi will sort the packages [topologically] based on their cross-dependencies and run tasks in this order.
 
 ### exec
 
@@ -98,6 +99,8 @@ A global concurrency option which can be used to execute multiple tasks in paral
 # run a build script 3 packages at a time
 athloi run build --concurrency 3
 ```
+
+_Please note:_ using a concurrency value higher than 1 no longer ensures that tasks will finish for packages which are dependencies of other packages.
 
 ### filter
 
