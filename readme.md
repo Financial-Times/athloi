@@ -108,13 +108,20 @@ A global filter option which can be used for all tasks. It can filter packages b
 
 ```sh
 # Run a build script in only the packages marked as private
-athloi run build --filter "private:true"
+athloi run build --filter private:true
 ```
 
-The field name preceeding the colon (`:`) is optional and the default field is `name`.
+The value of the field will be coerced using `JSON.parse()` so boolean and number values can be used but this string values must use double-quotes:
 
 ```sh
-# Run a build script only for the package named `x-interaction`
+# Run a build script for only the package named `x-interaction`
+athloi run build --filter 'name:"x-interaction"'
+```
+
+The field name preceeding the colon (`:`) is optional and if omitted will set the default field to `name`.
+
+```sh
+# Run a build script for only the package named `x-interaction`
 athloi run build --filter x-interaction
 ```
 
