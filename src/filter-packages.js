@@ -18,7 +18,7 @@ module.exports = (filter, packages = []) => (
 				return test(manifest[key], JSON.parse(value));
 			} else {
 				// By default filter on the package name
-				return manifest.name.split('/').slice(-1)[0] === filter;
+				return manifest.name.split('/')[0] === filter;
 			}
 		})
 		: packages
