@@ -118,6 +118,16 @@ The value of the field will be coerced using `JSON.parse()` so boolean and numbe
 athloi run build --filter 'name:"x-interaction"'
 ```
 
+Property values inside arrays and objects can also be matched:
+
+```sh
+# Run the script for packages with a keyword of `demo`
+athloi run build --filter 'keywords:"demo"'
+
+# Run the script for packages with a dependency on `lodash`
+athloi run build --filter 'dependencies:"lodash"'
+```
+
 The field name preceeding the colon (`:`) is optional and if omitted will set the default field to `name`.
 
 ```sh
