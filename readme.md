@@ -3,7 +3,6 @@
 Athloi is a tool to assist with the management of multi-package repositories (a.k.a. [monorepos]) with git and npm. It provides an interface to execute commands and scripts within the scope of each package.
 
 [monorepos]: https://github.com/babel/babel/blob/master/doc/design/monorepo.md
-[lerna]: https://lernajs.io/
 
 ## Getting Started
 
@@ -30,6 +29,8 @@ Configuration can be passed to Athloi by providing a `monorepo.json` file in you
 
 
 ## Commands
+
+_Please note:_ Before executing a command Athloi will sort the packages [topologically] based on their cross-dependencies and run tasks in this order.
 
 ### exec
 
@@ -99,19 +100,38 @@ A global concurrency option which can be used to execute multiple tasks in paral
 athloi run build --concurrency 3
 ```
 
+_Please note:_ using a concurrency value higher than 1 no longer ensures that tasks will finish for packages which are dependencies of other packages.
+
 ### filter
 
-A global filter option which can be used for all tasks. It can filter packages based on the value of a field within each package manifest file.
+A global filter option which can be used for all tasks. It filters packages based on the value of a field within their package manifest file.
 
 ```sh
 # Run a build script in only the packages marked as private
-athloi run build --filter "private:true"
+athloi run build --filter private:true
 ```
 
-The field name preceeding the colon (`:`) is optional and the default field is `name`.
+The value of the field will be coerced using `JSON.parse()` so boolean and number values can be used and string values must use double-quotes:
 
 ```sh
-# Run a build script only for the package named `x-interaction`
+# Run a build script for only the package named "x-interaction"
+athloi run build --filter 'name:"x-interaction"'
+```
+
+Property values inside arrays and objects can also be matched:
+
+```sh
+# Run the script for packages with a keyword of "demo"
+athloi run build --filter 'keywords:"demo"'
+
+# Run the script for packages with a dependency on the "lodash" package
+athloi run build --filter 'dependencies:"lodash"'
+```
+
+The field name preceeding the colon (`:`) is optional and if omitted will set the default field to `name`.
+
+```sh
+# Run a build script for only the package named "x-interaction"
 athloi run build --filter x-interaction
 ```
 

@@ -13,6 +13,15 @@ describe('src/filter-packages', () => {
 		{
 			name: 'baz',
 			private: false
+		},
+		{
+			name: 'qux',
+			dependencies: {
+				lodash: '^1.0.0'
+			},
+			keywords: [
+				'awesome'
+			]
 		}
 	];
 
@@ -35,6 +44,18 @@ describe('src/filter-packages', () => {
 
 		expect(b.length).toEqual(1);
 		expect(b[0].manifest.name).toEqual('bar');
+	});
+
+	it('handles object and array matching', () => {
+		const a = subject('keywords:"awesome"', fixture);
+
+		expect(a.length).toEqual(1);
+		expect(a[0].manifest.name).toEqual('qux');
+
+		const b = subject('dependencies:"lodash"', fixture);
+
+		expect(b.length).toEqual(1);
+		expect(b[0].manifest.name).toEqual('qux');
 	});
 
 	it('defaults to matching the package name', () => {
