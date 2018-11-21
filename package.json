@@ -28,15 +28,15 @@
     "async-sema": "^2.1.2",
     "byline": "^5.0.0",
     "chalk": "^2.4.1",
-    "commander": "^2.16.0",
+    "commander": "^2.19.0",
     "find-up": "^3.0.0",
     "glob": "^7.1.2",
-    "jest": "^23.4.1",
     "log-symbols": "^2.2.0",
-    "semver": "^5.5.0",
+    "semver": "^5.6.0",
     "toposort": "^2.0.2"
   },
   "devDependencies": {
-    "@financial-times/n-gage": "^2.0.2"
+    "@financial-times/n-gage": "^2.0.2",
+    "jest": "^23.4.1"
   }
 }

@@ -104,34 +104,34 @@ _Please note:_ using a concurrency value higher than 1 no longer ensures that ta
 
 ### filter
 
-A global filter option which can be used for all tasks. It can filter packages based on the value of a field within each package manifest file.
+A global filter option which can be used for all tasks. It filters packages based on the value of a field within their package manifest file.
 
 ```sh
 # Run a build script in only the packages marked as private
 athloi run build --filter private:true
 ```
 
-The value of the field will be coerced using `JSON.parse()` so boolean and number values can be used but this string values must use double-quotes:
+The value of the field will be coerced using `JSON.parse()` so boolean and number values can be used and string values must use double-quotes:
 
 ```sh
-# Run a build script for only the package named `x-interaction`
+# Run a build script for only the package named "x-interaction"
 athloi run build --filter 'name:"x-interaction"'
 ```
 
 Property values inside arrays and objects can also be matched:
 
 ```sh
-# Run the script for packages with a keyword of `demo`
+# Run the script for packages with a keyword of "demo"
 athloi run build --filter 'keywords:"demo"'
 
-# Run the script for packages with a dependency on `lodash`
+# Run the script for packages with a dependency on the "lodash" package
 athloi run build --filter 'dependencies:"lodash"'
 ```
 
 The field name preceeding the colon (`:`) is optional and if omitted will set the default field to `name`.
 
 ```sh
-# Run a build script for only the package named `x-interaction`
+# Run a build script for only the package named "x-interaction"
 athloi run build --filter x-interaction
 ```
 
