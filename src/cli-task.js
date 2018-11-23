@@ -39,7 +39,7 @@ module.exports = (task) => {
 			logger.info(`Running ${tasks.length} tasks`);
 
 			// 6. execute all tasks
-			await runParallel(tasks, globals.concurrency);
+			await runParallel(sortedPackages, tasks, globals.concurrency);
 
 			timer.stop();
 
