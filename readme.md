@@ -135,6 +135,12 @@ The field name preceeding the colon (`:`) is optional and if omitted will set th
 athloi run build --filter x-interaction
 ```
 
+And you also use a wildcard when filtering by name:
+
+```sh
+athloi run build --filter 'x-*'
+```
+
 
 ## What's with the name?
 

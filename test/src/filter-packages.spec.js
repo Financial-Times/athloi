@@ -22,6 +22,9 @@ describe('src/filter-packages', () => {
 			keywords: [
 				'awesome'
 			]
+		},
+		{
+			name: '@ft/quux'
 		}
 	];
 
@@ -63,5 +66,20 @@ describe('src/filter-packages', () => {
 
 		expect(result.length).toEqual(1);
 		expect(result[0].manifest.name).toEqual('baz');
+	});
+
+	it('ignores the package organisation', () => {
+		const result = subject('quux', fixture);
+
+		expect(result.length).toEqual(1);
+		expect(result[0].manifest.name).toEqual('@ft/quux');
+	});
+
+	it('allows wildcard names for partial matching', () => {
+		const result = subject('ba*', fixture);
+
+		expect(result.length).toEqual(2);
+		expect(result[0].manifest.name).toEqual('bar');
+		expect(result[1].manifest.name).toEqual('baz');
 	});
 });
