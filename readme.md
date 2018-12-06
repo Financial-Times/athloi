@@ -104,19 +104,14 @@ _Please note:_ using a concurrency value higher than 1 no longer ensures that ta
 
 ### filter
 
-A global filter option which can be used for all tasks. It filters packages based on the value of a field within their package manifest file.
+A global filter option which can be used for all tasks. It can filter packages based on the value of a field within their package manifest.
 
 ```sh
 # Run a build script in only the packages marked as private
 athloi run build --filter private:true
 ```
 
-The value of the field will be coerced using `JSON.parse()` so boolean and number values can be used and string values must use double-quotes:
-
-```sh
-# Run a build script for only the package named "x-interaction"
-athloi run build --filter 'name:"x-interaction"'
-```
+The value of the field will be coerced using `JSON.parse()` so boolean and number values can be used and string values must use double-quotes.
 
 Property values inside arrays and objects can also be matched:
 
@@ -128,16 +123,17 @@ athloi run build --filter 'keywords:"demo"'
 athloi run build --filter 'dependencies:"lodash"'
 ```
 
-The field name preceeding the colon (`:`) is optional and if omitted will set the default field to `name`.
+The field name preceeding the colon (`:`) is optional and if omitted Athloi will default to checking package names, ignoring the npm organisation name.
 
 ```sh
-# Run a build script for only the package named "x-interaction"
+# Run a build script for only the package named "@financial-times/x-interaction"
 athloi run build --filter x-interaction
 ```
 
-And you also use a wildcard when filtering by name:
+When filtering by name you can also use a wildcard prefix:
 
 ```sh
+# Run a build script for all packages with names beginning "@financial-times/x-"
 athloi run build --filter 'x-*'
 ```
 

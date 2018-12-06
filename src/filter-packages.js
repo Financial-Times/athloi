@@ -1,4 +1,4 @@
-const testValue = (a, b) => {
+const testKeyValue = (a, b) => {
 	if (Array.isArray(a) && typeof b === 'string') {
 		return a.includes(b);
 	}
@@ -10,7 +10,7 @@ const testValue = (a, b) => {
 	return a === b;
 };
 
-const testName = (fullName, filter) => {
+const testPackageName = (fullName, filter) => {
 	// Ignore the organisation name
 	const packageName = fullName.startsWith('@')
 		? fullName.split('/').pop()
@@ -28,10 +28,10 @@ module.exports = (filter, packages = []) => (
 		? packages.filter(({ manifest }) => {
 			if (filter.includes(':')) {
 				const [key, value] = filter.split(':');
-				return testValue(manifest[key], JSON.parse(value));
+				return testKeyValue(manifest[key], JSON.parse(value));
 			} else {
 				// By default filter on the package name
-				return testName(manifest.name, filter);
+				return testPackageName(manifest.name, filter);
 			}
 		})
 		: packages
