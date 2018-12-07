@@ -16,10 +16,12 @@ function version (packages = [], tag) {
 	const packageNames = new Set(packages.map((pkg) => pkg.name));
 
 	return packages.map((pkg) => {
-		return () => {
+		const apply = () => {
 			const newManifest = updateVersions(pkg.manifest, number, packageNames);
 			return pkg.writeManifest(newManifest);
 		};
+
+		return { pkg, apply };
 	});
 };
 

@@ -6,7 +6,7 @@ const noRunningDependencies = (running, dependencies) => {
 	return !dependencies.some((dependency) => running.has(dependency));
 };
 
-module.exports = (packages = [], tasks = [], concurrency = 1) => {
+module.exports = (tasks = [], concurrency = 1) => {
 	const semaphore = new Semaphore(concurrency);
 
 	logger.info(`Executing up to ${concurrency} tasks at a time`);
@@ -14,16 +14,12 @@ module.exports = (packages = [], tasks = [], concurrency = 1) => {
 	const packagesRunning = new Set();
 
 	return Promise.all(
-		tasks.map((task, i) => {
-			// TODO: number of tasks ~= number of packages
-			const packageName = packages[i].name;
-			const packageManifest = packages[i].manifest;
-
+		tasks.map(({ pkg, apply }) => {
 			const allDependencies = Object.keys({
-				...packageManifest.dependencies,
-				...packageManifest.devDependencies,
-				...packageManifest.peerDependencies,
-				...packageManifest.optionalDependencies
+				...pkg.manifest.dependencies,
+				...pkg.manifest.devDependencies,
+				...pkg.manifest.peerDependencies,
+				...pkg.manifest.optionalDependencies
 			});
 
 			return semaphore
@@ -34,11 +30,11 @@ module.exports = (packages = [], tasks = [], concurrency = 1) => {
 					});
 				})
 				.then(() => {
-					packagesRunning.add(packageName);
-					return task();
+					packagesRunning.add(pkg.name);
+					return apply();
 				})
 				.then(() => {
-					packagesRunning.delete(packageName);
+					packagesRunning.delete(pkg.name);
 					return semaphore.release();
 				});
 		})

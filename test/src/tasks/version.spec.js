@@ -29,11 +29,12 @@ describe('src/tasks/version', () => {
 		mockRun.mockReset();
 	});
 
-	it('it returns an array of functions', () => {
+	it('it returns an array of tasks', () => {
 		expect(result).toBeInstanceOf(Array);
 
 		result.forEach((item) => {
-			expect(item).toBeInstanceOf(Function);
+			expect(item.pkg).toBeDefined();
+			expect(item.apply).toEqual(expect.any(Function));
 		});
 	});
 
