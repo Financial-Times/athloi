@@ -15,18 +15,11 @@ module.exports = (tasks = [], concurrency = 1) => {
 
 	return Promise.all(
 		tasks.map(({ pkg, apply }) => {
-			const allDependencies = Object.keys({
-				...pkg.manifest.dependencies,
-				...pkg.manifest.devDependencies,
-				...pkg.manifest.peerDependencies,
-				...pkg.manifest.optionalDependencies
-			});
-
 			return semaphore
 				.acquire()
 				.then(() => {
 					return waitUntil(() => {
-						return noRunningDependencies(packagesRunning, allDependencies);
+						return noRunningDependencies(packagesRunning, pkg.allDependencies);
 					});
 				})
 				.then(() => {
