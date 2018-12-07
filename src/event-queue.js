@@ -8,28 +8,28 @@ class EventQueue extends EventEmitter {
 
 	add(item) {
 		this.queue.add(item);
-		this.emit('queue:add', item);
+		this.emit('add', item);
 	}
 
 	delete(item) {
 		this.queue.delete(item);
-		this.emit('queue:delete', item);
+		this.emit('delete', item);
 	}
 
-	// Resolves when the queue contains none of the given items
-	done(items = []) {
+	waitFor(items = []) {
 		return new Promise((resolve) => {
-			const callback = () => {
-				const noItemsRunning = items.every((item) => !this.queue.has(item));
+			const callback = (item) => {
+				const itemsRunning = items.some((item) => this.queue.has(item));
 
-				if (noItemsRunning) {
-					this.off('queue:delete', callback);
+				if (!itemsRunning) {
+					this.off('delete', callback);
 					resolve();
 				}
 			};
 
-			this.on('queue:delete', callback);
-			callback();
+			this.on('delete', callback);
+
+			callback(null);
 		});
 	}
 }

@@ -16,7 +16,7 @@ module.exports = (tasks = [], concurrency = 1) => {
 					// Queue the package now to maintain running order...
 					queue.add(pkg.name);
 					// ...but wait for any dependencies in the queue to finish
-					return queue.done(pkg.allDependencies);
+					return queue.waitFor(pkg.allDependencies);
 				})
 				.then(() => {
 					return apply();
