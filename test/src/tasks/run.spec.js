@@ -2,20 +2,13 @@ const mockRun = jest.fn();
 jest.mock('../../../src/run-package', () => mockRun);
 
 const { task: subject } = require('../../../src/tasks/run');
-
-const createPackage = (name, options = {}) => (
-	{
-		name,
-		location: `/Path/to/${name}`,
-		...options
-	}
-);
+const createPackage = require('../../helpers/create-package');
 
 describe('src/tasks/run', () => {
 	const packages = [
-		createPackage('foo', { manifest: { scripts: { test: '' } } }),
-		createPackage('bar', { manifest: { scripts: { test: '' } } }),
-		createPackage('baz', { manifest: {} }),
+		createPackage('foo', { scripts: { test: '' } }),
+		createPackage('bar', { scripts: { test: '' } }),
+		createPackage('baz', { scripts: {} }),
 	];
 
 	const command = 'test';

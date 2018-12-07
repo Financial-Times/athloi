@@ -67,7 +67,7 @@ describe('src/package', () => {
 			expect(instance.allDependencies).toBeInstanceOf(Array);
 			expect(instance.allDependencies.length).toEqual(4);
 		});
-	})
+	});
 
 	describe('#writeManifest', () => {
 		beforeEach(() => {

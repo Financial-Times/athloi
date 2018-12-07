@@ -1,39 +1,27 @@
 const subject = require('../../src/sort-packages');
+const createPackage = require('../helpers/create-package');
 
-const fixture = Object.freeze([
-	{
-		name: 'foo',
-		manifest: {
-			dependencies: {
-				qux: '0.0.0'
-			}
+const fixture = [
+	createPackage('foo', {
+		dependencies: {
+			qux: '0.0.0'
 		}
-	},
-	{
-		name: 'bar',
-		manifest: {
-			dependencies: {
-				baz: '0.0.0'
-			}
+	}),
+	createPackage('bar', {
+		dependencies: {
+			baz: '0.0.0'
 		}
-	},
-	{
-		name: 'baz',
-		manifest: {
-			dependencies: {
-				foo: '0.0.0',
-				qux: '0.0.0'
-			}
-		},
-	},
-	{
-		name: 'qux',
-		manifest: {
-			dependencies: {
-			}
+	}),
+	createPackage('baz', {
+		dependencies: {
+			foo: '0.0.0',
+			qux: '0.0.0'
 		}
-	}
-]);
+	}),
+	createPackage('qux', {
+		dependencies: {}
+	})
+];
 
 describe('src/sort-packages', () => {
 	it('returns a new array', () => {

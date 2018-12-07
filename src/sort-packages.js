@@ -1,15 +1,5 @@
 const toposort = require('toposort');
 
-const collateDependencies = (manifest) => {
-	// TODO: refactor into package class
-	return Object.keys({
-		...manifest.dependencies,
-		...manifest.devDependencies,
-		...manifest.peerDependencies,
-		...manifest.optionalDependencies
-	});
-};
-
 module.exports = (reverse = false, packages = []) => {
 	const packageNames = new Set(packages.map((pkg) => pkg.name));
 
