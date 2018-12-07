@@ -1,33 +1,28 @@
 const Semaphore = require('async-sema');
 const logger = require('./logger');
-const waitUntil = require('./wait-until');
-
-const noRunningDependencies = (running, dependencies) => {
-	return !dependencies.some((dependency) => running.has(dependency));
-};
+const EventQueue = require('./event-queue');
 
 module.exports = (tasks = [], concurrency = 1) => {
 	const semaphore = new Semaphore(concurrency);
+	const queue = new EventQueue();
 
 	logger.info(`Executing up to ${concurrency} tasks at a time`);
-
-	const packagesRunning = new Set();
 
 	return Promise.all(
 		tasks.map(({ pkg, apply }) => {
 			return semaphore
 				.acquire()
 				.then(() => {
-					return waitUntil(() => {
-						return noRunningDependencies(packagesRunning, pkg.allDependencies);
-					});
+					// Queue the package now to maintain running order...
+					queue.add(pkg.name);
+					// ...but wait for any dependencies in the queue to finish
+					return queue.done(pkg.allDependencies);
 				})
 				.then(() => {
-					packagesRunning.add(pkg.name);
 					return apply();
 				})
 				.then(() => {
-					packagesRunning.delete(pkg.name);
+					queue.delete(pkg.name);
 					return semaphore.release();
 				});
 		})
