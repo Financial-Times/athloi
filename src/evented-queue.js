@@ -1,6 +1,6 @@
 const EventEmitter = require('events');
 
-class EventQueue extends EventEmitter {
+class EventedQueue extends EventEmitter {
 	constructor() {
 		super();
 		this.queue = new Set();
@@ -9,20 +9,22 @@ class EventQueue extends EventEmitter {
 	add(item) {
 		this.queue.add(item);
 		this.emit('add', item);
+		return this;
 	}
 
 	delete(item) {
 		this.queue.delete(item);
 		this.emit('delete', item);
+		return this;
 	}
 
 	waitFor(items = []) {
 		return new Promise((resolve) => {
-			const callback = (item) => {
+			const callback = () => {
 				const itemsRunning = items.some((item) => this.queue.has(item));
 
 				if (!itemsRunning) {
-					this.off('delete', callback);
+					this.removeListener('delete', callback);
 					resolve();
 				}
 			};
@@ -34,4 +36,4 @@ class EventQueue extends EventEmitter {
 	}
 }
 
-module.exports = EventQueue;
+module.exports = EventedQueue;

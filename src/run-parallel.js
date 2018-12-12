@@ -1,10 +1,10 @@
 const Semaphore = require('async-sema');
 const logger = require('./logger');
-const EventQueue = require('./event-queue');
+const EventedQueue = require('./evented-queue');
 
 module.exports = (tasks = [], concurrency = 1) => {
 	const semaphore = new Semaphore(concurrency);
-	const queue = new EventQueue();
+	const queue = new EventedQueue();
 
 	logger.info(`Executing up to ${concurrency} tasks at a time`);
 

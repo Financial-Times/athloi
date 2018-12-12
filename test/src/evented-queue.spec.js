@@ -1,6 +1,6 @@
-const Subject = require('../../src/event-queue');
+const Subject = require('../../src/evented-queue');
 
-describe('src/event-queue', () => {
+describe('src/evented-queue', () => {
 	let instance;
 
 	beforeEach(() => {
@@ -34,7 +34,7 @@ describe('src/event-queue', () => {
 		it('emits an event when items are removed from the queue', (done) => {
 			instance.add('foo');
 
-			instance.on('delete', (item) => {
+			instance.on('delete', () => {
 				done();
 			});
 
@@ -44,18 +44,20 @@ describe('src/event-queue', () => {
 
 	describe('#waitFor', () => {
 		it('resolves when the queue no longer contains any of the given items', (done) => {
-			instance.add('foo');
-			instance.add('bar');
-			instance.add('baz');
+			instance
+				.add('foo')
+				.add('bar')
+				.add('baz');
 
 			instance.waitFor(['foo', 'bar', 'baz']).then(() => {
 				expect(instance.queue.size).toEqual(0);
 				done();
 			});
 
-			instance.delete('foo');
-			instance.delete('bar');
-			instance.delete('baz');
+			instance
+				.delete('foo')
+				.delete('bar')
+				.delete('baz');
 		});
 	});
 });
