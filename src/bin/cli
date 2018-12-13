@@ -12,7 +12,11 @@ program
 	.option(
 		'-C, --concurrency <number>',
 		'Number of tasks to be run concurrently',
-		(arg) => /\d/.test(arg) ? parseInt(arg, 10) : undefined
+		(arg) => /^\d$/.test(arg) ? parseInt(arg, 10) : null
+	)
+	.option(
+		'-P, --preserve-order',
+		'Preserve topological sort order when running tasks concurrently'
 	)
 	.option(
 		'-R, --reverse',

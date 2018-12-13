@@ -2,7 +2,7 @@ const Semaphore = require('async-sema');
 const logger = require('./logger');
 const EventedQueue = require('./evented-queue');
 
-module.exports = (tasks = [], concurrency = 1) => {
+module.exports = (tasks = [], concurrency = 1, preserveOrder = false) => {
 	const semaphore = new Semaphore(concurrency);
 	const queue = new EventedQueue();
 
@@ -10,13 +10,13 @@ module.exports = (tasks = [], concurrency = 1) => {
 
 	return Promise.all(
 		tasks.map(({ pkg, apply }) => {
+			queue.add(pkg.name);
+
 			return semaphore
 				.acquire()
 				.then(() => {
-					// Queue the package now to maintain running order...
-					queue.add(pkg.name);
-					// ...but wait for any dependencies in the queue to finish
-					return queue.waitFor(pkg.allDependencies);
+					// wait for any dependencies still in the queue to finish
+					return preserveOrder ? queue.waitFor(pkg.allDependencies) : null;
 				})
 				.then(() => {
 					return apply();

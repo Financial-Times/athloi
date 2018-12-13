@@ -34,21 +34,21 @@ _Please note:_ Before executing a command Athloi will sort the packages [topolog
 
 ### exec
 
-Runs an arbitrary command in the scope of each package.
+Runs an arbitrary command within the scope of each package.
 
 ```sh
 athloi exec npm install
 ```
 
-A double-dash (`--`) is necessary to pass any dashed arguments to the script being executed.
+A double-dash (`--`) is necessary to pass any dashed arguments to the command being executed.
 
 ```sh
-athloi exec -- npm i -D
+athloi exec -- npm i -D lodash
 ```
 
 ### run
 
-Runs an [npm script] in each package that contains that script.
+Runs an [npm script] in each package that defines that script.
 
 ```sh
 athloi run build
@@ -66,7 +66,7 @@ athloi script path/to/task.js
 
 ### version
 
-Updates the release number for all packages and writes the new data back to `package.json`. The given tag must parseable as a valid semver number.
+Updates the release number for all public packages and writes the new data back to `package.json`. The given tag must parseable as a valid semver number.
 
 ```sh
 athloi version v1.0.0
@@ -93,18 +93,25 @@ athloi publish -- --access=public
 
 ### concurrency
 
-A global concurrency option which can be used to execute multiple tasks in parallel. By default only one task will run at a time.
+A global option which will execute up to the given number of tasks concurrently. By default one task will be run at a time.
 
 ```sh
-# run a build script 3 packages at a time
-athloi run build --concurrency 3
+# run a lint script in up to 3 packages at a time
+athloi run lint --concurrency 3
 ```
 
-_Please note:_ using a concurrency value higher than 1 no longer ensures that tasks will finish for packages which are dependencies of other packages.
+### preserve-order
+
+A global flag which will ensure tasks maintain topological sort order. When used with a concurrency value higher than 1 this option will force queued tasks to wait for any still running tasks in cross-dependent packages to finish first.
+
+```sh
+# run a concurrent build script but ensure dependencies are built first
+athloi run build --concurrency 5 --preserve-order
+```
 
 ### filter
 
-A global filter option which can be used for all tasks. It can filter packages based on the value of a field within their package manifest.
+A global option which can be used for all tasks. It filters packages based on the value of a field within their package manifest or the package name.
 
 ```sh
 # Run a build script in only the packages marked as private
