@@ -1,21 +1,10 @@
 const toposort = require('toposort');
 
-const collateDependencies = (manifest) => {
-	return Object.keys({
-		...manifest.dependencies,
-		...manifest.devDependencies,
-		...manifest.peerDependencies,
-		...manifest.optionalDependencies
-	});
-};
-
 module.exports = (reverse = false, packages = []) => {
 	const packageNames = new Set(packages.map((pkg) => pkg.name));
 
 	const edges = packages.reduce((edges, pkg) => {
-		const dependencyNames = collateDependencies(pkg.manifest);
-
-		const localDependencies = dependencyNames.filter((dependency) => {
+		const localDependencies = pkg.allDependencies.filter((dependency) => {
 			return packageNames.has(dependency);
 		});
 

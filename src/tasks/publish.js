@@ -10,7 +10,8 @@ function publish (packages = [], args = []) {
 
 	// create a queue of tasks to run
 	return filteredPackages.map((pkg) => {
-		return () => runPackage('npm', ['publish', ...args], pkg.location);
+		const apply = () => runPackage('npm', ['publish', ...args], pkg.location);
+		return { pkg, apply };
 	});
 };
 

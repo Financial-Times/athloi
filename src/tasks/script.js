@@ -6,7 +6,8 @@ function script (packages = [], scriptPath) {
 	const resolvedScript = path.resolve(process.cwd(), scriptPath);
 
 	return packages.map((pkg) => {
-		return () => runPackage('node', [resolvedScript], pkg.location);
+		const apply = () => runPackage('node', [resolvedScript], pkg.location);
+		return { pkg, apply };
 	});
 }
 

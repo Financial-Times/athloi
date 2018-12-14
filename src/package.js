@@ -31,6 +31,15 @@ class Package {
 		return path.relative(process.cwd(), this.location);
 	}
 
+	get allDependencies () {
+		return Object.keys({
+			...this.manifest.dependencies,
+			...this.manifest.devDependencies,
+			...this.manifest.peerDependencies,
+			...this.manifest.optionalDependencies
+		});
+	};
+
 	async writeManifest (manifest) {
 		const json = JSON.stringify(manifest, null, 2);
 		await writeFile(this.manifestLocation, json);

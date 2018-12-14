@@ -2,13 +2,7 @@ const mockRun = jest.fn();
 jest.mock('../../../src/run-package', () => mockRun);
 
 const { task: subject } = require('../../../src/tasks/script');
-
-const createPackage = (name) => (
-	{
-		name,
-		location: `/Path/to/${name}`
-	}
-);
+const createPackage = require('../../helpers/create-package');
 
 describe('src/tasks/script', () => {
 	const packages = [
@@ -29,11 +23,12 @@ describe('src/tasks/script', () => {
 		mockRun.mockReset();
 	});
 
-	it('it returns an array of functions', () => {
+	it('it returns an array of tasks', () => {
 		expect(result).toBeInstanceOf(Array);
 
 		result.forEach((item) => {
-			expect(item).toBeInstanceOf(Function);
+			expect(item.pkg).toBeDefined();
+			expect(item.apply).toEqual(expect.any(Function));
 		});
 	});
 
@@ -44,12 +39,10 @@ describe('src/tasks/script', () => {
 	it('provides the correct arguments to run helper', () => {
 		const resolvedPath = process.cwd() + '/' + scriptPath;
 
-		result.forEach((item, i) => {
-			const pkg = packages[i];
+		result.forEach((item) => {
+			item.apply();
 
-			item();
-
-			expect(mockRun).toHaveBeenCalledWith('node', [ resolvedPath ], pkg.location);
+			expect(mockRun).toHaveBeenCalledWith('node', [ resolvedPath ], item.pkg.location);
 		});
 	});
 });

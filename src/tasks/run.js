@@ -12,7 +12,8 @@ function run (packages = [], script) {
 
 	// create a queue of tasks to run
 	return filteredPackages.map((pkg) => {
-		return () => runPackage('npm', ['run', script], pkg.location);
+		const apply = () => runPackage('npm', ['run', script], pkg.location);
+		return { pkg, apply };
 	});
 };
 

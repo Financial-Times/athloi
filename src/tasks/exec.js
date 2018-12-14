@@ -3,7 +3,8 @@ const runPackage = require('../run-package');
 
 function exec (packages = [], command, args = []) {
 	return packages.map((pkg) => {
-		return () => runPackage(command, args, pkg.location);
+		const apply = () => runPackage(command, args, pkg.location);
+		return { pkg, apply };
 	});
 };
 

@@ -6,6 +6,14 @@ const Subject = require('../../src/package');
 const fixture = Object.freeze({
 	name: 'my-package',
 	version: '0.0.0',
+	dependencies: {
+		lodash: '^3.0.0',
+		hyperons: '^0.5.0'
+	},
+	devDependencies: {
+		jest: '^16.0.0',
+		prettier: '^12.0.0'
+	}
 });
 
 describe('src/package', () => {
@@ -53,6 +61,14 @@ describe('src/package', () => {
 		});
 	});
 
+	describe('get #allDependencies', () => {
+		it('returns a list of all dependencies', () => {
+			const instance = factory(fixture);
+			expect(instance.allDependencies).toBeInstanceOf(Array);
+			expect(instance.allDependencies.length).toEqual(4);
+		});
+	});
+
 	describe('#writeManifest', () => {
 		beforeEach(() => {
 			// The final arg is a callback that needs calling!
@@ -65,7 +81,7 @@ describe('src/package', () => {
 
 			expect(fs.writeFile).toHaveBeenCalledWith(
 				'/root/path/to/package/package.json',
-				JSON.stringify({ name : 'my-package', version: '1.0.0' }, null, 2),
+				JSON.stringify({ ...fixture, version: '1.0.0' }, null, 2),
 				expect.any(Function)
 			);
 		});

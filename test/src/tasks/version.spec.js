@@ -2,13 +2,7 @@ const mockRun = jest.fn();
 jest.mock('../../../src/run-package', () => mockRun);
 
 const { task: subject } = require('../../../src/tasks/version');
-
-const createPackage = (name) => (
-	{
-		name,
-		location: `/Path/to/${name}`
-	}
-);
+const createPackage = require('../../helpers/create-package');
 
 describe('src/tasks/version', () => {
 	const packages = [
@@ -29,11 +23,12 @@ describe('src/tasks/version', () => {
 		mockRun.mockReset();
 	});
 
-	it('it returns an array of functions', () => {
+	it('it returns an array of tasks', () => {
 		expect(result).toBeInstanceOf(Array);
 
 		result.forEach((item) => {
-			expect(item).toBeInstanceOf(Function);
+			expect(item.pkg).toBeDefined();
+			expect(item.apply).toEqual(expect.any(Function));
 		});
 	});
 
