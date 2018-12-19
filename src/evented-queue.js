@@ -31,7 +31,7 @@ class EventedQueue extends EventEmitter {
 
 			this.on('delete', callback);
 
-			callback(null);
+			callback();
 		});
 	}
 }

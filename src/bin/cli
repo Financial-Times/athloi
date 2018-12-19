@@ -12,7 +12,7 @@ program
 	.option(
 		'-C, --concurrency <number>',
 		'Number of tasks to be run concurrently',
-		(arg) => /^\d$/.test(arg) ? parseInt(arg, 10) : null
+		(arg) => /^\d+$/.test(arg) ? parseInt(arg, 10) : 1
 	)
 	.option(
 		'-P, --preserve-order',
