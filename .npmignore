@@ -2,3 +2,4 @@ test/
 ft.yml
 Makefile
 secret-squirrel.js
+.circleci
