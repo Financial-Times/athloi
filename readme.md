@@ -72,6 +72,22 @@ Updates the release number for all public packages and writes the new data back 
 athloi version v1.0.0
 ```
 
+All cross-dependent packages referenced using the `file:` protocol will be re-written with the given version number, for example:
+
+```diff
+{
+  "name": "Example",
+-  "version": "0.0.0",
++  "version": "1.0.0",
+  "dependencies": {
+-    "sibling": "file:../sibling"
++    "sibling": "^1.0.0"
+  }
+}
+```
+
+Cross dependency versions will be prefixed the caret `^` range selector by default. To skip applying a range and use an exact version number the `--exact-version` flag may be used.
+
 ### publish
 
 Runs [`npm publish`][npm-publish] in the scope of each public package.
