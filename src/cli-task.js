@@ -14,6 +14,7 @@ module.exports = (task) => {
 		const command = args[args.length - 1];
 		const options = args.slice(0, -1);
 		const globals = command.parent.opts();
+		const flags = command.opts();
 
 		try {
 			timer.start();
@@ -34,7 +35,7 @@ module.exports = (task) => {
 			sortedPackages.map((pkg) => logger.message(`- ${pkg.relativeLocation}`));
 
 			// 5. create a queue of tasks to run
-			const tasks = await Reflect.apply(task, null, [sortedPackages, ...options]);
+			const tasks = await Reflect.apply(task, null, [sortedPackages, ...options, flags]);
 
 			logger.info(`Running ${tasks.length} tasks`);
 

@@ -10,12 +10,12 @@ const targetProperties = [
 // link: specifiers are used by Yarn and will supported by npm in future
 const targetSpecifiers = /^(file:|link:)/
 
-module.exports = (manifest, number, localDependencies = []) => {
+module.exports = (manifest, number, useExactNumber, localDependencies = []) => {
 	const pkg = clone(manifest);
 
 	pkg.version = number;
 
-	const range = `^${number}`;
+	const range = useExactNumber ? number : `^${number}`;
 
 	for (const packageName of localDependencies) {
 		for (const targetProperty of targetProperties) {

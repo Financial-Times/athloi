@@ -23,15 +23,22 @@ describe('src/update-versions', () => {
 	});
 
 	it('updates the version numbers of any local dependencies', () => {
-		const result = subject(fixture, '1.0.0', [ 'foo', 'baz' ]);
+		const result = subject(fixture, '1.0.0', null, [ 'foo', 'baz' ]);
 
 		expect(result.dependencies.foo).toEqual('^1.0.0');
 		expect(result.devDependencies.baz).toEqual('^1.0.0');
 	});
 
 	it('does not update the version numbers of any non-local dependencies', () => {
-		const result = subject(fixture, '1.0.0', [ 'bar' ]);
+		const result = subject(fixture, '1.0.0', null, [ 'bar' ]);
 
 		expect(result.dependencies.bar).toEqual('^1.2.3');
+	});
+
+	it('does not use range specifier when instructed to use exact value', () => {
+		const result = subject(fixture, '1.0.0', true, [ 'foo', 'baz' ]);
+
+		expect(result.dependencies.foo).toEqual('1.0.0');
+		expect(result.devDependencies.baz).toEqual('1.0.0');
 	});
 });
