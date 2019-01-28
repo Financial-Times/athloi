@@ -7,7 +7,7 @@ const fixture = Object.freeze({
 		bar: '^1.2.3',
 	},
 	devDependencies: {
-		baz: 'file:../baz'
+		baz: 'link:../baz'
 	}
 });
 

@@ -7,6 +7,9 @@ const targetProperties = [
 	'optionalDependencies'
 ];
 
+// link: specifiers are used by Yarn and will supported by npm in future
+const targetSpecifiers = /^(file:|link:)/
+
 module.exports = (manifest, number, localDependencies = []) => {
 	const pkg = clone(manifest);
 
@@ -19,7 +22,7 @@ module.exports = (manifest, number, localDependencies = []) => {
 			const version = pkg[targetProperty] && pkg[targetProperty][packageName];
 
 			// Only update dependencies using relative package paths
-			if (version && /^file:/.test(version)) {
+			if (version && targetSpecifiers.test(version)) {
 				pkg[targetProperty][packageName] = range;
 			}
 		}
