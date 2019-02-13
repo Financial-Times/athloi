@@ -16,7 +16,7 @@ module.exports = (tasks = [], concurrency = 1, preserveOrder = false) => {
 
 			// wait for any dependencies still in the queue to finish
 			if (preserveOrder) {
-				await queue.waitFor(pkg.allDependencies);
+				await queue.waitBehind(pkg.allDependencies);
 			}
 
 			await apply();

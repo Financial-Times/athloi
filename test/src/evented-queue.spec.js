@@ -42,14 +42,14 @@ describe('src/evented-queue', () => {
 		});
 	});
 
-	describe('#waitFor', () => {
+	describe('#waitBehind', () => {
 		it('resolves when the queue no longer contains any of the given items', (done) => {
 			instance
 				.add('foo')
 				.add('bar')
 				.add('baz');
 
-			instance.waitFor(['foo', 'bar', 'baz']).then(() => {
+			instance.waitBehind(['foo', 'bar', 'baz']).then(() => {
 				expect(instance.waiting.size).toEqual(0);
 				done();
 			});

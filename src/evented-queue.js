@@ -18,7 +18,7 @@ class EventedQueue extends EventEmitter {
 		return this;
 	}
 
-	waitFor(items = []) {
+	waitBehind(items = []) {
 		return new Promise((resolve) => {
 			const callback = () => {
 				const itemsWaiting = items.some((item) => this.waiting.has(item));
