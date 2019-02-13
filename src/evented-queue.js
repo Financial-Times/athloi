@@ -3,17 +3,17 @@ const EventEmitter = require('events');
 class EventedQueue extends EventEmitter {
 	constructor() {
 		super();
-		this.queue = new Set();
+		this.waiting = new Set();
 	}
 
 	add(item) {
-		this.queue.add(item);
+		this.waiting.add(item);
 		this.emit('add', item);
 		return this;
 	}
 
 	delete(item) {
-		this.queue.delete(item);
+		this.waiting.delete(item);
 		this.emit('delete', item);
 		return this;
 	}
@@ -21,9 +21,9 @@ class EventedQueue extends EventEmitter {
 	waitFor(items = []) {
 		return new Promise((resolve) => {
 			const callback = () => {
-				const itemsRunning = items.some((item) => this.queue.has(item));
+				const itemsWaiting = items.some((item) => this.waiting.has(item));
 
-				if (!itemsRunning) {
+				if (!itemsWaiting) {
 					this.removeListener('delete', callback);
 					resolve();
 				}
