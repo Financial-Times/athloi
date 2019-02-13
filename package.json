@@ -1,7 +1,6 @@
 {
   "name": "@financial-times/athloi",
   "version": "0.0.0",
-  "main": "src/index.js",
   "scripts": {
     "precommit": "node_modules/.bin/secret-squirrel",
     "commitmsg": "node_modules/.bin/secret-squirrel-commitmsg",
