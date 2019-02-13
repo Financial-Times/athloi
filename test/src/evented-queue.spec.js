@@ -10,7 +10,7 @@ describe('src/evented-queue', () => {
 	describe('#add', () => {
 		it('adds the given item to the queue', () => {
 			instance.add('foo');
-			expect(instance.queue.size).toEqual(1);
+			expect(instance.waiting.size).toEqual(1);
 		});
 
 		it('emits an event when items are added to the queue', (done) => {
@@ -25,10 +25,10 @@ describe('src/evented-queue', () => {
 	describe('#delete', () => {
 		it('removes the given item to the queue', () => {
 			instance.add('foo');
-			expect(instance.queue.size).toEqual(1);
+			expect(instance.waiting.size).toEqual(1);
 
 			instance.delete('foo');
-			expect(instance.queue.size).toEqual(0);
+			expect(instance.waiting.size).toEqual(0);
 		});
 
 		it('emits an event when items are removed from the queue', (done) => {
@@ -42,15 +42,15 @@ describe('src/evented-queue', () => {
 		});
 	});
 
-	describe('#waitFor', () => {
+	describe('#waitBehind', () => {
 		it('resolves when the queue no longer contains any of the given items', (done) => {
 			instance
 				.add('foo')
 				.add('bar')
 				.add('baz');
 
-			instance.waitFor(['foo', 'bar', 'baz']).then(() => {
-				expect(instance.queue.size).toEqual(0);
+			instance.waitBehind(['foo', 'bar', 'baz']).then(() => {
+				expect(instance.waiting.size).toEqual(0);
 				done();
 			});
 

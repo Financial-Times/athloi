@@ -9,22 +9,21 @@ module.exports = (tasks = [], concurrency = 1, preserveOrder = false) => {
 	logger.info(`Executing up to ${concurrency} tasks at a time`);
 
 	return Promise.all(
-		tasks.map(({ pkg, apply }) => {
+		tasks.map(async ({ pkg, apply }) => {
 			queue.add(pkg.name);
 
-			return semaphore
-				.acquire()
-				.then(() => {
-					// wait for any dependencies still in the queue to finish
-					return preserveOrder ? queue.waitFor(pkg.allDependencies) : null;
-				})
-				.then(() => {
-					return apply();
-				})
-				.then(() => {
-					queue.delete(pkg.name);
-					return semaphore.release();
-				});
+			await semaphore.acquire();
+
+			// wait for any dependencies still in the queue to finish
+			if (preserveOrder) {
+				await queue.waitBehind(pkg.allDependencies);
+			}
+
+			await apply();
+
+			queue.delete(pkg.name);
+
+			semaphore.release();
 		})
 	);
 };
