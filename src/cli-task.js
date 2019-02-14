@@ -46,7 +46,7 @@ module.exports = (task) => {
 			logger.message(`Tasks complete, took ${timer.duration}s`);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : error;
-			const exitCode = error.code || 1;
+			const exitCode = Number.isInteger(error.code) ? error.code : 1;
 
 			logger.error(`Task failed: "${message}"`);
 			process.exit(exitCode);
