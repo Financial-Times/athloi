@@ -4,9 +4,15 @@ const loadManifest = require('./load-manifest');
 
 module.exports = async (globs = []) => {
 	const locations = await getPackages(globs);
+	const packages = []
 
-	return locations.map((location) => {
+	locations.forEach((location) => {
 		const manifest = loadManifest(location);
-		return new Package(manifest, location);
+
+		if (manifest) {
+			packages.push(new Package(manifest, location));
+		}
 	});
+
+	return packages
 };

@@ -36,6 +36,6 @@
   },
   "devDependencies": {
     "@financial-times/n-gage": "^3.0.0",
-    "jest": "^23.4.1"
+    "jest": "^24.0.0"
   }
 }
