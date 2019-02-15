@@ -14,14 +14,21 @@ npm install --save-dev @financial-times/athloi
 
 [npm]: https://www.npmjs.com/
 
-Configuration can be passed to Athloi by providing a `monorepo.json` file in your repository root. This must include a `packages` property which is a list of [globs] matching the directories containing your packages.
+Next you need to configure where Athloi should look for the directories containing your packages. To do this you can either create a new `monorepo.json` file in your repository root or add an extra property to your root `package.json` file.
+
+When using a `monorepo.json` file you need to specify a `packages` property which is an array of [globs] matching the your package directories.
 
 ```json
 {
-  "packages": [
-    "components/*",
-    "tools/*"
-  ]
+  "packages": ["components/*", "tools/*"]
+}
+```
+
+Alternatively, you can add a `workspaces` property to your existing `package.json` file which is also an array of [globs] matching your package directories.
+
+```json
+{
+  "workspaces": ["components/*", "tools/*"]
 }
 ```
 
