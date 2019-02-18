@@ -4,6 +4,15 @@ Athloi is a tool to assist with the management of multi-package repositories (a.
 
 [monorepos]: https://github.com/babel/babel/blob/master/doc/design/monorepo.md
 
+
+## Features
+
+- Provides a number of helpers to improve your monorepo workflow such as: installing all dependencies, running npm or custom scripts, publishing public packages, updating version numbers, etc.
+- Capable of running tasks serially or in parallel whilst preserving topological sort order between cross-dependent packages.
+- Options to filter the packages to target either by name or `package.json` field
+- Works well with Yarn workspaces.
+
+
 ## Getting Started
 
 Start by installing Athloi within your project using [npm].
@@ -14,18 +23,27 @@ npm install --save-dev @financial-times/athloi
 
 [npm]: https://www.npmjs.com/
 
-Configuration can be passed to Athloi by providing a `monorepo.json` file in your repository root. This must include a `packages` property which is a list of [globs] matching the directories containing your packages.
+Next you must configure where Athloi should look for the directories containing your packages. To do this you can either create a new `monorepo.json` file in your repository root or add an extra property to your root `package.json` file.
+
+When using a `monorepo.json` file you need to specify a `packages` property which is an array of [globs] matching the your package directories. This is similar to tools like [Lerna].
 
 ```json
 {
-  "packages": [
-    "components/*",
-    "tools/*"
-  ]
+  "packages": ["components/*", "tools/*"]
+}
+```
+
+Alternatively, you can add a `workspaces` property to your existing `package.json` file which is also an array of [globs] matching your package directories. This is compatible with [Yarn].
+
+```json
+{
+  "workspaces": ["components/*", "tools/*"]
 }
 ```
 
 [globs]: https://en.wikipedia.org/wiki/Glob_(programming)
+[Lerna]: https://lernajs.io/
+[Yarn]: https://yarnpkg.com/en/
 
 
 ## Commands

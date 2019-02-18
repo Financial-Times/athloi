@@ -22,7 +22,7 @@ module.exports = (task) => {
 			const config = await loadConfig();
 
 			// 2. find all packages by path and create package instances
-			const packages = await loadPackages(config.packages);
+			const packages = await loadPackages(config);
 
 			// 3. filter packages to run in based on filter option
 			const filteredPackages = filterPackages(globals.filter, packages);

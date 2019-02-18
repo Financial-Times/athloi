@@ -1,11 +1,24 @@
 const findUp = require('find-up');
 
 module.exports = async () => {
-	const config = await findUp('monorepo.json');
+	const [ monorepo, manifest ] = await Promise.all([
+		findUp('monorepo.json'),
+		findUp('package.json')
+	]);
 
-	if (!config) {
-		throw Error('Could not find monorepo.json');
+	// Lerna style configuration file
+	if (monorepo) {
+		return require(monorepo).packages;
 	}
 
-	return require(config);
+	// Yarn workspaces style configuration
+	if (manifest) {
+		const pkg = require(manifest);
+
+		if (Array.isArray(pkg.workspaces)) {
+			return pkg.workspaces;
+		}
+	}
+
+	throw Error('Could not find any Athloi configuration');
 };
