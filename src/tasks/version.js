@@ -34,6 +34,6 @@ exports.task = version;
 exports.register = (program) => {
 	program
 		.command('version <tag>')
-		.description('Updates the release number for all packages and writes the new data back to package.json')
+		.description('Updates the release number for public packages and their cross-dependencies and writes the data back to package.json')
 		.action(taskify(version));
 };
