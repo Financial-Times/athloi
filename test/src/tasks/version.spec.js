@@ -1,6 +1,6 @@
 const mockGet = jest.fn();
 
-jest.mock('../../../src/get-latest', () => mockGet);
+jest.mock('../../../src/get-latest-versions', () => mockGet);
 
 const { task: subject } = require('../../../src/tasks/version');
 const createPackage = require('../../helpers/create-package');

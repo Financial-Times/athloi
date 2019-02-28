@@ -1,8 +1,8 @@
 const semver = require('semver');
 const logger = require('../logger');
 const taskify = require('../cli-task');
-const getLatest = require('../get-latest');
 const updateVersions = require('../update-versions');
+const getLatestVersions = require('../get-latest-versions');
 
 async function version (targetPackages = [], tag, allPackages = []) {
 	// Projects may use different tag formats
@@ -15,7 +15,7 @@ async function version (targetPackages = [], tag, allPackages = []) {
 	}
 
 	// Fetch the latest versions for every package from npm
-	const latestVersions = await getLatest(allPackages);
+	const latestVersions = await getLatestVersions(allPackages);
 	// Only bump the version for the list of target packages
 	const packageNames = new Set(targetPackages.map((pkg) => pkg.name));
 
