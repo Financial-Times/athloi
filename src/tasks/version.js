@@ -17,11 +17,11 @@ async function version (targetPackages = [], tag, allPackages = []) {
 	// Fetch the latest versions for every package from npm
 	const latestVersions = await getLatestVersions(allPackages);
 	// Only bump the version for the list of target packages
-	const packageNames = new Set(targetPackages.map((pkg) => pkg.name));
+	const packagesToUpdate = new Set(targetPackages.map((pkg) => pkg.name));
 
 	return targetPackages.map((pkg) => {
 		const apply = () => {
-			const newManifest = updateVersions(pkg.manifest, packageNames, number, latestVersions);
+			const newManifest = updateVersions(pkg.manifest, packagesToUpdate, number, latestVersions);
 			return pkg.writeManifest(newManifest);
 		};
 

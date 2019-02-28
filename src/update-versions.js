@@ -8,9 +8,9 @@ const targetProperties = [
 ];
 
 // link: specifiers are used by Yarn and will supported by npm in future
-const targetSpecifiers = /^(file:|link:)/
+const localSpecifiers = /^(file:|link:)/
 
-module.exports = (manifest, targetDependencies, targetNumber, latestVersions) => {
+module.exports = (manifest, packagesToUpdate, targetNumber, fallbackVersions) => {
 	const pkg = clone(manifest);
 
 	pkg.version = targetNumber;
@@ -23,11 +23,11 @@ module.exports = (manifest, targetDependencies, targetNumber, latestVersions) =>
 			const version = dependencies[dependencyName];
 
 			// Only update dependencies using relative package paths
-			if (version && targetSpecifiers.test(version)) {
-				if (targetDependencies.has(dependencyName)) {
+			if (version && localSpecifiers.test(version)) {
+				if (packagesToUpdate.has(dependencyName)) {
 					dependencies[dependencyName] = `^${targetNumber}`;
-				} else if (latestVersions.has(dependencyName)) {
-					dependencies[dependencyName] = `^${latestVersions.get(dependencyName)}`;
+				} else if (fallbackVersions.has(dependencyName)) {
+					dependencies[dependencyName] = `^${fallbackVersions.get(dependencyName)}`;
 				}
 			}
 		});
