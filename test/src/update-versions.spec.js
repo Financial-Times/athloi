@@ -8,12 +8,15 @@ const fixture = Object.freeze({
 	},
 	devDependencies: {
 		baz: 'link:../baz'
+	},
+	peerDependencies: {
+		qux: 'file:../qux'
 	}
 });
 
 describe('src/update-versions', () => {
 	it('returns a new object', () => {
-		const targets = new Set();
+		const targets = new Set(['foo', 'bar', 'baz', 'qux']);
 		const fallbacks = new Map();
 		const result = subject(fixture, targets, '1.1.0', fallbacks);
 
@@ -21,7 +24,7 @@ describe('src/update-versions', () => {
 	});
 
 	it('updates the version number', () => {
-		const targets = new Set();
+		const targets = new Set(['foo', 'bar', 'baz', 'qux']);
 		const fallbacks = new Map();
 		const result = subject(fixture, targets, '1.1.0', fallbacks);
 
@@ -29,28 +32,35 @@ describe('src/update-versions', () => {
 	});
 
 	it('updates the version numbers of targeted local dependencies', () => {
-		const targets = new Set([ 'foo', 'baz' ]);
+		const targets = new Set(['foo', 'bar', 'baz', 'qux']);
 		const fallbacks = new Map();
 		const result = subject(fixture, targets, '1.1.0', fallbacks);
 
 		expect(result.dependencies.foo).toEqual('^1.1.0');
-		expect(result.devDependencies.baz).toEqual('^1.1.0');
+		expect(result.peerDependencies.qux).toEqual('^1.1.0');
 	});
 
-	it('uses fallback version for non-targeted local dependencies', () => {
-		const targets = new Set([ 'baz' ]);
-		const fallbacks = new Map([[ 'foo', '1.0.1' ]]);
+	it('uses a fallback version for other local dependencies', () => {
+		const targets = new Set([ 'foo', 'baz' ]);
+		const fallbacks = new Map().set('qux', '1.0.2');
 		const result = subject(fixture, targets, '1.1.0', fallbacks);
 
-		expect(result.dependencies.foo).toEqual('^1.0.1');
-		expect(result.devDependencies.baz).toEqual('^1.1.0');
+		expect(result.peerDependencies.qux).toEqual('^1.0.2');
 	});
 
-	it('does not update the version numbers of any non-local dependencies', () => {
-		const targets = new Set([ 'bar' ]);
+	it('does not update development dependency version numbers', () => {
+		const targets = new Set(['foo', 'bar', 'baz', 'qux']);
 		const fallbacks = new Map();
-		const result = subject(fixture, targets, '1.0.0', fallbacks);
+		const result = subject(fixture, targets, '1.1.0', fallbacks);
 
-		expect(result.dependencies.bar).toEqual('^1.2.3');
+		expect(result.devDependencies.baz).toEqual('link:../baz');
+	});
+
+	it('throws if no fallback version is found for other local dependencies', () => {
+		const targets = new Set([ 'baz' ]);
+		const fallbacks = new Map().set('foo', '1.0.1');
+		const result = () => subject(fixture, targets, '1.1.0', fallbacks);
+
+		expect(result).toThrowError('No suitable version found for qux package');
 	});
 });

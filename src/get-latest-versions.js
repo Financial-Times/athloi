@@ -19,11 +19,7 @@ module.exports = async (packages = []) => {
 	const requests = publishable.map((pkg) => fetchJSON(`https://registry.npmjs.org/${pkg.name}`));
 	const results = await Promise.all(requests);
 
-	const available = results.filter(Boolean).reduce((map, result) => {
+	return results.filter(Boolean).reduce((map, result) => {
 		return map.set(result.name, result['dist-tags'].latest);
-	}, new Map());
-
-	return packages.reduce((map, { name }) => {
-		return map.set(name, available.has(name) ? available.get(name) : '0.0.0');
 	}, new Map());
 };
