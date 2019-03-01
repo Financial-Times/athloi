@@ -2,7 +2,8 @@ const byline = require('byline');
 const { spawn } = require('child_process');
 const logger = require('./logger');
 
-const cleanLine = (line) => line.toString('utf8');
+// npm prefixes each line with ">" which adds a lot of noise
+const cleanLine = (line) => line.toString('utf8').replace(/^>\s+/, '');
 
 module.exports = (cmd, args = [], opts = {}) => {
 	return new Promise((resolve, reject) => {
