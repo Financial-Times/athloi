@@ -6,8 +6,8 @@ const cleanLine = (line) => line.toString('utf8').replace(/^>\s+/, '');
 
 module.exports = (cmd, args = [], opts = {}) => {
 	return new Promise((resolve, reject) => {
-		const stdout = []
-		const stderr = []
+		const stdout = [];
+		const stderr = [];
 
 		const child = spawn(cmd, args, { env: process.env, ...opts });
 
@@ -21,14 +21,16 @@ module.exports = (cmd, args = [], opts = {}) => {
 		child.on('error', reject);
 
 		child.on('exit', (code) => {
+			const logs = [...stdout, ...stderr];
+
 			if (code > 0) {
 				const error = Error(`${cmd} exited with code ${code}`);
 				error.code = code;
-				error.logs = [...stdout, ...stderr];
+				error.logs = logs;
 
 				reject(error);
 			} else {
-				resolve(stdout);
+				resolve(logs);
 			}
 		});
 	});

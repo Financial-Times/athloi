@@ -11,4 +11,5 @@ module.exports = async (cmd, args = [], location) => {
 	logger.info(`Output from ${relPath}:`);
 	logs.forEach((log) => logger.debug(log));
 	logger.success(`Task succeeded in ${relPath}`);
+	logger.debug('');
 };
