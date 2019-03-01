@@ -24,7 +24,7 @@ module.exports = (cmd, args = [], opts = {}) => {
 			const logs = [...stdout, ...stderr];
 
 			if (code > 0) {
-				const error = Error(`${cmd} exited with code ${code}`);
+				const error = Error(`Exited with code ${code}`);
 				error.code = code;
 				error.logs = logs;
 
