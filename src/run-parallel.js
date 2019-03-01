@@ -1,12 +1,9 @@
 const { Sema } = require('async-sema');
-const logger = require('./logger');
 const EventedQueue = require('./evented-queue');
 
 module.exports = (tasks = [], concurrency = 1, preserveOrder = false) => {
 	const semaphore = new Sema(concurrency);
 	const queue = new EventedQueue();
-
-	logger.debug(`Running ${tasks.length} tasks up to ${concurrency} tasks at a time`);
 
 	return Promise.all(
 		tasks.map(async ({ pkg, apply }) => {

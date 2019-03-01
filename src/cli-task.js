@@ -42,11 +42,12 @@ module.exports = (task) => {
 			]);
 
 			// 6. execute all tasks
+			logger.info(`Running ${tasks.length} tasks up to ${globals.concurrency} tasks at a time`);
 			await runParallel(tasks, globals.concurrency, globals.preserveOrder);
 
 			timer.stop();
 
-			logger.debug(`Tasks complete, took ${timer.duration}s`);
+			logger.success(`Tasks complete, took ${timer.duration}s`);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : error;
 			const exitCode = Number.isInteger(error.code) ? error.code : 1;
