@@ -5,8 +5,6 @@ const logger = require('./logger');
 module.exports = async (cmd, args = [], location) => {
 	const relPath = path.relative(process.cwd(), location);
 
-	logger.info(`Running task in ${relPath}`);
-
 	try {
 		const logs = await spawn(cmd, args, { cwd: location });
 
