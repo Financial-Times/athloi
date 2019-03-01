@@ -6,13 +6,9 @@ module.exports = async (cmd, args = [], location) => {
 	const relPath = path.relative(process.cwd(), location);
 
 	logger.debug(`Running task in ${relPath}`);
+	const logs = await spawn(cmd, args, { cwd: location });
 
-	// TODO: remove try/catch and let error bubble
-	try {
-		await spawn(cmd, args, { cwd: location });
-		logger.success(`Task succeeded in ${relPath}`);
-	} catch (error) {
-		logger.error(error.message);
-		return Promise.reject(error);
-	}
+	logger.info(`Output from ${relPath}:`);
+	logs.forEach((log) => logger.debug(log));
+	logger.success(`Task succeeded in ${relPath}`);
 };

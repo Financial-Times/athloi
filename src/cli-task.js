@@ -52,6 +52,11 @@ module.exports = (task) => {
 			const exitCode = Number.isInteger(error.code) ? error.code : 1;
 
 			logger.error(`Task failed: "${message}"`);
+
+			if (Array.isArray(error.logs)) {
+				error.logs.forEach((log) => logger.debug(log));
+			}
+
 			process.exit(exitCode);
 		}
 	};
