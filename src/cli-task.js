@@ -30,8 +30,8 @@ module.exports = (task) => {
 			// 4. sort packages topologically
 			const sortedPackages = sortPackages(globals.reverse, filteredPackages);
 
-			logger.info(`Loaded ${sortedPackages.length} packages:`);
-			sortedPackages.map((pkg) => logger.message(`- ${pkg.relativeLocation}`));
+			logger.info(`Found ${sortedPackages.length} packages:`);
+			sortedPackages.map((pkg) => logger.debug(`- ${pkg.relativeLocation}`));
 
 			// 5. create a queue of tasks to run
 			// TODO: refactor argslist into named params
@@ -41,14 +41,12 @@ module.exports = (task) => {
 				allPackages
 			]);
 
-			logger.info(`Running ${tasks.length} tasks`);
-
 			// 6. execute all tasks
 			await runParallel(tasks, globals.concurrency, globals.preserveOrder);
 
 			timer.stop();
 
-			logger.message(`Tasks complete, took ${timer.duration}s`);
+			logger.debug(`Tasks complete, took ${timer.duration}s`);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : error;
 			const exitCode = Number.isInteger(error.code) ? error.code : 1;

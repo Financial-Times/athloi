@@ -11,10 +11,10 @@ module.exports = (cmd, args = [], opts = {}) => {
 		// Closing the input stream is a micro-optimisation and can speed up a task by 100-200ms
 		child.stdin.end();
 
-		byline(child.stdout).on('data', (line) => logger.message(cleanLine(line)));
+		byline(child.stdout).on('data', (line) => logger.debug(cleanLine(line)));
 
 		// stderr is not always used for error logging so rely on non-zero exit code
-		byline(child.stderr).on('data', (line) => logger.message(cleanLine(line)));
+		byline(child.stderr).on('data', (line) => logger.debug(cleanLine(line)));
 
 		child.on('error', reject);
 

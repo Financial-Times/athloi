@@ -6,7 +6,7 @@ module.exports = (tasks = [], concurrency = 1, preserveOrder = false) => {
 	const semaphore = new Sema(concurrency);
 	const queue = new EventedQueue();
 
-	logger.info(`Executing up to ${concurrency} tasks at a time`);
+	logger.debug(`Running ${tasks.length} tasks up to ${concurrency} tasks at a time`);
 
 	return Promise.all(
 		tasks.map(async ({ pkg, apply }) => {
