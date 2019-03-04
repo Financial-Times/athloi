@@ -22,10 +22,10 @@ module.exports = (task) => {
 			const config = await loadConfig();
 
 			// 2. find all packages by path and create package instances
-			const packages = await loadPackages(config);
+			const allPackages = await loadPackages(config);
 
 			// 3. filter packages to run in based on filter option
-			const filteredPackages = filterPackages(globals.filter, packages);
+			const filteredPackages = filterPackages(globals.filter, allPackages);
 
 			// 4. sort packages topologically
 			const sortedPackages = sortPackages(globals.reverse, filteredPackages);
@@ -34,7 +34,12 @@ module.exports = (task) => {
 			sortedPackages.map((pkg) => logger.message(`- ${pkg.relativeLocation}`));
 
 			// 5. create a queue of tasks to run
-			const tasks = await Reflect.apply(task, null, [sortedPackages, ...options]);
+			// TODO: refactor argslist into named params
+			const tasks = await Reflect.apply(task, null, [
+				sortedPackages,
+				...options,
+				allPackages
+			]);
 
 			logger.info(`Running ${tasks.length} tasks`);
 

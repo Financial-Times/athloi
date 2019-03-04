@@ -84,11 +84,13 @@ athloi script path/to/task.js
 
 ### version
 
-Updates the release number for all public packages and writes the new data back to `package.json`. The given tag must parseable as a valid semver number.
+Updates the release number for public packages and their cross-dependencies and writes the data back to `package.json`. The given tag must parseable as a valid semver number.
 
 ```sh
 athloi version v1.0.0
 ```
+
+Please note that when using the `version` command with the [filter option](#filter) any cross-dependent packages which have been excluded will fall back to their latest published version on npm.
 
 ### publish
 

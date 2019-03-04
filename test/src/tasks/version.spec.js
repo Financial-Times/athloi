@@ -1,5 +1,6 @@
-const mockRun = jest.fn();
-jest.mock('../../../src/run-package', () => mockRun);
+const mockGet = jest.fn();
+
+jest.mock('../../../src/get-latest-versions', () => mockGet);
 
 const { task: subject } = require('../../../src/tasks/version');
 const createPackage = require('../../helpers/create-package');
@@ -15,12 +16,12 @@ describe('src/tasks/version', () => {
 
 	let result;
 
-	beforeEach(() => {
-		result = subject(packages, tag);
+	beforeEach(async () => {
+		result = await subject(packages, tag);
 	});
 
 	afterEach(() => {
-		mockRun.mockReset();
+		mockGet.mockReset();
 	});
 
 	it('it returns an array of tasks', () => {
@@ -42,5 +43,9 @@ describe('src/tasks/version', () => {
 		} catch (error) {
 			expect(error.message).toEqual(expect.stringContaining('not a valid version number'));
 		}
+	});
+
+	it('fetches the latest version for all packages', () => {
+		expect(mockGet).toHaveBeenCalledWith([]);
 	});
 });
