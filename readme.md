@@ -157,12 +157,14 @@ The field name preceeding the colon (`:`) is optional and if omitted Athloi will
 athloi run build --filter x-interaction
 ```
 
-When filtering by name you can also use a wildcard prefix:
+When filtering by package name you can also use a [glob pattern] to match them using wildcard characters:
 
 ```sh
 # Run a build script for all packages with names beginning "@financial-times/x-"
 athloi run build --filter 'x-*'
 ```
+
+[glob pattern]: https://en.wikipedia.org/wiki/Glob_(programming)
 
 
 ## What's with the name?
