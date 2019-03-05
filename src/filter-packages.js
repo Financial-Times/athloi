@@ -1,3 +1,5 @@
+const minimatch = require('minimatch');
+
 const testKeyValue = (a, b) => {
 	if (Array.isArray(a) && typeof b === 'string') {
 		return a.includes(b);
@@ -16,11 +18,7 @@ const testPackageName = (fullName, filter) => {
 		? fullName.split('/').pop()
 		: fullName;
 
-	if (filter.endsWith('*')) {
-		return packageName.startsWith(filter.replace(/\*$/, ''));
-	} else {
-		return packageName === filter;
-	}
+	return minimatch(packageName, filter);
 };
 
 module.exports = (filter, packages = []) => (
