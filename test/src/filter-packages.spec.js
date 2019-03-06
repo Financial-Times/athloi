@@ -75,11 +75,16 @@ describe('src/filter-packages', () => {
 		expect(result[0].manifest.name).toEqual('@ft/quux');
 	});
 
-	it('allows wildcard names for partial matching', () => {
-		const result = subject('ba*', fixture);
+	it('allows glob values to enable pattern matching', () => {
+		const a = subject('ba*', fixture);
+		const b = subject('*ux', fixture);
 
-		expect(result.length).toEqual(2);
-		expect(result[0].manifest.name).toEqual('bar');
-		expect(result[1].manifest.name).toEqual('baz');
+		expect(a.length).toEqual(2);
+		expect(a[0].manifest.name).toEqual('bar');
+		expect(a[1].manifest.name).toEqual('baz');
+
+		expect(b.length).toEqual(2);
+		expect(b[0].manifest.name).toEqual('qux');
+		expect(b[1].manifest.name).toEqual('@ft/quux');
 	});
 });
