@@ -23,17 +23,9 @@ npm install --save-dev @financial-times/athloi
 
 [npm]: https://www.npmjs.com/
 
-Next you must configure where Athloi should look for the directories containing your packages. To do this you can either create a new `monorepo.json` file in your repository root or add an extra property to your root `package.json` file.
+Next you must configure where Athloi should look for the directories containing your packages. To do this you must add an extra `"workspaces"` property to your root `package.json` file if you do not have one already.
 
-When using a `monorepo.json` file you need to specify a `packages` property which is an array of [globs] matching the your package directories. This is similar to tools like [Lerna].
-
-```json
-{
-  "packages": ["components/*", "tools/*"]
-}
-```
-
-Alternatively, you can add a `workspaces` property to your existing `package.json` file which is also an array of [globs] matching your package directories. This is compatible with [Yarn].
+This property is an array of [globs] matching your package directories. This designed to be compatible with [Yarn].
 
 ```json
 {
