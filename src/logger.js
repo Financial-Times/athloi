@@ -7,22 +7,22 @@ const format = (symbol, color, message) => {
 	return `${symbol} ${chalk[color](message)}\n`;
 };
 
-module.exports.info = (message) => {
+exports.info = (message) => {
 	process.stdout.write(format(logSymbols.info, 'blue', message));
 };
 
-module.exports.message = (message) => {
+exports.debug = (message) => {
 	process.stdout.write(format(WS, 'gray', message));
 };
 
-module.exports.success = (message) => {
+exports.success = (message) => {
 	process.stdout.write(format(logSymbols.success, 'green', message));
 };
 
-module.exports.warning = (message) => {
+exports.warning = (message) => {
 	process.stdout.write(format(logSymbols.warning, 'yellow', message));
 };
 
-module.exports.error = (message) => {
+exports.error = (message) => {
 	process.stderr.write(format(logSymbols.error, 'red', message));
 };

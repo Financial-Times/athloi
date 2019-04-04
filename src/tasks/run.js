@@ -8,7 +8,7 @@ function run (packages = [], script) {
 		return manifest.scripts && manifest.scripts.hasOwnProperty(script);
 	});
 
-	logger.message(`Found ${filteredPackages.length} packages with script`);
+	logger.debug(`Found ${filteredPackages.length} packages with script "${script}"`);
 
 	// create a queue of tasks to run
 	return filteredPackages.map((pkg) => {

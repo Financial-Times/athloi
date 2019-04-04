@@ -5,13 +5,23 @@ const logger = require('./logger');
 module.exports = async (cmd, args = [], location) => {
 	const relPath = path.relative(process.cwd(), location);
 
-	logger.info(`Running task in ${relPath}`);
-
 	try {
-		await spawn(cmd, args, { cwd: location });
-		logger.success('Task succeeded\n');
+		const logs = await spawn(cmd, args, { cwd: location });
+
+		logger.success(`Task succeeded in ${relPath}`);
+
+		logs.forEach((log) => logger.debug(log));
+
+		logger.debug('\n');
 	} catch (error) {
-		logger.error(error.message);
+		logger.error(`Task failed in ${relPath}`);
+
+		if (Array.isArray(error.logs)) {
+			error.logs.forEach((log) => logger.debug(log));
+		}
+
+		logger.debug('\n');
+
 		return Promise.reject(error);
 	}
 };
