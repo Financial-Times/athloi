@@ -26,7 +26,3 @@ exports.warning = (message) => {
 exports.error = (message) => {
 	process.stderr.write(format(logSymbols.error, 'red', message));
 };
-
-exports.separator = () => {
-	process.stdout.write('\n\n');
-};
