@@ -27,7 +27,7 @@
     "async-sema": "^3.0.0",
     "byline": "^5.0.0",
     "chalk": "^2.4.1",
-    "commander": "^2.19.0",
+    "commander": "^2.20.0",
     "find-up": "^3.0.0",
     "glob": "^7.1.2",
     "log-symbols": "^2.2.0",
@@ -38,6 +38,6 @@
   },
   "devDependencies": {
     "@financial-times/n-gage": "3.5.0",
-    "jest": "^24.0.0"
+    "jest": "^24.7.0"
   }
 }
