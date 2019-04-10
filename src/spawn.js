@@ -6,7 +6,7 @@ const cleanLine = (line) => line.toString('utf8').replace(/^>\s+/, '');
 
 module.exports = (cmd, args = [], opts = {}) => {
 	return new Promise((resolve, reject) => {
-		const logs = [];
+		const logs = [`${cmd} ${args.join(' ')}`.trim()];
 		const child = spawn(cmd, args, { env: process.env, ...opts });
 
 		// Closing the input stream is a micro-optimisation and can speed up a task by 100-200ms
