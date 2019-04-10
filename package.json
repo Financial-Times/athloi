@@ -5,7 +5,7 @@
     "precommit": "node_modules/.bin/secret-squirrel",
     "commitmsg": "node_modules/.bin/secret-squirrel-commitmsg",
     "prepush": "make verify -j3",
-    "test": "jest"
+    "test": "jest --runInBand --testEnvironment=node"
   },
   "bin": "src/bin/cli",
   "keywords": [],
