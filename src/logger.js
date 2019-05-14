@@ -1,28 +1,34 @@
-const chalk = require('chalk');
-const logSymbols = require('log-symbols');
+const ora = require('ora');
 
-const WS = '\x20';
-
-const format = (symbol, color, message) => {
-	return `${symbol} ${chalk[color](message)}\n`;
-};
+const spinner = exports.spinner = ora({
+	spinner: new Date().getMonth() === 11 ? 'christmas' : 'dots',
+	isEnabled: process.env.NODE_ENV !== 'test'
+});
 
 exports.info = (message) => {
-	process.stdout.write(format(logSymbols.info, 'blue', message));
+	spinner.info(message).start();
 };
 
 exports.debug = (message) => {
-	process.stdout.write(format(WS, 'gray', message));
+	spinner.stopAndPersist({ symbol: ' ', text: message }).start();
 };
 
 exports.success = (message) => {
-	process.stdout.write(format(logSymbols.success, 'green', message));
+	spinner.succeed(message).start();
 };
 
 exports.warning = (message) => {
-	process.stdout.write(format(logSymbols.warning, 'yellow', message));
+	spinner.warn(message).start();
 };
 
 exports.error = (message) => {
-	process.stderr.write(format(logSymbols.error, 'red', message));
+	spinner.fail(message).start();
+};
+
+exports.endWithSuccess = (message) => {
+	spinner.stopAndPersist({ symbol: '✨', text: message });
+};
+
+exports.endWithFailure = (message) => {
+	spinner.stopAndPersist({ symbol: '💥', text: message });
 };
