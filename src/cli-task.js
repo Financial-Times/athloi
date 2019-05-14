@@ -47,12 +47,12 @@ module.exports = (task) => {
 
 			timer.stop();
 
-			logger.debug(`Tasks complete, took ${timer.duration}s ✨`);
+			logger.endWithSuccess(`Tasks complete, took ${timer.duration}s`);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : error;
 			const exitCode = Number.isInteger(error.code) ? error.code : 1;
 
-			logger.error(message);
+			logger.endWithFailure(message);
 			process.exit(exitCode);
 		}
 	};
