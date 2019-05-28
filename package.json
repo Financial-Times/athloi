@@ -5,7 +5,8 @@
     "precommit": "node_modules/.bin/secret-squirrel",
     "commitmsg": "node_modules/.bin/secret-squirrel-commitmsg",
     "prepush": "make verify -j3",
-    "test": "jest --runInBand --testEnvironment=node"
+    "test": "jest --runInBand --testEnvironment=node",
+    "prepare": "npx snyk protect || npx snyk protect -d || true"
   },
   "bin": "src/bin/cli",
   "keywords": [],
@@ -37,6 +38,7 @@
   },
   "devDependencies": {
     "@financial-times/n-gage": "^3.6.0",
-    "jest": "^24.7.0"
+    "jest": "^24.7.0",
+    "snyk": "^1.167.2"
   }
 }
