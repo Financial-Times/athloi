@@ -2,7 +2,7 @@ const ora = require('ora');
 
 const spinner = exports.spinner = ora({
 	spinner: new Date().getMonth() === 11 ? 'christmas' : 'dots',
-	isEnabled: process.env.NODE_ENV !== 'test'
+	isEnabled: process.env.NODE_ENV === 'test' ? false : null
 });
 
 exports.info = (message) => {
