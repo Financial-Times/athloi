@@ -3,3 +3,4 @@ ft.yml
 Makefile
 secret-squirrel.js
 .circleci
+.snyk
