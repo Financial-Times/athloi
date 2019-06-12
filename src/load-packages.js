@@ -4,15 +4,19 @@ const loadManifest = require('./load-manifest');
 
 module.exports = async (globs = []) => {
 	const locations = await getPackages(globs);
-	const packages = []
+	const packages = [];
 
 	locations.forEach((location) => {
 		const manifest = loadManifest(location);
 
 		if (manifest) {
-			packages.push(new Package(manifest, location));
+			if (packages.some((pkg) => manifest.name === pkg.name)) {
+				throw Error(`Two or more packages have been found with the same name: "${manifest.name}"`);
+			} else {
+				packages.push(new Package(manifest, location));
+			}
 		}
 	});
 
-	return packages
+	return packages;
 };
