@@ -5,8 +5,9 @@ const targetProperties = [
 	'peerDependencies'
 ];
 
-// link: specifiers are used by Yarn and will supported by npm in future
-const targetSpecifiers = /^(file:|link:)/
+// link: specifiers are used by Yarn and should be supported by npm in future
+// workspace: specifiers are used by Yarn and pnpm
+const targetSpecifiers = /^(file|link|workspace):/
 
 module.exports = (manifest, packagesToUpdate, number, fallbackVersions) => {
 	const pkg = clone(manifest);
