@@ -1,5 +1,5 @@
 const byline = require('byline');
-const { spawn } = require('child_process');
+const spawn = require('cross-spawn');
 
 // npm prefixes each line with ">" which adds a lot of noise
 const cleanLine = (line) => line.toString('utf8').replace(/^>\s+/, '');
