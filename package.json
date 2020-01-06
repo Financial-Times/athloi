@@ -34,7 +34,7 @@
     "minimatch": "^3.0.4",
     "node-fetch": "^2.2.0",
     "ora": "^4.0.0",
-    "semver": "^6.0.0",
+    "semver": "^7.0.0",
     "toposort": "^2.0.2"
   },
   "devDependencies": {
