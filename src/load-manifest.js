@@ -10,7 +10,7 @@ module.exports = (packagePath) => {
 		if (fs.existsSync(manifestPath)) {
 			return require(manifestPath);
 		} else {
-			throw Error(`Folder found without package.json file: ${packagePath}`)
+			throw Error(`Folder found without package.json file: ${packagePath}`);
 		}
 	}
 };

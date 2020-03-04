@@ -4,7 +4,7 @@ const wait = (ms = 10) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const noop = () => {};
 
-function createTask(name, onStart, onEnd, time = 10, allDependencies = []) {
+function createTask (name, onStart, onEnd, time = 10, allDependencies = []) {
 	return {
 		apply: () => {
 			onStart();
@@ -34,7 +34,7 @@ describe('src/run-parallel', () => {
 
 	describe('with preserve order option', () => {
 		it('waits for dependent tasks to finish', async () => {
-			const complete = []
+			const complete = [];
 
 			const tasks = [
 				createTask(
@@ -64,7 +64,7 @@ describe('src/run-parallel', () => {
 
 	describe('without preserve order option', () => {
 		it('waits for dependent tasks to finish', async () => {
-			const complete = []
+			const complete = [];
 
 			const tasks = [
 				createTask(
