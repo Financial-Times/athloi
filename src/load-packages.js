@@ -1,3 +1,4 @@
+const logger = require('./logger');
 const Package = require('./package');
 const getPackages = require('./get-packages');
 const loadManifest = require('./load-manifest');
@@ -7,7 +8,13 @@ module.exports = async (globs = []) => {
 	const packages = [];
 
 	locations.forEach((location) => {
-		const manifest = loadManifest(location);
+		let manifest;
+
+		try {
+			manifest = loadManifest(location);
+		} catch (error) {
+			logger.warning(error.toString());
+		}
 
 		if (manifest) {
 			if (packages.some((pkg) => manifest.name === pkg.name)) {
