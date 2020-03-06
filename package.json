@@ -27,7 +27,7 @@
   "dependencies": {
     "async-sema": "^3.0.0",
     "byline": "^5.0.0",
-    "commander": "^3.0.0",
+    "commander": "^4.0.0",
     "cross-spawn": "^7.0.1",
     "find-up": "^4.0.0",
     "glob": "^7.1.2",
