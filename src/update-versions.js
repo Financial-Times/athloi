@@ -7,7 +7,8 @@ const targetProperties = [
 
 // link: specifiers are used by Yarn and should be supported by npm in future
 // workspace: specifiers are used by Yarn and pnpm
-const targetSpecifiers = /^(file|link|workspace):/;
+// portal: specifiers are used by Yarn 2 (a.k.a Berry)
+const targetSpecifiers = /^(file|link|workspace|portal):/;
 
 module.exports = (manifest, packagesToUpdate, number, fallbackVersions) => {
 	const pkg = clone(manifest);
