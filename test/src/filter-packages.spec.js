@@ -4,31 +4,29 @@ describe('src/filter-packages', () => {
 	const manifests = [
 		{
 			name: 'foo',
-			private: true
+			private: true,
 		},
 		{
 			name: 'bar',
-			author: 'Joe Bloggs'
+			author: 'Joe Bloggs',
 		},
 		{
 			name: 'baz',
-			private: false
+			private: false,
 		},
 		{
 			name: 'qux',
 			dependencies: {
-				lodash: '^1.0.0'
+				lodash: '^1.0.0',
 			},
-			keywords: [
-				'awesome'
-			]
+			keywords: ['awesome'],
 		},
 		{
-			name: '@ft/quux'
-		}
+			name: '@ft/quux',
+		},
 	];
 
-	const fixture = manifests.map((manifest) => ({ manifest }));
+	const fixture = manifests.map(manifest => ({ manifest }));
 
 	it('matches manifests with a matching field and value', () => {
 		const result = subject('private:false', fixture);

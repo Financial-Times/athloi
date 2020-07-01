@@ -26,7 +26,7 @@ describe('src/tasks/script', () => {
 	it('it returns an array of tasks', () => {
 		expect(result).toBeInstanceOf(Array);
 
-		result.forEach((item) => {
+		result.forEach(item => {
 			expect(item.pkg).toBeDefined();
 			expect(item.apply).toEqual(expect.any(Function));
 		});
@@ -37,12 +37,16 @@ describe('src/tasks/script', () => {
 	});
 
 	it('provides the correct arguments to run helper', () => {
-		const resolvedPath = process.cwd() + '/' + scriptPath;
+		const resolvedPath = `${process.cwd()}/${scriptPath}`;
 
-		result.forEach((item) => {
+		result.forEach(item => {
 			item.apply();
 
-			expect(mockRun).toHaveBeenCalledWith('node', [ resolvedPath ], item.pkg.location);
+			expect(mockRun).toHaveBeenCalledWith(
+				'node',
+				[resolvedPath],
+				item.pkg.location,
+			);
 		});
 	});
 });

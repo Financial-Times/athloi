@@ -1,5 +1,3 @@
 {
-  "extends": [
-    "github>financial-times/renovate-config-next"
-  ]
+	"extends": ["github>financial-times/renovate-config-next"]
 }

@@ -28,7 +28,7 @@ describe('src/tasks/exec', () => {
 	it('it returns an array of tasks', () => {
 		expect(result).toBeInstanceOf(Array);
 
-		result.forEach((item) => {
+		result.forEach(item => {
 			expect(item.pkg).toBeDefined();
 			expect(item.apply).toEqual(expect.any(Function));
 		});
@@ -39,10 +39,14 @@ describe('src/tasks/exec', () => {
 	});
 
 	it('provides the correct arguments to run helper', () => {
-		result.forEach((item) => {
+		result.forEach(item => {
 			item.apply();
 
-			expect(mockRun).toHaveBeenCalledWith(command, args, item.pkg.location);
+			expect(mockRun).toHaveBeenCalledWith(
+				command,
+				args,
+				item.pkg.location,
+			);
 		});
 	});
 });

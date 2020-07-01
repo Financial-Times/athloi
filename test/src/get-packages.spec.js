@@ -9,25 +9,22 @@ describe('src/get-packages', () => {
 	});
 
 	it('munges multiple patterns', () => {
-		subject([
-			'components/*',
-			'packages/*'
-		]);
+		subject(['components/*', 'packages/*']);
 
 		expect(mockGlob).toHaveBeenCalledWith(
 			'{components/*,packages/*}',
 			expect.any(Object),
-			expect.any(Function)
+			expect.any(Function),
 		);
 	});
 
 	it('does not munge a single pattern', () => {
-		subject([ 'components/*' ]);
+		subject(['components/*']);
 
 		expect(mockGlob).toHaveBeenCalledWith(
 			'components/*',
 			expect.any(Object),
-			expect.any(Function)
+			expect.any(Function),
 		);
 	});
 });

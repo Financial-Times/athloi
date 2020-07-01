@@ -1,27 +1,27 @@
 const EventEmitter = require('events');
 
 class EventedQueue extends EventEmitter {
-	constructor () {
+	constructor() {
 		super();
 		this.waiting = new Set();
 	}
 
-	add (item) {
+	add(item) {
 		this.waiting.add(item);
 		this.emit('add', item);
 		return this;
 	}
 
-	delete (item) {
+	delete(item) {
 		this.waiting.delete(item);
 		this.emit('delete', item);
 		return this;
 	}
 
-	waitBehind (items = []) {
-		return new Promise((resolve) => {
+	waitBehind(items = []) {
+		return new Promise(resolve => {
 			const callback = () => {
-				const itemsWaiting = items.some((item) => this.waiting.has(item));
+				const itemsWaiting = items.some(item => this.waiting.has(item));
 
 				if (!itemsWaiting) {
 					this.removeListener('delete', callback);

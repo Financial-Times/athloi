@@ -6,14 +6,12 @@ Athloi is a tool to assist with the management of multi-package repositories (a.
 
 [monorepos]: https://github.com/babel/babel/blob/master/doc/design/monorepo.md
 
-
 ## Features
 
-- Provides a number of helpers to improve your monorepo workflow such as: installing all dependencies, running npm or custom scripts, publishing public packages, updating version numbers, etc.
-- Capable of running tasks serially or in parallel whilst preserving topological sort order between cross-dependent packages.
-- Options to filter the packages to target either by name or `package.json` field
-- Works well with Yarn workspaces.
-
+-   Provides a number of helpers to improve your monorepo workflow such as: installing all dependencies, running npm or custom scripts, publishing public packages, updating version numbers, etc.
+-   Capable of running tasks serially or in parallel whilst preserving topological sort order between cross-dependent packages.
+-   Options to filter the packages to target either by name or `package.json` field
+-   Works well with Yarn workspaces.
 
 ## Getting Started
 
@@ -31,14 +29,13 @@ This property is an array of [globs] matching your package directories. This des
 
 ```json
 {
-  "workspaces": ["components/*", "tools/*"]
+	"workspaces": ["components/*", "tools/*"]
 }
 ```
 
 [globs]: https://en.wikipedia.org/wiki/Glob_(programming)
-[Lerna]: https://lernajs.io/
-[Yarn]: https://yarnpkg.com/en/
-
+[lerna]: https://lernajs.io/
+[yarn]: https://yarnpkg.com/en/
 
 ## Commands
 
@@ -102,7 +99,6 @@ athloi publish -- --access=public
 
 [npm-publish]: https://docs.npmjs.com/cli/publish
 
-
 ## Options
 
 ### concurrency
@@ -160,11 +156,9 @@ athloi run build --filter 'x-*'
 
 [glob pattern]: https://en.wikipedia.org/wiki/Glob_(programming)
 
-
 ## What's with the name?
 
 One of the twelve labours of Hercules (hoi hērakleous athloi) was to slay the Lernean Hydra.
-
 
 ## licence
 

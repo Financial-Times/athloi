@@ -6,7 +6,7 @@ const loadPackages = require('./load-packages');
 const sortPackages = require('./sort-packages');
 const filterPackages = require('./filter-packages');
 
-module.exports = (task) => {
+module.exports = task => {
 	const timer = new Stopwatch();
 
 	return async (...args) => {
@@ -25,25 +25,39 @@ module.exports = (task) => {
 			const allPackages = await loadPackages(config);
 
 			// 3. filter packages to run in based on filter option
-			const filteredPackages = filterPackages(globals.filter, allPackages);
+			const filteredPackages = filterPackages(
+				globals.filter,
+				allPackages,
+			);
 
 			// 4. sort packages topologically
-			const sortedPackages = sortPackages(globals.reverse, filteredPackages);
+			const sortedPackages = sortPackages(
+				globals.reverse,
+				filteredPackages,
+			);
 
 			logger.info(`Found ${sortedPackages.length} packages:`);
-			sortedPackages.map((pkg) => logger.debug(`- ${pkg.relativeLocation}`));
+			sortedPackages.map(pkg =>
+				logger.debug(`- ${pkg.relativeLocation}`),
+			);
 
 			// 5. create a queue of tasks to run
 			// TODO: refactor argslist into named params
 			const tasks = await Reflect.apply(task, null, [
 				sortedPackages,
 				...options,
-				allPackages
+				allPackages,
 			]);
 
 			// 6. execute all tasks
-			logger.info(`Running ${tasks.length} tasks up to ${globals.concurrency} tasks at a time`);
-			await runParallel(tasks, globals.concurrency, globals.preserveOrder);
+			logger.info(
+				`Running ${tasks.length} tasks up to ${globals.concurrency} tasks at a time`,
+			);
+			await runParallel(
+				tasks,
+				globals.concurrency,
+				globals.preserveOrder,
+			);
 
 			timer.stop();
 
@@ -53,7 +67,7 @@ module.exports = (task) => {
 			const exitCode = Number.isInteger(error.code) ? error.code : 1;
 
 			logger.endWithFailure(message);
-			process.exit(exitCode);
+			process.exit(exitCode); // eslint-disable-line unicorn/no-process-exit
 		}
 	};
 };

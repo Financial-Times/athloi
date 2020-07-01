@@ -7,11 +7,11 @@ const fixture = Object.freeze({
 		bar: '^1.2.3',
 	},
 	devDependencies: {
-		baz: 'link:../baz'
+		baz: 'link:../baz',
 	},
 	peerDependencies: {
-		qux: 'file:../qux'
-	}
+		qux: 'file:../qux',
+	},
 });
 
 describe('src/update-versions', () => {
@@ -41,7 +41,7 @@ describe('src/update-versions', () => {
 	});
 
 	it('uses a fallback version for other local dependencies', () => {
-		const targets = new Set([ 'foo', 'baz' ]);
+		const targets = new Set(['foo', 'baz']);
 		const fallbacks = new Map().set('qux', '1.0.2');
 		const result = subject(fixture, targets, '1.1.0', fallbacks);
 
@@ -57,10 +57,12 @@ describe('src/update-versions', () => {
 	});
 
 	it('throws if no fallback version is found for other local dependencies', () => {
-		const targets = new Set([ 'baz' ]);
+		const targets = new Set(['baz']);
 		const fallbacks = new Map().set('foo', '1.0.1');
 		const result = () => subject(fixture, targets, '1.1.0', fallbacks);
 
-		expect(result).toThrowError('No suitable version found for qux package');
+		expect(result).toThrowError(
+			'No suitable version found for qux package',
+		);
 	});
 });

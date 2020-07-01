@@ -1,9 +1,6 @@
-const clone = (src) => JSON.parse(JSON.stringify(src));
+const clone = src => JSON.parse(JSON.stringify(src));
 
-const targetProperties = [
-	'dependencies',
-	'peerDependencies'
-];
+const targetProperties = ['dependencies', 'peerDependencies'];
 
 // link: specifiers are used by Yarn and should be supported by npm in future
 // workspace: specifiers are used by Yarn and pnpm
@@ -15,11 +12,11 @@ module.exports = (manifest, packagesToUpdate, number, fallbackVersions) => {
 
 	pkg.version = number;
 
-	targetProperties.forEach((targetProperty) => {
+	targetProperties.forEach(targetProperty => {
 		const dependencies = pkg[targetProperty] || {};
 		const dependencyNames = Object.keys(dependencies);
 
-		dependencyNames.forEach((dependencyName) => {
+		dependencyNames.forEach(dependencyName => {
 			const version = dependencies[dependencyName];
 
 			// Only update dependency version of dependencies specified with a local path
@@ -27,10 +24,14 @@ module.exports = (manifest, packagesToUpdate, number, fallbackVersions) => {
 				if (packagesToUpdate.has(dependencyName)) {
 					dependencies[dependencyName] = `^${number}`;
 				} else if (fallbackVersions.has(dependencyName)) {
-					dependencies[dependencyName] = `^${fallbackVersions.get(dependencyName)}`;
+					dependencies[dependencyName] = `^${fallbackVersions.get(
+						dependencyName,
+					)}`;
 				} else {
 					// Don't allow packages to depend on unpublished packages
-					throw Error(`No suitable version found for ${dependencyName} package`);
+					throw new Error(
+						`No suitable version found for ${dependencyName} package`,
+					);
 				}
 			}
 		});

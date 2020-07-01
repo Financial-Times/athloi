@@ -26,7 +26,7 @@ describe('src/tasks/publish', () => {
 	it('it returns an array of tasks', () => {
 		expect(result).toBeInstanceOf(Array);
 
-		result.forEach((item) => {
+		result.forEach(item => {
 			expect(item.pkg).toBeDefined();
 			expect(item.apply).toEqual(expect.any(Function));
 		});
@@ -37,10 +37,14 @@ describe('src/tasks/publish', () => {
 	});
 
 	it('provides the correct arguments to run helper', () => {
-		result.forEach((item) => {
+		result.forEach(item => {
 			item.apply();
 
-			expect(mockRun).toHaveBeenCalledWith('npm', ['publish'].concat(args), item.pkg.location);
+			expect(mockRun).toHaveBeenCalledWith(
+				'npm',
+				['publish'].concat(args),
+				item.pkg.location,
+			);
 		});
 	});
 });

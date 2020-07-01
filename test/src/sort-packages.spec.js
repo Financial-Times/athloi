@@ -4,23 +4,23 @@ const createPackage = require('../helpers/create-package');
 const fixture = [
 	createPackage('foo', {
 		dependencies: {
-			qux: '0.0.0'
-		}
+			qux: '0.0.0',
+		},
 	}),
 	createPackage('bar', {
 		dependencies: {
-			baz: '0.0.0'
-		}
+			baz: '0.0.0',
+		},
 	}),
 	createPackage('baz', {
 		dependencies: {
 			foo: '0.0.0',
-			qux: '0.0.0'
-		}
+			qux: '0.0.0',
+		},
 	}),
 	createPackage('qux', {
-		dependencies: {}
-	})
+		dependencies: {},
+	}),
 ];
 
 describe('src/sort-packages', () => {

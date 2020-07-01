@@ -6,8 +6,8 @@ const createPackage = require('../../helpers/create-package');
 
 describe('src/tasks/run', () => {
 	const packages = [
-		createPackage('foo', { scripts: { test: '' } }),
-		createPackage('bar', { scripts: { test: '' } }),
+		createPackage('foo', { scripts: { test: 'command' } }),
+		createPackage('bar', { scripts: { test: 'command' } }),
 		createPackage('baz', { scripts: {} }),
 	];
 
@@ -26,7 +26,7 @@ describe('src/tasks/run', () => {
 	it('it returns an array of tasks', () => {
 		expect(result).toBeInstanceOf(Array);
 
-		result.forEach((item) => {
+		result.forEach(item => {
 			expect(item.pkg).toBeDefined();
 			expect(item.apply).toEqual(expect.any(Function));
 		});
@@ -37,10 +37,14 @@ describe('src/tasks/run', () => {
 	});
 
 	it('provides the correct arguments to run helper', () => {
-		result.forEach((item) => {
+		result.forEach(item => {
 			item.apply();
 
-			expect(mockRun).toHaveBeenCalledWith('npm', ['run', command], item.pkg.location);
+			expect(mockRun).toHaveBeenCalledWith(
+				'npm',
+				['run', command],
+				item.pkg.location,
+			);
 		});
 	});
 });
