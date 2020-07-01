@@ -38,7 +38,7 @@
     "toposort": "^2.0.2"
   },
   "devDependencies": {
-    "@financial-times/n-gage": "^5.0.0",
+    "@financial-times/rel-engage": "^7.4.3",
     "jest": "^24.7.0",
     "snyk": "^1.167.2"
   }
