@@ -5,8 +5,11 @@ orbs:
 
 references:
 
-  container_config_node8: &container_config_node8
-    working_directory: ~/project/build
+  #
+  # Workspace
+  #
+  container_config_node: &container_config_node
+    working_directory: ~/project
     docker:
       - image: circleci/node:8-browsers
 
@@ -17,26 +20,29 @@ references:
     attach_workspace:
       at: *workspace_root
 
-  npm_cache_keys: &npm_cache_keys
-    keys:
-        - v2-dependency-npm-{{ checksum "package.json" }}-
-        - v2-dependency-npm-{{ checksum "package.json" }}
-        - v2-dependency-npm-
+  npm_cache_key: &npm_cache_key
+    cache-v001-{{ .Branch }}-{{ checksum "./package.json" }}
 
-  cache_npm_cache: &cache_npm_cache
+  #
+  # Cache creation
+  #
+  create_cache: &create_cache
     save_cache:
-        key: v2-dependency-npm-{{ checksum "package.json" }}-{{ epoch }}
+        key: *npm_cache_key
         paths:
         - ./node_modules/
 
-  restore_npm_cache: &restore_npm_cache
+  #
+  # Cache restoration
+  #
+  restore_cache: &restore_cache
     restore_cache:
-        <<: *npm_cache_keys
+      keys:
+        - *npm_cache_key
 
-  filters_ignore_tags: &filters_ignore_tags
-    tags:
-      ignore: /.*/
-
+  #
+  # Filters
+  #
   filters_version_tag: &filters_version_tag
     tags:
       only:
@@ -47,24 +53,30 @@ references:
 jobs:
 
   build:
-    <<: *container_config_node8
+    <<: *container_config_node
     steps:
       - checkout
-      - *restore_npm_cache
+      - *restore_cache
       - run:
-          name: Install project dependencies
+          name: Install Node.js dependencies
           command: npm install
       - run:
-          name: Run the project build task
+          name: Create dotfiles
+          command: make .editorconfig .eslintrc.js .eslintignore .prettierrc.js .prettierignore
+      - *create_cache
+      # - run:
+      #     name: Fetch environment variables
+      #     command: make env WHO=ci
+      - run:
+          name: Run build
           command: make build
-      - *cache_npm_cache
       - persist_to_workspace:
           root: *workspace_root
           paths:
-            - build
+            - .
 
   test:
-    <<: *container_config_node8
+    <<: *container_config_node
     steps:
       - *attach_workspace
       - run:
@@ -72,7 +84,7 @@ jobs:
           command: make test
 
   publish:
-    <<: *container_config_node8
+    <<: *container_config_node
     steps:
       - *attach_workspace
       - run:
@@ -83,37 +95,15 @@ jobs:
 
 workflows:
 
-  build-test:
-    jobs:
-      - build:
-          filters:
-            <<: *filters_ignore_tags
-      - test:
-          filters:
-            <<: *filters_ignore_tags
-          requires:
-            - build
-      - ft-snyk-orb/scan-js-packages:
-          context: rel-eng-creds
-          filters:
-            <<: *filters_ignore_tags
-          requires:
-            - build
-
   build-test-publish:
     jobs:
       - build:
-          filters:
-            <<: *filters_version_tag
+          context: rel-eng-creds
       - test:
-          filters:
-            <<: *filters_version_tag
           requires:
             - build
       - ft-snyk-orb/scan-js-packages:
           context: rel-eng-creds
-          filters:
-            <<: *filters_version_tag
           requires:
             - build
       - publish:
