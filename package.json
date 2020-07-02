@@ -2,11 +2,8 @@
   "name": "@financial-times/athloi",
   "version": "0.0.0",
   "scripts": {
-    "precommit": "node_modules/.bin/secret-squirrel",
-    "commitmsg": "node_modules/.bin/secret-squirrel-commitmsg",
-    "prepush": "make verify -j3",
-    "test": "jest --runInBand --testEnvironment=node",
-    "prepare": "npx snyk protect || npx snyk protect -d || true"
+    "build": "make build",
+    "test": "make test"
   },
   "bin": "src/bin/cli",
   "keywords": [],
@@ -39,7 +36,6 @@
   },
   "devDependencies": {
     "@financial-times/rel-engage": "^7.4.3",
-    "jest": "^24.7.0",
-    "snyk": "^1.167.2"
+    "jest": "^24.7.0"
   }
 }
