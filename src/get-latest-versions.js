@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-const fetchJSON = async (url) => {
+const fetchJSON = async url => {
 	const response = await fetch(url);
 
 	if (response.ok) {
@@ -11,12 +11,14 @@ const fetchJSON = async (url) => {
 		return null;
 	}
 
-	return Promise.reject(`The request to "${url}" returned a ${response.status}`);
+	throw new Error(`The request to "${url}" returned a ${response.status}`);
 };
 
 module.exports = async (packages = []) => {
-	const publishable = packages.filter((pkg) => pkg.private === false);
-	const requests = publishable.map((pkg) => fetchJSON(`https://registry.npmjs.org/${pkg.name}`));
+	const publishable = packages.filter(pkg => pkg.private === false);
+	const requests = publishable.map(pkg =>
+		fetchJSON(`https://registry.npmjs.org/${pkg.name}`),
+	);
 	const results = await Promise.all(requests);
 
 	return results.filter(Boolean).reduce((map, result) => {

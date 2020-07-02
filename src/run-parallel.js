@@ -21,6 +21,6 @@ module.exports = (tasks = [], concurrency = 1, preserveOrder = false) => {
 			queue.delete(pkg.name);
 
 			semaphore.release();
-		})
+		}),
 	);
 };

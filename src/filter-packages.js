@@ -6,7 +6,7 @@ const testKeyValue = (a, b) => {
 	}
 
 	if (typeof a === 'object' && typeof b === 'string') {
-		return a.hasOwnProperty(b);
+		return Object.prototype.hasOwnProperty.call(a, b);
 	}
 
 	return a === b;
@@ -21,16 +21,14 @@ const testPackageName = (fullName, filter) => {
 	return minimatch(packageName, filter);
 };
 
-module.exports = (filter, packages = []) => (
+module.exports = (filter, packages = []) =>
 	filter
 		? packages.filter(({ manifest }) => {
-			if (filter.includes(':')) {
-				const [key, value] = filter.split(':');
-				return testKeyValue(manifest[key], JSON.parse(value));
-			} else {
+				if (filter.includes(':')) {
+					const [key, value] = filter.split(':');
+					return testKeyValue(manifest[key], JSON.parse(value));
+				}
 				// By default filter on the package name
 				return testPackageName(manifest.name, filter);
-			}
-		})
-		: packages
-);
+		  })
+		: packages;

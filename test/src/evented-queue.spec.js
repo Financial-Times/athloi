@@ -13,12 +13,14 @@ describe('src/evented-queue', () => {
 			expect(instance.waiting.size).toEqual(1);
 		});
 
-		it('emits an event when items are added to the queue', (done) => {
-			instance.on('add', () => {
-				done();
-			});
+		it('emits an event when items are added to the queue', () => {
+			return new Promise(resolve => {
+				instance.on('add', () => {
+					resolve();
+				});
 
-			instance.add('foo');
+				instance.add('foo');
+			});
 		});
 	});
 
@@ -31,33 +33,37 @@ describe('src/evented-queue', () => {
 			expect(instance.waiting.size).toEqual(0);
 		});
 
-		it('emits an event when items are removed from the queue', (done) => {
-			instance.add('foo');
+		it('emits an event when items are removed from the queue', () => {
+			return new Promise(resolve => {
+				instance.add('foo');
 
-			instance.on('delete', () => {
-				done();
+				instance.on('delete', () => {
+					resolve();
+				});
+
+				instance.delete('foo');
 			});
-
-			instance.delete('foo');
 		});
 	});
 
 	describe('#waitBehind', () => {
-		it('resolves when the queue no longer contains any of the given items', (done) => {
-			instance
-				.add('foo')
-				.add('bar')
-				.add('baz');
+		it('resolves when the queue no longer contains any of the given items', () => {
+			return new Promise(resolve => {
+				instance
+					.add('foo')
+					.add('bar')
+					.add('baz');
 
-			instance.waitBehind(['foo', 'bar', 'baz']).then(() => {
-				expect(instance.waiting.size).toEqual(0);
-				done();
+				instance.waitBehind(['foo', 'bar', 'baz']).then(() => {
+					expect(instance.waiting.size).toEqual(0);
+					resolve();
+				});
+
+				instance
+					.delete('foo')
+					.delete('bar')
+					.delete('baz');
 			});
-
-			instance
-				.delete('foo')
-				.delete('bar')
-				.delete('baz');
 		});
 	});
 });

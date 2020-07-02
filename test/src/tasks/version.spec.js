@@ -27,7 +27,7 @@ describe('src/tasks/version', () => {
 	it('it returns an array of tasks', () => {
 		expect(result).toBeInstanceOf(Array);
 
-		result.forEach((item) => {
+		result.forEach(item => {
 			expect(item.pkg).toBeDefined();
 			expect(item.apply).toEqual(expect.any(Function));
 		});
@@ -38,11 +38,9 @@ describe('src/tasks/version', () => {
 	});
 
 	it('validates the given tag', async () => {
-		try {
-			await subject(packages, '0-foo');
-		} catch (error) {
-			expect(error.message).toEqual(expect.stringContaining('not a valid version number'));
-		}
+		await expect(subject(packages, '0-foo')).rejects.toThrow(
+			'The given tag "0-foo" is not a valid version number',
+		);
 	});
 
 	it('fetches the latest version for all packages', () => {

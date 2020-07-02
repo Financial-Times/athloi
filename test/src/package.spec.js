@@ -8,19 +8,19 @@ const fixture = Object.freeze({
 	version: '0.0.0',
 	dependencies: {
 		lodash: '^3.0.0',
-		hyperons: '^0.5.0'
+		hyperons: '^0.5.0',
 	},
 	devDependencies: {
 		jest: '^16.0.0',
-		prettier: '^12.0.0'
-	}
+		prettier: '^12.0.0',
+	},
 });
 
-describe('src/package', () => {
-	const factory = (json) => {
-		return new Subject(json, '/root/path/to/package');
-	};
+const factory = json => {
+	return new Subject(json, '/root/path/to/package');
+};
 
+describe('src/package', () => {
 	describe('constructor', () => {
 		it('stores the given manifest', () => {
 			const instance = factory(fixture);
@@ -50,14 +50,18 @@ describe('src/package', () => {
 	describe('get #manifestLocation', () => {
 		it('gets the manifest name', () => {
 			const instance = factory(fixture);
-			expect(instance.manifestLocation).toBe('/root/path/to/package/package.json');
+			expect(instance.manifestLocation).toBe(
+				'/root/path/to/package/package.json',
+			);
 		});
 	});
 
 	describe('get #nodeModulesLocation', () => {
 		it('gets the manifest name', () => {
 			const instance = factory(fixture);
-			expect(instance.nodeModulesLocation).toEqual('/root/path/to/package/node_modules');
+			expect(instance.nodeModulesLocation).toEqual(
+				'/root/path/to/package/node_modules',
+			);
 		});
 	});
 
@@ -72,7 +76,9 @@ describe('src/package', () => {
 	describe('#writeManifest', () => {
 		beforeEach(() => {
 			// The final arg is a callback that needs calling!
-			fs.writeFile.mockImplementation((...args) => args[args.length - 1]());
+			fs.writeFile.mockImplementation((...args) =>
+				args[args.length - 1](),
+			);
 		});
 
 		it('writes the new manifest', async () => {
@@ -82,7 +88,7 @@ describe('src/package', () => {
 			expect(fs.writeFile).toHaveBeenCalledWith(
 				'/root/path/to/package/package.json',
 				JSON.stringify({ ...fixture, version: '1.0.0' }, null, 2),
-				expect.any(Function)
+				expect.any(Function),
 			);
 		});
 

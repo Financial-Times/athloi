@@ -10,14 +10,14 @@ module.exports = async (cmd, args = [], location) => {
 
 		logger.success(`Task succeeded in ${relPath}`);
 
-		logs.forEach((log) => logger.debug(log));
+		logs.forEach(log => logger.debug(log));
 
 		logger.debug('\n');
 	} catch (error) {
 		logger.error(`Task failed in ${relPath}`);
 
 		if (Array.isArray(error.logs)) {
-			error.logs.forEach((log) => logger.debug(log));
+			error.logs.forEach(log => logger.debug(log));
 		}
 
 		logger.debug('\n');

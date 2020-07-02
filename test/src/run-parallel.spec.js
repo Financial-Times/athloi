@@ -1,10 +1,10 @@
 const subject = require('../../src/run-parallel');
 
-const wait = (ms = 10) => new Promise((resolve) => setTimeout(resolve, ms));
+const wait = (ms = 10) => new Promise(resolve => setTimeout(resolve, ms));
 
 const noop = () => {};
 
-function createTask (name, onStart, onEnd, time = 10, allDependencies = []) {
+function createTask(name, onStart, onEnd, time = 10, allDependencies = []) {
 	return {
 		apply: () => {
 			onStart();
@@ -12,8 +12,8 @@ function createTask (name, onStart, onEnd, time = 10, allDependencies = []) {
 		},
 		pkg: {
 			name,
-			allDependencies
-		}
+			allDependencies,
+		},
 	};
 }
 
@@ -24,7 +24,7 @@ describe('src/run-parallel', () => {
 		const tasks = [
 			createTask('a', noop, () => complete.push('a')),
 			createTask('b', noop, () => complete.push('b')),
-			createTask('c', noop, () => complete.push('c'))
+			createTask('c', noop, () => complete.push('c')),
 		];
 
 		await subject(tasks);
@@ -41,21 +41,24 @@ describe('src/run-parallel', () => {
 					'a',
 					() => expect(complete.length).toEqual(0),
 					() => complete.push('a'),
-					100
+					100,
 				),
 				createTask(
 					'b',
 					() => expect(complete.length).toEqual(0),
 					() => complete.push('b'),
-					10
+					10,
 				),
 				createTask(
 					'c',
-					() => expect(complete).toEqual(expect.arrayContaining(['a', 'b'])),
+					() =>
+						expect(complete).toEqual(
+							expect.arrayContaining(['a', 'b']),
+						),
 					() => complete.push('c'),
 					10,
-					['a', 'b']
-				)
+					['a', 'b'],
+				),
 			];
 
 			await subject(tasks, 10, true);
@@ -71,21 +74,21 @@ describe('src/run-parallel', () => {
 					'a',
 					() => expect(complete.length).toEqual(0),
 					() => complete.push('a'),
-					100
+					100,
 				),
 				createTask(
 					'b',
 					() => expect(complete.length).toEqual(0),
 					() => complete.push('b'),
-					10
+					10,
 				),
 				createTask(
 					'c',
 					() => expect(complete.length).toEqual(0),
 					() => complete.push('c'),
 					10,
-					['a', 'b']
-				)
+					['a', 'b'],
+				),
 			];
 
 			await subject(tasks, 10, false);

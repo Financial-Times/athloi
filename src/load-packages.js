@@ -7,7 +7,7 @@ module.exports = async (globs = []) => {
 	const locations = await getPackages(globs);
 	const packages = [];
 
-	locations.forEach((location) => {
+	locations.forEach(location => {
 		let manifest;
 
 		try {
@@ -17,8 +17,10 @@ module.exports = async (globs = []) => {
 		}
 
 		if (manifest) {
-			if (packages.some((pkg) => manifest.name === pkg.name)) {
-				throw Error(`Two or more packages have been found with the same name: "${manifest.name}"`);
+			if (packages.some(pkg => manifest.name === pkg.name)) {
+				throw new Error(
+					`Two or more packages have been found with the same name: "${manifest.name}"`,
+				);
 			} else {
 				packages.push(new Package(manifest, location));
 			}
