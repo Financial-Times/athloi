@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  ft-snyk-orb: financial-times/ft-snyk-orb@0
+  ft-snyk-orb: financial-times/ft-snyk-orb@0.0.14
 
 references:
 
