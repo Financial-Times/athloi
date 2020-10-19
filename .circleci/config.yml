@@ -4,7 +4,13 @@ orbs:
   ft-snyk-orb: financial-times/ft-snyk-orb@0
 
 references:
-
+  #
+  # Authority
+  #
+  docker-auth: &docker-auth
+    auth:
+      username: $DOCKERHUB_USERNAME
+      password: $DOCKERHUB_ACCESS_TOKEN
   #
   # Workspace
   #
@@ -12,6 +18,7 @@ references:
     working_directory: ~/project
     docker:
       - image: circleci/node:8-browsers
+        <<: *docker-auth
 
   workspace_root: &workspace_root
     ~/project
@@ -98,16 +105,22 @@ workflows:
   build-test-publish:
     jobs:
       - build:
-          context: rel-eng-creds
+          context:
+            - dockerhub-shared
+            - rel-eng-creds
       - test:
           requires:
             - build
       - ft-snyk-orb/scan-js-packages:
-          context: rel-eng-creds
+          context:
+            - dockerhub-shared
+            - rel-eng-creds
           requires:
             - build
       - publish:
-          context: rel-eng-creds
+          context:
+            - dockerhub-shared
+            - rel-eng-creds
           filters:
             <<: *filters_version_tag
           requires:
