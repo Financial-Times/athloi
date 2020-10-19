@@ -17,7 +17,7 @@ references:
   container_config_node: &container_config_node
     working_directory: ~/project
     docker:
-      - image: circleci/node:8-browsers
+      - image: circleci/node:12-browsers
         <<: *docker-auth
 
   workspace_root: &workspace_root
