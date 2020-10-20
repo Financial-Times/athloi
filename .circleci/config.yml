@@ -105,6 +105,9 @@ workflows:
             - dockerhub-shared
             - rel-eng-creds
       - test:
+          context:
+            - dockerhub-shared
+            - rel-eng-creds
           requires:
             - build
       - ft-snyk-orb/scan-js-packages:
