@@ -35,7 +35,7 @@
     "toposort": "^2.0.2"
   },
   "devDependencies": {
-    "@financial-times/rel-engage": "^8.0.1",
+    "@financial-times/rel-engage": "^8.0.3",
     "jest": "^24.7.0"
   }
 }
