@@ -4,32 +4,29 @@ orbs:
   ft-snyk-orb: financial-times/ft-snyk-orb@0
 
 references:
-
   #
   # Workspace
   #
   container_config_node: &container_config_node
     working_directory: ~/project
     docker:
-      - image: circleci/node:8-browsers
+      - image: circleci/node:14-browsers
 
-  workspace_root: &workspace_root
-    ~/project
+  workspace_root: &workspace_root ~/project
 
   attach_workspace: &attach_workspace
     attach_workspace:
       at: *workspace_root
 
-  npm_cache_key: &npm_cache_key
-    cache-v001-{{ .Branch }}-{{ checksum "./package.json" }}
+  npm_cache_key: &npm_cache_key cache-v001-{{ .Branch }}-{{ checksum "./package.json" }}
 
   #
   # Cache creation
   #
   create_cache: &create_cache
     save_cache:
-        key: *npm_cache_key
-        paths:
+      key: *npm_cache_key
+      paths:
         - ./node_modules/
 
   #
@@ -51,7 +48,6 @@ references:
       ignore: /.*/
 
 jobs:
-
   build:
     <<: *container_config_node
     steps:
@@ -94,7 +90,6 @@ jobs:
             make npm-publish
 
 workflows:
-
   build-test-publish:
     jobs:
       - build:

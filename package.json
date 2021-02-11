@@ -19,7 +19,7 @@
   "homepage": "https://github.com/Financial-Times/athloi#readme",
   "description": "Athloi is a tool to assist with the management of multi-package repositories (a.k.a. monorepos)",
   "engines": {
-    "node": ">=8.0.0"
+    "node": "14.x"
   },
   "dependencies": {
     "async-sema": "^3.0.0",
@@ -35,7 +35,7 @@
     "toposort": "^2.0.2"
   },
   "devDependencies": {
-    "@financial-times/rel-engage": "^8.0.1",
+    "@financial-times/rel-engage": "^8.0.3",
     "jest": "^24.7.0"
   }
 }

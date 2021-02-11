@@ -49,20 +49,14 @@ describe('src/evented-queue', () => {
 	describe('#waitBehind', () => {
 		it('resolves when the queue no longer contains any of the given items', () => {
 			return new Promise(resolve => {
-				instance
-					.add('foo')
-					.add('bar')
-					.add('baz');
+				instance.add('foo').add('bar').add('baz');
 
 				instance.waitBehind(['foo', 'bar', 'baz']).then(() => {
 					expect(instance.waiting.size).toEqual(0);
 					resolve();
 				});
 
-				instance
-					.delete('foo')
-					.delete('bar')
-					.delete('baz');
+				instance.delete('foo').delete('bar').delete('baz');
 			});
 		});
 	});
