@@ -97,6 +97,7 @@ workflows:
       - test:
           requires:
             - build
+      #Scan package.json for vulnerable dependencies while developing
       - ft-snyk-orb/scan-js-packages:
           context: rel-eng-creds
           requires:
@@ -108,6 +109,14 @@ workflows:
           requires:
             - test
             - ft-snyk-orb/scan-js-packages
+      #Scan and monitor vulnerabilities once in production
+      - ft-snyk-orb/scan-and-monitor-js-packages:
+          name: snyk-scan-and-monitor
+          context: rel-eng-creds
+          requires:
+            - publish
+          filters:
+            <<: *filters_version_tag
 
 experimental:
   notify:
