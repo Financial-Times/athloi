@@ -91,25 +91,30 @@ workflows:
     jobs:
       - build:
           context: rel-eng-creds
+          filters:
+            <<: *only_version_tags
       - test:
+          context: rel-eng-creds
           requires:
             - build
+          filters:
+            <<: *only_version_tags
       #Scan package.json for vulnerable dependencies while developing
       - ft-snyk-orb/scan-js-packages:
           context: rel-eng-creds
           requires:
             - build
-          filters: *only_version_tags
+          filters:
+            <<: *only_version_tags
       - publish:
           context: rel-eng-creds
           requires:
             - test
             - ft-snyk-orb/scan-js-packages
           filters:
+            <<: *only_version_tags
             branches:
               ignore: /.*/
-            tags:
-              only: /.*/
       #Scan and monitor vulnerabilities once in production
       - ft-snyk-orb/scan-and-monitor-js-packages:
           name: snyk-scan-and-monitor
