@@ -98,7 +98,7 @@ workflows:
       - ft-snyk-orb/scan-js-packages:
           context: rel-eng-creds
           requires:
-            - install
+            - build
           filters: *only_version_tags
       - publish:
           context: rel-eng-creds
