@@ -40,12 +40,9 @@ references:
   #
   # Filters
   #
-  filters_version_tag: &filters_version_tag
+  only_version_tags: &only_version_tags
     tags:
-      only:
-        - /^v[0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta|rc)\.\d+)?$/
-    branches:
-      ignore: /.*/
+      only: /^v[0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta)\.\d+)?$/
 
 jobs:
   build:
@@ -101,14 +98,18 @@ workflows:
       - ft-snyk-orb/scan-js-packages:
           context: rel-eng-creds
           requires:
-            - build
+            - install
+          filters: *only_version_tags
       - publish:
           context: rel-eng-creds
-          filters:
-            <<: *filters_version_tag
           requires:
             - test
             - ft-snyk-orb/scan-js-packages
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*/
       #Scan and monitor vulnerabilities once in production
       - ft-snyk-orb/scan-and-monitor-js-packages:
           name: snyk-scan-and-monitor
@@ -116,7 +117,9 @@ workflows:
           requires:
             - publish
           filters:
-            <<: *filters_version_tag
+            <<: *only_version_tags
+            branches:
+              ignore: /.*/
 
 experimental:
   notify:
