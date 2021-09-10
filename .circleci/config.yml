@@ -1,72 +1,92 @@
-version: 2.1
 
-orbs:
-  ft-snyk-orb: financial-times/ft-snyk-orb@0
+# generator: n-circle2-cli
+# template: component
 
 references:
-  #
-  # Workspace
-  #
-  container_config_node: &container_config_node
-    working_directory: ~/project
-    docker:
-      - image: circleci/node:14-browsers
 
-  workspace_root: &workspace_root ~/project
+  container_config_node: &container_config_node
+    working_directory: ~/project/build
+    docker:
+      - image: circleci/node:12
+
+  workspace_root: &workspace_root
+    ~/project
 
   attach_workspace: &attach_workspace
     attach_workspace:
       at: *workspace_root
 
-  npm_cache_key: &npm_cache_key cache-v001-{{ .Branch }}-{{ checksum "./package.json" }}
+  npm_cache_keys: &npm_cache_keys
+    keys:
+        - v2-dependency-npm-{{ checksum "package.json" }}-
+        - v2-dependency-npm-{{ checksum "package.json" }}
+        - v2-dependency-npm-
 
-  #
-  # Cache creation
-  #
-  create_cache: &create_cache
+  cache_npm_cache: &cache_npm_cache
     save_cache:
-      key: *npm_cache_key
-      paths:
+        key: v2-dependency-npm-{{ checksum "package.json" }}-{{ epoch }}
+        paths:
         - ./node_modules/
 
-  #
-  # Cache restoration
-  #
-  restore_cache: &restore_cache
+  restore_npm_cache: &restore_npm_cache
     restore_cache:
-      keys:
-        - *npm_cache_key
+        <<: *npm_cache_keys
 
-  #
-  # Filters
-  #
-  only_version_tags: &only_version_tags
+  filters_only_main: &filters_only_main
+    branches:
+      only: main
+
+  filters_ignore_main: &filters_ignore_main
+    branches:
+      ignore: main
+
+  filters_ignore_tags: &filters_ignore_tags
     tags:
-      only: /^v[0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta)\.\d+)?$/
+      ignore: /.*/
+
+  filters_version_tag: &filters_version_tag
+    tags:
+      only:
+        - /^v?\d+\.\d+\.\d+(?:-beta\.\d+)?$/
+    branches:
+      ignore: /.*/
+
+version: 2
 
 jobs:
+
   build:
     <<: *container_config_node
     steps:
       - checkout
-      - *restore_cache
       - run:
-          name: Install Node.js dependencies
-          command: npm install
+          name: Checkout next-ci-shared-helpers
+          command: git clone --depth 1 git@github.com:Financial-Times/next-ci-shared-helpers.git .circleci/shared-helpers
+      - *restore_npm_cache
       - run:
-          name: Create dotfiles
-          command: make .editorconfig .eslintrc.js .eslintignore .prettierrc.js .prettierignore
-      - *create_cache
-      # - run:
-      #     name: Fetch environment variables
-      #     command: make env WHO=ci
+          name: Install project dependencies
+          command: make install
       - run:
-          name: Run build
+          name: shared-helper / npm-install-peer-deps
+          command: .circleci/shared-helpers/helper-npm-install-peer-deps
+      - run:
+          name: shared-helper / npm-update
+          command: .circleci/shared-helpers/helper-npm-update
+      - run:
+          name: Run the project build task
           command: make build
+      - run:
+          name: shared-helper / generate-build-state-artifacts
+          command: .circleci/shared-helpers/helper-generate-build-state-artifacts
+          when: always
+      - *cache_npm_cache
+      - store_artifacts:
+          path: build-state
+          destination: build-state
       - persist_to_workspace:
           root: *workspace_root
           paths:
-            - .
+            - build
 
   test:
     <<: *container_config_node
@@ -75,59 +95,66 @@ jobs:
       - run:
           name: Run tests
           command: make test
+          environment:
+            JEST_JUNIT_OUTPUT: test-results/jest/results.xml
+            MOCHA_FILE: test-results/mocha/results.xml
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
+          destination: test-results
 
   publish:
     <<: *container_config_node
     steps:
       - *attach_workspace
       - run:
-          name: npm publish
-          command: |
-            echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > ${HOME}/.npmrc
-            make npm-publish
+          name: shared-helper / npm-store-auth-token
+          command: .circleci/shared-helpers/helper-npm-store-auth-token
+      - run: npx snyk monitor --org=customer-products --project-name=Financial-Times/athloi
+      - run:
+          name: shared-helper / npm-version-and-publish-public
+          command: .circleci/shared-helpers/helper-npm-version-and-publish-public
 
 workflows:
+
+  version: 2
+
+  build-test:
+    jobs:
+      - build:
+          filters:
+            <<: *filters_ignore_tags
+      - test:
+          requires:
+            - build
+
   build-test-publish:
     jobs:
       - build:
-          context: rel-eng-creds
           filters:
-            <<: *only_version_tags
+            <<: *filters_version_tag
       - test:
-          context: rel-eng-creds
+          filters:
+            <<: *filters_version_tag
           requires:
             - build
-          filters:
-            <<: *only_version_tags
-      #Scan package.json for vulnerable dependencies while developing
-      - ft-snyk-orb/scan-js-packages:
-          context: rel-eng-creds
-          requires:
-            - build
-          filters:
-            <<: *only_version_tags
       - publish:
-          context: rel-eng-creds
+          filters:
+            <<: *filters_version_tag
           requires:
             - test
-            - ft-snyk-orb/scan-js-packages
-          filters:
-            <<: *only_version_tags
-            branches:
-              ignore: /.*/
-      #Scan and monitor vulnerabilities once in production
-      - ft-snyk-orb/scan-and-monitor-js-packages:
-          name: snyk-scan-and-monitor
-          context: rel-eng-creds
-          requires:
-            - publish
-          filters:
-            <<: *only_version_tags
-            branches:
-              ignore: /.*/
 
-experimental:
-  notify:
-    branches:
-      only:
-        - main
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            <<: *filters_only_main
+    jobs:
+      - build:
+          context: next-nightly-build
+      - test:
+          requires:
+            - build
+          context: next-nightly-build
