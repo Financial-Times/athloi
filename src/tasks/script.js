@@ -2,7 +2,7 @@ const path = require('path');
 const taskify = require('../cli-task');
 const runPackage = require('../run-package');
 
-function script(packages = [], scriptPath) {
+function script (packages = [], scriptPath) {
 	const resolvedScript = path.resolve(process.cwd(), scriptPath);
 
 	return packages.map(pkg => {

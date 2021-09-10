@@ -4,7 +4,7 @@ const wait = (ms = 10) => new Promise(resolve => setTimeout(resolve, ms));
 
 const noop = () => {};
 
-function createTask(name, onStart, onEnd, time = 10, allDependencies = []) {
+function createTask (name, onStart, onEnd, time = 10, allDependencies = []) {
 	return {
 		apply: () => {
 			onStart();

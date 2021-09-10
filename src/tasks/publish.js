@@ -2,7 +2,7 @@ const logger = require('../logger');
 const taskify = require('../cli-task');
 const runPackage = require('../run-package');
 
-function publish(packages = [], args = []) {
+function publish (packages = [], args = []) {
 	// filter out any private packages
 	const filteredPackages = packages.filter(pkg => !pkg.private);
 

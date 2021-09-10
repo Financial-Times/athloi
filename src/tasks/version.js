@@ -4,7 +4,7 @@ const taskify = require('../cli-task');
 const updateVersions = require('../update-versions');
 const getLatestVersions = require('../get-latest-versions');
 
-async function version(targetPackages = [], tag, allPackages = []) {
+async function version (targetPackages = [], tag, allPackages = []) {
 	// Projects may use different tag formats
 	const number = semver.clean(tag);
 

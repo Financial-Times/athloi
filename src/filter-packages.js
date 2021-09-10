@@ -24,11 +24,11 @@ const testPackageName = (fullName, filter) => {
 module.exports = (filter, packages = []) =>
 	filter
 		? packages.filter(({ manifest }) => {
-				if (filter.includes(':')) {
-					const [key, value] = filter.split(':');
-					return testKeyValue(manifest[key], JSON.parse(value));
-				}
-				// By default filter on the package name
-				return testPackageName(manifest.name, filter);
-		  })
+			if (filter.includes(':')) {
+				const [key, value] = filter.split(':');
+				return testKeyValue(manifest[key], JSON.parse(value));
+			}
+			// By default filter on the package name
+			return testPackageName(manifest.name, filter);
+		})
 		: packages;

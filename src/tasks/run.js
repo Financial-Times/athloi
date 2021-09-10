@@ -2,7 +2,7 @@ const logger = require('../logger');
 const taskify = require('../cli-task');
 const runPackage = require('../run-package');
 
-function run(packages = [], script) {
+function run (packages = [], script) {
 	// filter out packages without the requested command
 	const filteredPackages = packages.filter(({ manifest }) => {
 		return manifest.scripts && manifest.scripts[script];

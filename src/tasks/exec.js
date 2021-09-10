@@ -1,7 +1,7 @@
 const taskify = require('../cli-task');
 const runPackage = require('../run-package');
 
-function exec(packages = [], command, args = []) {
+function exec (packages = [], command, args = []) {
 	return packages.map(pkg => {
 		const apply = () => runPackage(command, args, pkg.location);
 		return { pkg, apply };

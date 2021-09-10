@@ -6,32 +6,32 @@ const util = require('util');
 const writeFile = util.promisify(fs.writeFile);
 
 class Package {
-	constructor(manifest, location) {
+	constructor (manifest, location) {
 		this.manifest = Object.freeze(manifest);
 		this.location = path.normalize(location);
 	}
 
-	get name() {
+	get name () {
 		return this.manifest.name;
 	}
 
-	get private() {
+	get private () {
 		return Boolean(this.manifest.private);
 	}
 
-	get manifestLocation() {
+	get manifestLocation () {
 		return path.join(this.location, 'package.json');
 	}
 
-	get nodeModulesLocation() {
+	get nodeModulesLocation () {
 		return path.join(this.location, 'node_modules');
 	}
 
-	get relativeLocation() {
+	get relativeLocation () {
 		return path.relative(process.cwd(), this.location);
 	}
 
-	get allDependencies() {
+	get allDependencies () {
 		return Object.keys({
 			...this.manifest.dependencies,
 			...this.manifest.devDependencies,
@@ -40,7 +40,7 @@ class Package {
 		});
 	}
 
-	async writeManifest(manifest) {
+	async writeManifest (manifest) {
 		const json = JSON.stringify(manifest, null, 2);
 		await writeFile(this.manifestLocation, json);
 		this.manifest = Object.freeze(manifest);
