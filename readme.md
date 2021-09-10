@@ -4,7 +4,7 @@
 
 Athloi is a tool to assist with the management of multi-package repositories (a.k.a. [monorepos]) with git and npm. It provides an interface to execute commands and scripts within the scope of each package.
 
-[monorepos]: https://github.com/babel/babel/blob/master/doc/design/monorepo.md
+[monorepos]: https://github.com/babel/babel/blob/HEAD/doc/design/monorepo.md
 
 ## Features
 
