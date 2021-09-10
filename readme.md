@@ -1,6 +1,6 @@
 # Athloi
 
-[![CircleCI](https://circleci.com/gh/Financial-Times/athloi/tree/master.svg?style=svg)](https://circleci.com/gh/Financial-Times/athloi/tree/master)
+[![CircleCI](https://circleci.com/gh/Financial-Times/athloi/tree/main.svg?style=svg)](https://circleci.com/gh/Financial-Times/athloi/tree/main)
 
 Athloi is a tool to assist with the management of multi-package repositories (a.k.a. [monorepos]) with git and npm. It provides an interface to execute commands and scripts within the scope of each package.
 
