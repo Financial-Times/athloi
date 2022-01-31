@@ -10,7 +10,7 @@ references:
   container_config_node: &container_config_node
     working_directory: ~/project
     docker:
-      - image: circleci/node:14-browsers
+      - image: cimg/node:14-browsers
 
   workspace_root: &workspace_root ~/project
 
