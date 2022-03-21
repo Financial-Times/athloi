@@ -107,7 +107,7 @@ workflows:
           filters:
             <<: *only_version_tags
       - publish:
-          context: rel-eng-creds
+          context: npm-publish-token
           requires:
             - test
             - ft-snyk-orb/scan-js-packages
