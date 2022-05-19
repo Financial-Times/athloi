@@ -36,6 +36,6 @@
   },
   "devDependencies": {
     "@financial-times/rel-engage": "^8.0.3",
-    "jest": "^24.7.0"
+    "jest": "^28.1.0"
   }
 }
